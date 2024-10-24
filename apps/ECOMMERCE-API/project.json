@@ -1,0 +1,33 @@
+{
+  "name": "ECOMMERCE-API",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/ECOMMERCE-API/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "ECOMMERCE-API:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "ECOMMERCE-API:build:development"
+        },
+        "production": {
+          "buildTarget": "ECOMMERCE-API:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/ECOMMERCE-API/jest.config.ts"
+      }
+    }
+  }
+}
