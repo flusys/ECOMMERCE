@@ -14,4 +14,6 @@ import { ProductListSharedComponent } from '../../shared/components/product-list
   ],
   templateUrl: './product-list.component.html',
 })
-export class ProductListComponent {}
+export class ProductListComponent {
+  showSortDropDown=false;
+}
