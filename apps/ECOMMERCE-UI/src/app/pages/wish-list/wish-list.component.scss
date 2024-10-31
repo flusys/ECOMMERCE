@@ -1,0 +1,208 @@
+
+.wishlist__product-name {
+    color: inherit
+}
+
+.wishlist__product-rating {
+    margin-top: 6px;
+    display: -ms-flexbox;
+    display: flex
+}
+
+.wishlist__product-rating-legend {
+    font-size: 13px;
+    line-height: 1;
+    color: #b3b3b3;
+    margin-left: 9px;
+    padding-top: 1px
+}
+
+@media (min-width:768px) {
+    .wishlist {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0
+    }
+
+    .wishlist__column {
+        padding: 12px 18px;
+        border-top: 1px solid #ebebeb
+    }
+
+    .wishlist__column:first-child {
+        border-left: 1px solid #ebebeb
+    }
+
+    .wishlist__column:last-child {
+        border-right: 1px solid #ebebeb
+    }
+
+    .wishlist__head {
+        background: #f7f7f7;
+        font-size: 15px
+    }
+
+    .wishlist__head .wishlist__column {
+        font-weight: 500
+    }
+
+    .wishlist__head .wishlist__column:first-child {
+        border-top-left-radius: 2.5px
+    }
+
+    .wishlist__head .wishlist__column:last-child {
+        border-top-right-radius: 2.5px
+    }
+
+    .wishlist__body .wishlist__column {
+        padding-top: 18px;
+        padding-bottom: 18px
+    }
+
+    .wishlist__body .wishlist__row:last-child .wishlist__column {
+        border-bottom: 1px solid #ebebeb
+    }
+
+    .wishlist__body .wishlist__row:last-child .wishlist__column:first-child {
+        border-bottom-left-radius: 2.5px
+    }
+
+    .wishlist__body .wishlist__row:last-child .wishlist__column:last-child {
+        border-bottom-right-radius: 2.5px
+    }
+
+    .wishlist__column--image {
+        width: 1px;
+        text-align: center
+    }
+
+    .wishlist__column--image img {
+        width: 80px
+    }
+
+    .wishlist__column--stock {
+        white-space: nowrap;
+        text-align: center;
+        width: 1px
+    }
+
+    .wishlist__column--price {
+        text-align: right;
+        width: 170px;
+        padding-left: 90px
+    }
+
+    .wishlist__column--tocart {
+        white-space: nowrap;
+        width: 1px;
+        padding-left: 90px;
+        padding-right: 0
+    }
+
+    .wishlist__column--remove {
+        width: 1px
+    }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+    .wishlist__column--price {
+        width: 140px
+    }
+
+    .wishlist__column--price,
+    .wishlist__column--tocart {
+        padding-left: 30px
+    }
+}
+
+@media (min-width:768px) and (max-width:991px) {
+    .wishlist__column--price {
+        width: 1px
+    }
+
+    .wishlist__column--price,
+    .wishlist__column--product,
+    .wishlist__column--stock,
+    .wishlist__column--tocart {
+        padding-left: 0
+    }
+
+    .wishlist__column--remove {
+        padding-left: 8px;
+        padding-right: 12px
+    }
+}
+
+@media (max-width:767px) {
+    .wishlist {
+        display: block
+    }
+
+    .wishlist__head {
+        display: none
+    }
+
+    .wishlist__body {
+        display: block
+    }
+
+    .wishlist__row {
+        position: relative;
+        width: 100%;
+        display: block;
+        border: 1px solid #ebebeb;
+        border-radius: 2px;
+        padding: 20px 20px 24px
+    }
+
+    .wishlist__row+.wishlist__row {
+        margin-top: 15px
+    }
+
+    .wishlist__column {
+        display: block;
+        padding: 0
+    }
+
+    .wishlist__column--image {
+        padding: 20px 20px 10px;
+        text-align: center
+    }
+
+    .wishlist__column--image img {
+        width: 100%;
+        max-width: 160px
+    }
+
+    .wishlist__column--price,
+    .wishlist__column--product,
+    .wishlist__column--stock,
+    .wishlist__column--tocart {
+        text-align: center
+    }
+
+    .wishlist__column--stock {
+        margin-top: 8px
+    }
+
+    .wishlist__column--price {
+        margin-top: 12px;
+        font-size: 16px;
+        font-weight: 700
+    }
+
+    .wishlist__column--tocart {
+        margin-top: 24px
+    }
+
+    .wishlist__column--remove {
+        position: absolute;
+        top: 5px;
+        right: 5px
+    }
+
+    .wishlist__product-rating {
+        -ms-flex-pack: center;
+        justify-content: center
+    }
+}

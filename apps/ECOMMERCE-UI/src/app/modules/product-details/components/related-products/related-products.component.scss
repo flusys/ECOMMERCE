@@ -1,0 +1,17 @@
+swiper-container::part(container) {
+    margin-bottom: -56px !important;
+    padding-bottom: 56px !important;
+}
+
+
+:host ::ng-deep {
+    app-product-vertical-card {
+        .product-card .product-card__buttons .btn {
+            font-size: .8125rem !important;
+            height: calc(1.5rem + 2px) !important;
+            line-height: 1.25 !important;
+            padding: .25rem .5625rem !important;
+            font-weight: 500 !important;
+        }
+    }
+}

@@ -1,21 +1,19 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PaginatorComponent } from '../../shared/components/paginator/paginator.component';
-import { ProductListSharedComponent } from '../../shared/components/product-list/product-list.component';
-import { ProductListFiltersComponent } from '../../modules/product-list/components/product-list-filters/product-list-filters.component';
+import { ProductFilterComponent } from '../../modules/product-list/components/product-filter/product-filter.component';
+import { LatestProductsComponent } from '../../modules/product-list/components/latest-products/latest-products.component';
+import { ProductListViewComponent } from '../../modules/product-list/components/product-list-view/product-list-view.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
   imports: [
-    CommonModule,
-    ProductListSharedComponent,
-    PaginatorComponent,
-    ProductListFiltersComponent
-
+    ProductFilterComponent,
+    LatestProductsComponent,
+    ProductListViewComponent
   ],
   templateUrl: './product-list.component.html',
+  styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent {
-  showSortDropDown=false;
+
 }

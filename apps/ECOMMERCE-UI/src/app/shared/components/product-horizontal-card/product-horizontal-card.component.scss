@@ -1,0 +1,112 @@
+:host ::ng-deep app-product-vertical-card {
+
+    .product-card {
+        -ms-flex-direction: row;
+        flex-direction: row;
+
+        .product-card__info {
+            padding: 20px 24px 20px 4px !important;
+
+            .product-card__features-list {
+                font-size: 14px;
+                line-height: 16px;
+                margin-bottom: 0;
+            }
+        }
+
+        .product-card__actions {
+            flex-shrink: 0 !important;
+            width: 190px !important;
+            padding: 16px 20px !important;
+            border-left: 1px solid #ebebeb !important;
+            display: flex;
+            flex-direction: column;
+
+            .product-card__prices {
+                margin: 0;
+            }
+
+            .product-card__buttons {
+                display: -ms-flexbox !important;
+                display: flex !important;
+                margin-top: auto !important;
+                flex-wrap: wrap !important;
+                .product-card__addtocart{
+                    width: 100%;
+                }
+                .btn {
+                    font-size: .875rem !important;
+                    height: calc(1.875rem + 2px) !important;
+                    line-height: 1.25 !important;
+                    padding: .375rem 1rem !important;
+                    font-weight: 500 !important;
+                }
+
+            }
+        }
+
+        .product-card__image {
+            -ms-flex-negative: 0;
+            flex-shrink: 0;
+            padding: 24px;
+            width: 210px;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    :host ::ng-deep app-product-vertical-card {
+        .product-card {
+            -ms-flex-direction: column;
+            flex-direction: column;
+
+            .product-card__info {
+                border-top: 1px solid #ebebeb !important;
+                padding: 24px !important;
+            }
+
+            .product-card__actions {
+                border-top: 1px solid #ebebeb !important;
+                border-left: 0px solid #ebebeb !important;
+                padding: 24px !important;
+                width: 100% !important;
+
+                .product-card__buttons {
+                    display: -ms-flexbox !important;
+                    display: flex !important;
+                    margin-top: 24px !important;
+                    flex-wrap: wrap !important;
+                    .product-card__addtocart{
+                        width: auto;
+                    }
+                    .btn {
+                        font-size: .875rem !important;
+                        height: calc(1.875rem + 2px) !important;
+                        line-height: 1.25 !important;
+                        padding: .375rem 1rem !important;
+                        font-weight: 500 !important;
+                    }
+
+                }
+            }
+
+            .product-card__image {
+                width: 250px;
+                padding: 20px;
+                margin: 0 auto;
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    :host ::ng-deep app-product-vertical-card {
+        .product-card {
+            .product-card__image {
+                width: 180px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    }
+}

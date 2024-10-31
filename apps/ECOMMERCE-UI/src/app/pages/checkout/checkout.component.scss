@@ -1,0 +1,131 @@
+
+.checkout__totals {
+    font-size: 15px;
+    line-height: 19px;
+    width: 100%;
+    margin-bottom: 40px
+}
+
+.checkout__totals td,
+.checkout__totals th {
+    padding: 4px 0
+}
+
+.checkout__totals th {
+    font-weight: 700
+}
+
+.checkout__totals tr>:first-child {
+    padding-right: 20px
+}
+
+.checkout__totals tr>:last-child {
+    text-align: right
+}
+
+.checkout__totals-header tr:last-child>* {
+    padding-bottom: 10px
+}
+
+.checkout__totals-products tr:first-child>* {
+    padding-top: 20px;
+    border-top: 1px solid #ebebeb
+}
+
+.checkout__totals-products tr:last-child>* {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ebebeb
+}
+
+.checkout__totals-subtotals tr:first-child>* {
+    padding-top: 20px
+}
+
+.checkout__totals-subtotals tr:last-child>* {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ebebeb
+}
+
+.checkout__totals-footer {
+    font-size: 24px
+}
+
+.checkout__totals-footer th {
+    font-weight: 500
+}
+
+.checkout__totals-footer tr:first-child>* {
+    padding-top: 20px
+}
+
+.payment-methods {
+    margin-bottom: 30px
+}
+
+.payment-methods__list {
+    list-style: none;
+    padding: 0;
+    margin: 0
+}
+
+.payment-methods__item {
+    border-radius: 2px;
+    background: transparent;
+    border: 1px solid #e5e5e5
+}
+
+.payment-methods__item:hover {
+    background: #f7f7f7;
+    border: 1px solid #e5e5e5
+}
+
+.payment-methods__item+.payment-methods__item {
+    margin-top: 6px
+}
+
+.payment-methods__item-header {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 8px 14px;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .01em;
+    cursor: pointer;
+    margin-bottom: 0
+}
+
+.payment-methods__item-radio {
+    margin-right: 10px
+}
+
+.payment-methods__item-container {
+    overflow: hidden;
+    height: 0;
+    transition: height .2s
+}
+
+.payment-methods__item-description {
+    font-size: 15px;
+    line-height: 20px;
+    padding: 2px 16px 13px
+}
+
+.payment-methods__item--active,
+.payment-methods__item--active:hover {
+    background: #f7f7f7;
+    border: 1px solid #e5e5e5
+}
+
+.payment-methods__item--active .payment-methods__item-container {
+    height: auto
+}
+
+.checkout__agree {
+    margin-bottom: 36px
+}
+
+.checkout__agree a:hover {
+    text-decoration: underline
+}

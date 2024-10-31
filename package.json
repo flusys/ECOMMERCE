@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "start-ui": "nx serve ECOMMERCE-UI",
-    "start-api": "nx serve ECOMMERCE-API"
+    "start-api": "nx serve ECOMMERCE-API",
+    "build-ui": "nx build ECOMMERCE-UI",
+    "build-api": "nx serve ECOMMERCE-API"
   },
   "private": true,
   "dependencies": {
@@ -21,7 +23,9 @@
     "@nestjs/platform-express": "^10.0.2",
     "axios": "^1.6.0",
     "reflect-metadata": "^0.1.13",
+    "ng2-nouislider": "^2.0.0",
     "rxjs": "~7.8.0",
+    "swiper": "^11.1.14",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {

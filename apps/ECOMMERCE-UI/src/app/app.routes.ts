@@ -1,51 +1,59 @@
-import { Route } from '@angular/router';
-import { LayoutComponent } from './core/components/layout/layout.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { Routes } from '@angular/router';
 
-export const appRoutes: Route[] = [
+export const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
-    loadChildren: () => [
-      {
-        path: '',
-        loadComponent: () =>
-          import('./pages/home/home.component').then(
-            (m) => m.HomeComponent
-          ),
-      },
-      {
-        path: 'product-list',
-        loadComponent: () =>
-          import('./pages/product-list/product-list.component').then(
-            (m) => m.ProductListComponent
-          ),
-      },
-      {
-        path: 'product-details/:id',
-        loadComponent: () =>
-          import('./pages/product-details/product-details.component').then(
-            (m) => m.ProductDetailsComponent
-          ),
-      },
-      {
-        path: 'contact-us',
-        loadComponent: () =>
-          import('./pages/contact-us/contact-us.component').then(
-            (m) => m.ContactUsComponent
-          ),
-      },
-      {
-        path: 'about-us',
-        loadComponent: () =>
-          import('./pages/about-us/about-us.component').then(
-            (m) => m.AboutUsComponent
-          ),
-      },
-    ],
+    loadComponent: () =>
+      import('./pages/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent
+      ),
   },
   {
-    path: '**',
-    component: NotFoundComponent,
+    path: 'product-list',
+    loadComponent: () =>
+      import('./pages/product-list/product-list.component').then(
+        (m) => m.ProductListComponent
+      ),
   },
+  {
+    path: 'product-details/:id',
+    loadComponent: () =>
+      import('./pages/product-details/product-details.component').then(
+        (m) => m.ProductDetailsComponent
+      ),
+  },
+  {
+    path: 'wish-list',
+    loadComponent: () =>
+      import('./pages/wish-list/wish-list.component').then(
+        (m) => m.WishListComponent
+      ),
+  },{
+    path: 'cart',
+    loadComponent: () =>
+      import('./pages/cart/cart.component').then(
+        (m) => m.CartComponent
+      ),
+  },{
+    path: 'checkout',
+    loadComponent: () =>
+      import('./pages/checkout/checkout.component').then(
+        (m) => m.CheckoutComponent
+      ),
+  },
+  {
+    path: 'contact-us',
+    loadComponent: () =>
+      import('./pages/contact-us/contact-us.component').then(
+        (m) => m.ContactUsComponent
+      ),
+  },
+  {
+    path: 'notfound',
+    loadComponent: () =>
+      import('./pages/not-found/not-found.component').then(
+        (com) => com.NotFoundComponent
+      ),
+  },
+  { path: '**', redirectTo: '/notfound', pathMatch: 'full' },
 ];

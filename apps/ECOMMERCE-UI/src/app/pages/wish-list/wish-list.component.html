@@ -1,0 +1,158 @@
+<div class="page-header">
+    <div class="page-header__container container">
+      <div class="page-header__breadcrumb">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="index.html">Home</a>
+              <svg class="breadcrumb-arrow" width="6px" height="9px">
+                <use
+                  xlink:href="images/sprite.svg#arrow-rounded-right-6x9"
+                ></use>
+              </svg>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="#">Breadcrumb</a>
+              <svg class="breadcrumb-arrow" width="6px" height="9px">
+                <use
+                  xlink:href="images/sprite.svg#arrow-rounded-right-6x9"
+                ></use>
+              </svg>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Wish List
+            </li>
+          </ol>
+        </nav>
+      </div>
+      <div class="page-header__title"><h1>Wish List</h1></div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="container">
+      <table class="wishlist">
+        <thead class="wishlist__head">
+          <tr class="wishlist__row">
+            <th class="wishlist__column wishlist__column--image">
+              Image
+            </th>
+            <th class="wishlist__column wishlist__column--product">
+              Product
+            </th>
+            <th class="wishlist__column wishlist__column--stock">
+              Stock Status
+            </th>
+            <th class="wishlist__column wishlist__column--price">
+              Price
+            </th>
+            <th class="wishlist__column wishlist__column--tocart"></th>
+            <th class="wishlist__column wishlist__column--remove"></th>
+          </tr>
+        </thead>
+        <tbody class="wishlist__body">
+          <tr class="wishlist__row">
+            <td class="wishlist__column wishlist__column--image">
+              <a href="#"
+                ><img src="images/products/product-1.jpg" alt=""
+              /></a>
+            </td>
+            <td class="wishlist__column wishlist__column--product">
+              <a href="#" class="wishlist__product-name"
+                >Electric Planer Brandix KL370090G 300 Watts</a
+              >
+              <app-product-rating-bar [star]="1"/>
+            </td>
+            <td class="wishlist__column wishlist__column--stock">
+              <div class="badge badge-success">In Stock</div>
+            </td>
+            <td class="wishlist__column wishlist__column--price">
+              $699.00
+            </td>
+            <td class="wishlist__column wishlist__column--tocart">
+              <button type="button" class="btn btn-primary btn-sm">
+                Add To Cart
+              </button>
+            </td>
+            <td class="wishlist__column wishlist__column--remove">
+              <button
+                type="button"
+                class="btn btn-light btn-sm btn-svg-icon"
+              >
+                <svg width="12px" height="12px">
+                  <use xlink:href="images/sprite.svg#cross-12"></use>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr class="wishlist__row">
+            <td class="wishlist__column wishlist__column--image">
+              <a href="#"
+                ><img src="images/products/product-2.jpg" alt=""
+              /></a>
+            </td>
+            <td class="wishlist__column wishlist__column--product">
+              <a href="#" class="wishlist__product-name"
+                >Undefined Tool IRadix DPS3000SY 2700 watts</a
+              >
+              <app-product-rating-bar [star]="1"/>
+            </td>
+            <td class="wishlist__column wishlist__column--stock">
+              <div class="badge badge-success">In Stock</div>
+            </td>
+            <td class="wishlist__column wishlist__column--price">
+              $849.00
+            </td>
+            <td class="wishlist__column wishlist__column--tocart">
+              <button type="button" class="btn btn-primary btn-sm">
+                Add To Cart
+              </button>
+            </td>
+            <td class="wishlist__column wishlist__column--remove">
+              <button
+                type="button"
+                class="btn btn-light btn-sm btn-svg-icon"
+              >
+                <svg width="12px" height="12px">
+                  <use xlink:href="images/sprite.svg#cross-12"></use>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr class="wishlist__row">
+            <td class="wishlist__column wishlist__column--image">
+              <a href="#"
+                ><img src="images/products/product-5.jpg" alt=""
+              /></a>
+            </td>
+            <td class="wishlist__column wishlist__column--product">
+              <a href="#" class="wishlist__product-name"
+                >Brandix Router Power Tool 2017ERXPK</a
+              >
+              <app-product-rating-bar [star]="1"/>
+            </td>
+            <td class="wishlist__column wishlist__column--stock">
+              <div class="badge badge-success">In Stock</div>
+            </td>
+            <td class="wishlist__column wishlist__column--price">
+              $1,210.00
+            </td>
+            <td class="wishlist__column wishlist__column--tocart">
+              <button type="button" class="btn btn-primary btn-sm">
+                Add To Cart
+              </button>
+            </td>
+            <td class="wishlist__column wishlist__column--remove">
+              <button
+                type="button"
+                class="btn btn-light btn-sm btn-svg-icon"
+              >
+                <svg width="12px" height="12px">
+                  <use xlink:href="images/sprite.svg#cross-12"></use>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

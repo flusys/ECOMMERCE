@@ -1,16 +1,25 @@
 import { Component } from '@angular/core';
+import { ProductDescriptionComponent } from '../../modules/product-details/components/product-description/product-description.component';
+import { ProductReviewsComponent } from '../../modules/product-details/components/product-reviews/product-reviews.component';
+import { ProductSpecificationComponent } from '../../modules/product-details/components/product-specification/product-specification.component';
+import { RelatedProductsComponent } from '../../modules/product-details/components/related-products/related-products.component';
+import { ProductContentComponent } from '../../shared/components/product-content/product-content.component';
 import { CommonModule } from '@angular/common';
-import { ProductListSharedComponent } from '../../shared/components/product-list/product-list.component';
-import { PaginatorComponent } from '../../shared/components/paginator/paginator.component';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
   imports: [
     CommonModule,
-    ProductListSharedComponent,
-    PaginatorComponent
+    ProductDescriptionComponent,
+    ProductReviewsComponent,
+    ProductSpecificationComponent,
+    RelatedProductsComponent,
+    ProductContentComponent
   ],
   templateUrl: './product-details.component.html',
+  styleUrl: './product-details.component.scss'
 })
-export class ProductDetailsComponent {}
+export class ProductDetailsComponent {
+  activeTab=1;
+}

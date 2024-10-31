@@ -1,0 +1,36 @@
+<div class="block block-products block-products--layout--large-first">
+  <div class="container">
+    <div class="block-header">
+      <h3 class="block-header__title">Bestsellers</h3>
+      <div class="block-header__divider"></div>
+    </div>
+    <div class="block-products__body">
+      <div class="block-products__featured">
+        <div class="block-products__featured-item">
+          <app-product-vertical-card [showFeatures]="true" />
+          <app-product-horizontal-card />
+        </div>
+      </div>
+      <div class="block-products__list">
+        <div class="block-products__list-item">
+          <app-product-vertical-card [showFeatures]="false" />
+        </div>
+        <div class="block-products__list-item">
+          <app-product-vertical-card [showFeatures]="false" />
+        </div>
+        <div class="block-products__list-item">
+          <app-product-vertical-card [showFeatures]="false" />
+        </div>
+        <div class="block-products__list-item">
+          <app-product-vertical-card [showFeatures]="false" />
+        </div>
+        <div class="block-products__list-item">
+          <app-product-vertical-card [showFeatures]="false" />
+        </div>
+        <div class="block-products__list-item">
+          <app-product-vertical-card [showFeatures]="false" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

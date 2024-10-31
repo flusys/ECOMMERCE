@@ -1,1 +1,13 @@
-<router-outlet/>
+<div class="site">
+  <app-site-header class="site__header" />
+  <div class="site__body">
+    <router-outlet />
+  </div>
+  <app-site-footer class="site__footer" />
+</div>
+<div class="product-quick-view" id="product-quick-view">
+  <div class="modal-content">
+    <span class="close" (click)="quickViewClose()">&times;</span>
+    <app-product-content />
+  </div>
+</div>

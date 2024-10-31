@@ -1,0 +1,350 @@
+:host ::ng-deep {
+    .ng2-nouislider {
+        margin: 0;
+        margin-top: 1.5rem;
+    }
+
+    .noUi-vertical .noUi-origin {
+        width: 0
+    }
+
+    .noUi-horizontal .noUi-origin {
+        height: 0
+    }
+
+    .noUi-handle {
+        position: absolute
+    }
+
+    .noUi-state-tap .noUi-connect,
+    .noUi-state-tap .noUi-origin {
+        transition: transform .3s
+    }
+
+    .noUi-state-drag * {
+        cursor: inherit !important
+    }
+
+    .noUi-horizontal {
+        height: 18px
+    }
+
+    .noUi-horizontal .noUi-handle {
+        width: 34px;
+        height: 28px;
+        left: -17px;
+        top: -6px
+    }
+
+    .noUi-vertical {
+        width: 18px
+    }
+
+    .noUi-vertical .noUi-handle {
+        width: 28px;
+        height: 34px;
+        left: -6px;
+        top: -17px
+    }
+
+    .noUi-horizontal .noUi-handle {
+        right: -17px;
+        left: auto
+    }
+
+    .noUi-target {
+        height: 16px;
+        box-shadow: none;
+        border: none;
+    }
+
+    .noUi-base {
+        padding-top: 5px
+    }
+
+    .noUi-connects {
+        background: #e0e0e0;
+        border-radius: 3px;
+        height: 6px
+    }
+
+    .noUi-connect {
+        border-radius: 2px;
+        background: #ffd333
+    }
+
+    .noUi-horizontal .noUi-handle {
+        cursor: ew-resize;
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        background: #3d464d;
+        box-shadow: 0 0 0 0 rgba(61, 70, 77, 0);
+        transition: box-shadow .2s;
+    }
+
+    .noUi-horizontal .noUi-handle:after {
+        display: block;
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        margin: 5px;
+        border-radius: 3px;
+        background: #ffd333;
+        transition: transform .2s;
+        left: -1px;
+        top: -1px;
+    }
+
+    .noUi-handle:before,
+    .noUi-handle:after {
+        content: "";
+        display: none;
+    }
+
+    .noUi-horizontal .noUi-handle:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(61, 70, 77, .3)
+    }
+
+    .noUi-horizontal .noUi-handle:focus:after {
+        transform: scale(0)
+    }
+
+    .noUi-horizontal .noUi-handle {
+        top: 0;
+        right: -8px;
+    }
+
+    .noUi-horizontal .noUi-handle {
+        right: -8px
+    }
+
+    .noUi-horizontal .noUi-handle:focus:after {
+        transform: scale(0);
+    }
+
+    .noUi-tooltip {
+        padding: 1px;
+        font-size: 12px;
+    }
+}
+
+
+
+.widget-filters {
+    border: 2px solid #f0f0f0;
+    border-radius: 2px;
+    padding: 20px
+}
+
+.widget-filters__item {
+    padding: 8px 20px;
+    margin: 0 -20px;
+    border-bottom: 2px solid #f0f0f0
+}
+
+.widget-filters__item:first-child {
+    border-top: 2px solid #f0f0f0
+}
+
+.widget-filters__actions {
+    padding-top: 24px;
+    padding-bottom: 16px
+}
+
+
+
+
+
+
+.filter__title {
+    display: block;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    width: calc(100% + 20px);
+    position: relative;
+    text-align: left;
+    color: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18px;
+    border-radius: 2px;
+    margin: 0 -10px;
+    transition: background-color .2s, fill .2s;
+    background: transparent;
+    fill: #ccc
+}
+
+.filter__title:focus,
+.filter__title:hover {
+    transition-duration: .1s, .1s;
+    background: #f2f2f2;
+    fill: #b3b3b3
+}
+
+.filter__title:focus {
+    outline: none
+}
+
+.filter__arrow {
+    position: absolute;
+    top: 11px;
+    right: 10px;
+    transition: transform .2s
+}
+
+.filter__body {
+    margin: 0 -20px;
+    overflow: hidden;
+    visibility: hidden;
+    height: 0;
+    opacity: 0;
+    transition: height .2s, opacity .2s, visibility 0s .2s
+}
+
+.filter__container {
+    padding: 10px 20px 16px
+}
+
+.filter--opened .filter__body {
+    transition-delay: 0s, 0s;
+    visibility: visible;
+    height: auto;
+    opacity: 1
+}
+
+.filter--opened .filter__arrow {
+    transform: rotate(180deg)
+}
+
+.filter-categories__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 15px;
+    line-height: 18px
+}
+
+.filter-categories__list a {
+    color: inherit;
+    transition: color .15s
+}
+
+.filter-categories__list a:hover {
+    color: #1a66ff
+}
+
+.filter-categories__item {
+    padding: 6px 0;
+    display: -ms-flexbox;
+    display: flex
+}
+
+.filter-categories__item>a {
+    padding-right: 10px;
+    -ms-flex-positive: 1;
+    flex-grow: 1
+}
+
+.filter-categories__item--parent {
+    position: relative;
+    padding-left: 14px
+}
+
+.filter-categories__item--current {
+    font-weight: 700
+}
+
+.filter-categories__item--child {
+    position: relative;
+    padding-left: 14px;
+    font-size: 15px
+}
+
+.filter-categories__arrow {
+    fill: #ccc;
+    position: absolute;
+    left: 0;
+    top: 10px
+}
+
+.filter-categories__counter {
+    font-size: 12px;
+    line-height: 12px;
+    padding-top: 4px;
+    font-weight: 400;
+    color: #999
+}
+
+.filter-color__list {
+    padding: 2px 0;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: -4px
+}
+
+.filter-color__item {
+    cursor: pointer;
+    margin: 4px
+}
+
+.filter-color__check {
+    display: block
+}
+
+.filter-list__list {
+    margin: -8px 0
+}
+
+.filter-list__item {
+    padding: 1px 0;
+    cursor: pointer;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 8px 0
+}
+
+.filter-list__input {
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    margin-right: 7px
+}
+
+.filter-list__title {
+    padding: 1px 0;
+    font-size: 14px;
+    line-height: 16px;
+    -ms-flex-positive: 1;
+    flex-grow: 1
+}
+
+.filter-list__counter {
+    margin-left: 12px;
+    padding-top: 3px;
+    font-size: 12px;
+    line-height: 12px;
+    color: #999
+}
+
+.filter-list__item--disabled {
+    cursor: default
+}
+
+.filter-list__item--disabled .filter-list__title {
+    color: #999
+}
+
+.filter-price__slider {
+    margin-top: 6px
+}
+
+.filter-price__title {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #999
+}
