@@ -54,6 +54,12 @@ export const routes: Routes = [
       import('./pages/about-us/about-us.component').then(
         (m) => m.AboutUsComponent
       ),
+  },{
+    path: 'faq',
+    loadComponent: () =>
+      import('./pages/faq/faq.component').then(
+        (m) => m.FaqComponent
+      ),
   },
   {
     path: 'notfound',
