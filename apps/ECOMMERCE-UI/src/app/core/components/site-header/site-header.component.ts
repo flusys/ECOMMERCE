@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { AngularModule } from '../../../shared/modules/angular.module';
 
 @Component({
   selector: 'app-site-header',
   standalone: true,
   imports: [
-    CommonModule,
-    RouterLink
+    AngularModule
   ],
   templateUrl: './site-header.component.html',
   styleUrl: './site-header.component.scss',

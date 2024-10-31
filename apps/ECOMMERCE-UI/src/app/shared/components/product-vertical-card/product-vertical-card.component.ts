@@ -13,6 +13,6 @@ export class ProductVerticalCardComponent {
 
   quickViewShow() {
     const quickView = document.getElementById('product-quick-view');
-    quickView?.style.setProperty('display', 'block');
+    quickView?.style.setProperty('display', 'flex');
   }
 }
