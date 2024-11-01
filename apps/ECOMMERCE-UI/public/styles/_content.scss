@@ -113,6 +113,12 @@
 }
 
 @media (min-width: 992px) {
+  .col-lg-8 {
+    -ms-flex: 0 0 66.666667%;
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+  }
+
   .offset-lg-3 {
     margin-left: 25%;
   }
@@ -802,4 +808,9 @@
   background: rgba(0, 0, 0, .08);
   fill: rgba(0, 0, 0, .5);
   opacity: 1
+}
+
+
+.mt-3, .my-3 {
+  margin-top: 1rem !important;
 }

@@ -28,13 +28,13 @@ export const routes: Routes = [
       import('./pages/wish-list/wish-list.component').then(
         (m) => m.WishListComponent
       ),
-  },{
+  }, {
     path: 'cart',
     loadComponent: () =>
       import('./pages/cart/cart.component').then(
         (m) => m.CartComponent
       ),
-  },{
+  }, {
     path: 'checkout',
     loadComponent: () =>
       import('./pages/checkout/checkout.component').then(
@@ -54,12 +54,29 @@ export const routes: Routes = [
       import('./pages/about-us/about-us.component').then(
         (m) => m.AboutUsComponent
       ),
-  },{
+  }, {
     path: 'faq',
     loadComponent: () =>
       import('./pages/faq/faq.component').then(
         (m) => m.FaqComponent
       ),
+  }, {
+    path: 'post',
+    loadChildren: () => [
+      {
+        path: 'post-list',
+        loadComponent: () =>
+          import('./pages/post/post-list/post-list.component').then(
+            (m) => m.PostListComponent
+          ),
+      }, {
+        path: 'post-details',
+        loadComponent: () =>
+          import('./pages/post/post-details/post-details.component').then(
+            (m) => m.PostDetailsComponent
+          ),
+      },
+    ]
   },
   {
     path: 'notfound',
