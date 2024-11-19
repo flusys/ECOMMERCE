@@ -8,32 +8,32 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
-import { AddBrandDto, FilterAndPaginationBrandDto, UpdateBrandDto } from '../../modules/brand/brand.dto';
+import { AddCompanyDto, FilterAndPaginationCompanyDto, UpdateCompanyDto } from '../../modules/company/company.dto';
 import { ResponsePayload } from '../../shared/interfaces/response-payload.interface';
 import { UtilsService } from '../../shared/modules/utils/utils.service';
-import { IBrand } from '../../modules/brand/brand.interface';
+import { ICompany } from '../../modules/company/company.interface';
 import { ErrorCodes } from '../../shared/enums/error-code.enum';
 
 const ObjectId = Types.ObjectId;
 
 @Injectable()
-export class BrandService {
-  private logger = new Logger(BrandService.name);
+export class CompanyService {
+  private logger = new Logger(CompanyService.name);
 
   constructor(
-    @InjectModel('Brand') private readonly brandModel: Model<IBrand>,
+    @InjectModel('Company') private readonly companyModel: Model<ICompany>,
     private utilsService: UtilsService,
   ) {}
 
   /**
    * ADD DATA
-   * addBrand()
-   * insertManyBrand()
+   * addCompany()
+   * insertManyCompany()
    */
-  async addBrand(addBrandDto: AddBrandDto): Promise<ResponsePayload> {
+  async addCompany(addCompanyDto: AddCompanyDto): Promise<ResponsePayload> {
     try {
       const createdAtString = this.utilsService.getDateString(new Date());
-      const data = new this.brandModel({ ...addBrandDto, createdAtString });
+      const data = new this.companyModel({ ...addCompanyDto, createdAtString });
       const saveData = await data.save();
 
       return {
@@ -51,18 +51,18 @@ export class BrandService {
 
   /**
    * GET DATA
-   * getAllBrands()
-   * getBrandById()
-   * getUserBrandById()
+   * getAllCompanys()
+   * getCompanyById()
+   * getUserCompanyById()
    */
-  async getAllBrands(
-    filterBrandDto: FilterAndPaginationBrandDto,
+  async getAllCompanys(
+    filterCompanyDto: FilterAndPaginationCompanyDto,
     searchQuery?: string,
   ): Promise<ResponsePayload> {
-    const { filter } = filterBrandDto;
-    const { pagination } = filterBrandDto;
-    const { sort } = filterBrandDto;
-    const { select } = filterBrandDto;
+    const { filter } = filterCompanyDto;
+    const { pagination } = filterCompanyDto;
+    const { sort } = filterCompanyDto;
+    const { select } = filterCompanyDto;
 
     // Essential Variables
     const aggregateStages = [];
@@ -145,7 +145,7 @@ export class BrandService {
     }
 
     try {
-      const dataAggregates = await this.brandModel.aggregate(aggregateStages);
+      const dataAggregates = await this.companyModel.aggregate(aggregateStages);
       if (pagination) {
         return {
           ...{ ...dataAggregates[0] },
@@ -169,9 +169,9 @@ export class BrandService {
     }
   }
 
-  async getBrandById(id: string, select: string): Promise<ResponsePayload> {
+  async getCompanyById(id: string, select: string): Promise<ResponsePayload> {
     try {
-      const data = await this.brandModel.findById(id).select(select);
+      const data = await this.companyModel.findById(id).select(select);
       console.log('data', data);
       return {
         success: true,
@@ -183,12 +183,12 @@ export class BrandService {
     }
   }
 
-  async getBrandByName(
+  async getCompanyByName(
     name: string,
     select?: string,
   ): Promise<ResponsePayload> {
     try {
-      const data = await this.brandModel.find({ name: name });
+      const data = await this.companyModel.find({ name: name });
       // console.log('data', data);
       return {
         success: true,
@@ -201,9 +201,9 @@ export class BrandService {
     }
   }
 
-  async getUserBrandById(id: string, select: string): Promise<ResponsePayload> {
+  async getUserCompanyById(id: string, select: string): Promise<ResponsePayload> {
     try {
-      const data = await this.brandModel.findById(id).select(select);
+      const data = await this.companyModel.findById(id).select(select);
       console.log('data', data);
       return {
         success: true,
@@ -217,17 +217,17 @@ export class BrandService {
 
   /**
    * UPDATE DATA
-   * updateBrandById()
-   * updateMultipleBrandById()
+   * updateCompanyById()
+   * updateMultipleCompanyById()
    */
-  async updateBrandById(
+  async updateCompanyById(
     id: string,
-    updateBrandDto: UpdateBrandDto,
+    updateCompanyDto: UpdateCompanyDto,
   ): Promise<ResponsePayload> {
     try {
-      const finalData = { ...updateBrandDto };
+      const finalData = { ...updateCompanyDto };
 
-      await this.brandModel.findByIdAndUpdate(id, {
+      await this.companyModel.findByIdAndUpdate(id, {
         $set: finalData,
       });
       return {
@@ -239,16 +239,16 @@ export class BrandService {
     }
   }
 
-  async updateMultipleBrandById(
+  async updateMultipleCompanyById(
     ids: string[],
-    updateBrandDto: UpdateBrandDto,
+    updateCompanyDto: UpdateCompanyDto,
   ): Promise<ResponsePayload> {
     const mIds = ids.map((m) => new ObjectId(m));
 
     try {
-      await this.brandModel.updateMany(
+      await this.companyModel.updateMany(
         { _id: { $in: mIds } },
-        { $set: updateBrandDto },
+        { $set: updateCompanyDto },
       );
 
       return {
@@ -262,16 +262,16 @@ export class BrandService {
 
   /**
    * DELETE DATA
-   * deleteBrandById()
-   * deleteMultipleBrandById()
+   * deleteCompanyById()
+   * deleteMultipleCompanyById()
    */
-  async deleteBrandById(
+  async deleteCompanyById(
     id: string,
     checkUsage: boolean,
   ): Promise<ResponsePayload> {
     let data;
     try {
-      data = await this.brandModel.findById(id);
+      data = await this.companyModel.findById(id);
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
@@ -282,7 +282,7 @@ export class BrandService {
       throw new NotFoundException('Sorry! Read only data can not be deleted');
     }
     try {
-      await this.brandModel.findByIdAndDelete(id);
+      await this.companyModel.findByIdAndDelete(id);
       return {
         success: true,
         message: 'Success',
@@ -292,13 +292,13 @@ export class BrandService {
     }
   }
 
-  async deleteMultipleBrandById(
+  async deleteMultipleCompanyById(
     ids: string[],
     checkUsage: boolean,
   ): Promise<ResponsePayload> {
     try {
       const mIds = ids.map((m) => new ObjectId(m));
-      await this.brandModel.deleteMany({ _id: mIds });
+      await this.companyModel.deleteMany({ _id: mIds });
       return {
         success: true,
         message: 'Success',

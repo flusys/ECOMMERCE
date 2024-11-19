@@ -1,7 +1,7 @@
-export interface IBrand {
+export interface ICompany {
   _id?: string;
   name?: string;
-  description?: string;
+  address?: string;
   image?: string;
   createdAt?: Date;
   updatedAt?: Date;
