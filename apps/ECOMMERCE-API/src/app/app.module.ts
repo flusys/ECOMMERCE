@@ -9,6 +9,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { BrandModule } from './pages/brand/brand.module';
 import { UtilsModule } from './shared/modules/utils/utils.module';
 import { EmailModule } from './shared/modules/email/email.module';
+import { CompanyModule } from './pages/company/company.module';
+import { TagModule } from './pages/tag/tag.module';
+import { AttributeValueModule } from './pages/attribute/attribute-value.module';
+import { AttributeModule } from './pages/attribute/attribute.module';
 
 @Module({
   imports: [
@@ -20,9 +24,13 @@ import { EmailModule } from './shared/modules/email/email.module';
 
     UtilsModule,
     EmailModule,
-    
+
     BrandModule,
-    
+    CompanyModule,
+    TagModule,
+    AttributeModule,
+    AttributeValueModule
+
   ],
   controllers: [AppController],
   providers: [AppService],
