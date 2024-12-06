@@ -1,6 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "include": ["src/**/*.ts"],
-  "compilerOptions": {},
+  "compilerOptions": {
+    "paths": {
+      "@core/*": ["src/app/core/*"],
+      "@shared/*": ["src/app/shared/*"],
+    }
+  },
   "exclude": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts"]
 }

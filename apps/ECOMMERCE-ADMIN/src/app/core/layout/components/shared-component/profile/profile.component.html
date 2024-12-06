@@ -1,0 +1,29 @@
+<button class="p-link layout-topbar-button" (click)="op.toggle($event)">
+  <img class="w-3rem h-3rem shadow-2 flex-shrink-0 border-circle" [src]="loginUserData?.profilePic??'' " />
+  <span>Profile</span>
+</button>
+
+<p-overlayPanel #op [showCloseIcon]="true" [style]="{width:'300px'}">
+  <div class="flex flex-wrap p-2 align-items-center gap-3">
+    <img class="w-3rem h-3rem shadow-2 flex-shrink-0 border-round" [src]="loginUserData?.profilePic??'' " />
+    <div class="flex-1 flex flex-column gap-2">
+      <span class="font-bold">{{loginUserData?.name}}</span>
+      <div class="flex align-items-center gap-2">
+        <i class="pi pi-tag text-sm"></i>
+        <span>{{loginUserData?.uid}}</span>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="flex">
+    <p-listbox #myListBox [options]="options" optionLabel="name" optionValue="code" [style]="{ width: '265px' }"
+      [multiple]="false" [listStyle]="{'max-height': '220px'}" (onChange)="clickOption($event)">
+      <ng-template let-option pTemplate="item">
+        <div class="flex align-items-center gap-2">
+          <i class="pi {{option.icon}}"></i>
+          <div>{{ option.name }}</div>
+        </div>
+      </ng-template>
+    </p-listbox>
+  </div>
+</p-overlayPanel>

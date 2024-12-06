@@ -1,12 +1,29 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { appRoutes } from './app.routes';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withRouterConfig, withViewTransitions } from '@angular/router';
+
+import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideImgixLoader } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideClientHydration(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(appRoutes),
-  ],
+    provideRouter(routes,
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'disabled',
+        anchorScrolling: 'enabled'
+      }),
+      withRouterConfig({
+        paramsInheritanceStrategy: 'always',
+        onSameUrlNavigation: 'reload'
+      }),
+      withComponentInputBinding(),
+      withViewTransitions()),
+    provideClientHydration(),
+    provideAnimations(),
+    provideHttpClient(withFetch(), withInterceptors([])),
+    provideImgixLoader("https://placehold.co/100x100"),
+  ]
 };

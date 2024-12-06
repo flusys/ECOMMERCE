@@ -1,0 +1,7 @@
+<div class="layout-menu">
+  <ul>
+    @for (item of model; track item.name; let i = $index) {
+      <li app-menuitem [item]="item" [index]="i"></li>
+    }
+  </ul>
+</div>

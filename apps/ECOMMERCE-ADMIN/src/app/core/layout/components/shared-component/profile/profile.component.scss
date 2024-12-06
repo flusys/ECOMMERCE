@@ -1,0 +1,8 @@
+::ng-deep {
+    .p-listbox {
+        border: none;
+    }
+    .p-listbox.p-focus {
+        box-shadow: none;
+    }
+}
