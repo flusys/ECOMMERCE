@@ -1,16 +1,10 @@
 import { Component } from '@angular/core';
-import {ButtonDirective} from "primeng/button";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {InputTextModule} from "primeng/inputtext";
-import {PasswordModule} from "primeng/password";
-import {Ripple} from "primeng/ripple";
-import {Router, RouterLink} from "@angular/router";
+import {Router} from "@angular/router";
 import {OtpValidationApiService} from "flusysng/core/services";
 import {take} from "rxjs";
-import {PrimeModule} from "@shared/modules/prime.module";
-import {AngularModule} from "@shared/modules/angular.module";
-import {AuthenticationApiService} from "@core/auth/service/authentication-api.service";
 import {MessageService} from "primeng/api";
+import { AngularModule, PrimeModule } from 'libs/shared/src';
+import { AuthenticationApiService } from '../../service/authentication-api.service';
 
 @Component({
   selector: 'app-forgot-password',

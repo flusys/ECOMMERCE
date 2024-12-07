@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { ɵFormGroupValue } from '@angular/forms';
 import {ILoginForm, IRegisterForm} from '../interface/authentication-form';
 import { ILoggedUserInfo } from '../interface/logged-user-info.interface';
-import { IReferCodeDetails } from '../interface/refer-code-details.interface';
 import {IResponsePayload} from "flusysng/shared/interfaces";
 
 
@@ -29,11 +28,6 @@ export class AuthenticationApiService {
   verifyAndChangePassword(changePassObj: object): Observable<IResponsePayload<string>> {
     return this.http.post<IResponsePayload<string>>(this.baseUrl + '/verify-and-change-password', changePassObj);
   }
-
-  getReferCodeDetails(code:string): Observable<IResponsePayload<IReferCodeDetails>> {
-    return this.http.get<IResponsePayload<IReferCodeDetails>>(this.baseUrl + `/get-refer-code-details-for-register/${code}`);
-  }
-
   checkUserLogin(): Observable<IResponsePayload<ILoggedUserInfo>> {
     return this.http.get<IResponsePayload<ILoggedUserInfo>>(this.baseUserUrl + '/check-login');
   }

@@ -3,10 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { AuthenticationFormService } from '../../service/authentication-form.service';
 import { AuthenticationApiService } from '../../service/authentication-api.service';
-import { PrimeModule } from '@shared/modules/prime.module';
-import { AngularModule } from '@shared/modules/angular.module';
 import { AuthenticationStateService } from '../../service/authentication-state.service';
-import {LineageFormService} from "../../../../modules/lineage/services/lineage-form.service";
+import { PrimeModule, AngularModule } from 'libs/shared/src';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +15,7 @@ import {LineageFormService} from "../../../../modules/lineage/services/lineage-f
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  providers: [AuthenticationFormService, LineageFormService ],
+  providers: [AuthenticationFormService ],
 })
 export class LoginComponent {
   @Input() requestUrl!: string;

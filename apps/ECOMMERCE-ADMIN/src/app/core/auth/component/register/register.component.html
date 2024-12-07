@@ -1,17 +1,9 @@
 <div class="text-center mb-8">
   <div class="text-900 text-3xl font-medium mb-3"><u>Registration to Family Bonding !</u></div>
-  @if(isRefer){
-  <p>Refer By - <b>{{geReferByName}}</b></p>
-  }
 </div>
 <form [formGroup]="registerForm">
   <div class="formgrid grid">
     <div class="grid field sm:col-12 md:col-8">
-      <div [formGroup]="lineageForm" class="field col-6">
-        <label for="lineageName">Lineage Name * </label>
-        <input type="text" formControlName="name" pInputText id="lineageName" class="w-full" placeholder="Bhuiya"
-          [readOnly]="isSameLineage">
-      </div>
       <div class="field col-6">
         <label for="name">Name * </label>
         <input id="name" type="text" formControlName="name" class="w-full" pInputText placeholder="Hossain Rana">
@@ -25,10 +17,6 @@
           <input id="email1" type="text" placeholder="Email address" pInputText class="w-full" formControlName="email"
                  (change)="setVerified(false)">
         </span>
-      </div>
-      <div class="field col-6">
-        <label for="gender">Gender * </label>
-        <app-gender-dropdown id="gender" [componentFormControl]="registerForm.controls['gender']" [isEditMode]="true" />
       </div>
       <div class="field col-6">
         <label for="password">Password * </label>

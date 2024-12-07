@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { AngularModule } from '@shared/modules/angular.module';
-import { PrimeModule } from '@shared/modules/prime.module';
+import { PrimeModule, AngularModule } from 'libs/shared/src';
 
 @Component({
   selector: 'app-auth-layout',

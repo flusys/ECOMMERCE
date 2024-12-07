@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationStateService } from '../../../../auth/service/authentication-state.service';
 import { Listbox } from 'primeng/listbox';
-import { PrimeModule } from '@ecommerce/shared';
+import { PrimeModule } from 'libs/shared/src';
 
 @Component({
   selector: 'app-profile',

@@ -2,7 +2,7 @@ import { Component, ElementRef } from '@angular/core';
 import { MenuStateService } from '../../services/menu-state.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import {AppMenuitemComponent} from "@core/layout/components/app-sidebar/app.menuitem.component";
+import { AppMenuitemComponent } from './app.menuitem.component';
 
 @Component({
   selector: 'app-sidebar',

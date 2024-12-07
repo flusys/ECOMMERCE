@@ -1,15 +1,13 @@
 import { Component, computed, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { ProfileComponent } from "../shared-component/profile/profile.component";
-import { SettingComponent } from "../shared-component/setting/setting.component";
-import { AngularModule } from '@shared/modules/angular.module';
-import { PrimeModule } from '@shared/modules/prime.module';
-import { SessionService } from '@core/layout/services/session.service';
-import { environment } from 'src/environments/environment';
 import {LayoutService} from "flusysng/layout/services";
 import {EditModeElementChangerDirective} from "flusysng/shared/directives";
 import {FormControl} from "@angular/forms";
 import {debounceTime, of, switchMap} from "rxjs";
+import { AngularModule, PrimeModule } from 'libs/shared/src';
+import { SessionService } from '../../services/session.service';
+import { environment } from 'apps/ECOMMERCE-ADMIN/src/environments/environment';
 
 @Component({
   selector: 'app-top-bar',
@@ -19,10 +17,8 @@ import {debounceTime, of, switchMap} from "rxjs";
     RouterLink,
     PrimeModule,
     //Component
-    ProfileComponent,
-    SettingComponent,
-    EditModeElementChangerDirective
-  ],
+    ProfileComponent
+],
   templateUrl: './app-top-bar.component.html',
   styleUrl: './app-top-bar.component.scss'
 })
@@ -58,14 +54,6 @@ export class AppTopBarComponent {
         console.warn(data)
         this.searchSuggestionDataList = data;
       });
-  }
-
-  gotoBusinessManager() {
-    this.sessionService.getCurrentSession().subscribe(res => {
-      if (res.success) {
-        window.open(environment.appBmDomainSessionUrl + "/" + res.result)
-      }
-    })
   }
 
   get dropdownOption(){

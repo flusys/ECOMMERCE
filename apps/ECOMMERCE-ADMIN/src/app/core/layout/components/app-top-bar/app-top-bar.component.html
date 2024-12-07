@@ -43,14 +43,6 @@
 
   <div #topBarMenu class="layout-topbar-menu"
     [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state().profileSidebarVisible}">
-
-    <button class="p-link layout-topbar-button" pTooltip="Go-to Business Manager"
-    (click)="gotoBusinessManager()">
-      <i class="pi pi-arrow-up-right"></i>
-      <span>Business Manager</span>
-    </button>
-
-    <app-setting />
     <app-profile />
   </div>
 </div>
