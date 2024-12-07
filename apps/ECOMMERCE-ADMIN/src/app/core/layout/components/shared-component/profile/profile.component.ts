@@ -1,14 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PrimeModule } from '@shared/modules/prime.module';
-import { AngularModule } from '@shared/modules/angular.module';
 import { AuthenticationStateService } from '../../../../auth/service/authentication-state.service';
+import { Listbox } from 'primeng/listbox';
+import { PrimeModule } from '@ecommerce/shared';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
-    PrimeModule,
-    AngularModule
+    PrimeModule
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
