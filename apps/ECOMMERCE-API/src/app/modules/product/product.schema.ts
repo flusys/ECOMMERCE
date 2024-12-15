@@ -71,7 +71,7 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    parentInfo: {
+    parentProduct: {
       type: Schema.Types.ObjectId,
       ref: 'ParentProduct',
       required: true,
@@ -80,17 +80,6 @@ const ProductSchema = new mongoose.Schema(
       {
         type: Schema.Types.ObjectId,
         ref: 'ProductSubVariant',
-      },
-    ],
-    variantIds: [
-      {
-        type: Number,
-      },
-    ],
-    purchases: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'ProductPurchases',
       },
     ],
     createdAtString: {
