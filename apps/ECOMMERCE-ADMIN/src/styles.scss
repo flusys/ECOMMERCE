@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+$gutter: 1rem; //for primeFlex grid system
+@import "flusysng/assets/layout/styles/style.scss";
+
+/* PrimeNG */
+@import "primeflex/primeflex.scss";
+@import "primeicons/primeicons.css";

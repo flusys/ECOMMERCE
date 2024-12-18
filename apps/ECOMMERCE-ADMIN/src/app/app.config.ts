@@ -1,29 +1,66 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withRouterConfig, withViewTransitions } from '@angular/router';
-
-import { routes } from './app.routes';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+  withRouterConfig,
+  withViewTransitions,
+} from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideImgixLoader } from '@angular/common';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
+import { MessageService } from 'primeng/api';
+import { routes } from './app.routes';
 
-export const appConfig: ApplicationConfig = {
+import {
+  apiLoaderInterceptor,
+  errorCatchingInterceptor,
+  withCredentials,
+} from 'flusysng/core/interceptors';
+import { ApiLoaderService } from 'flusysng/core/services';
+import { LIB_CONFIG } from 'flusysng';
+import { environment } from '../environments/environment';
+import { providePrimeNG } from 'primeng/config';
+import { NavyBlueTheme } from 'flusysng/core/theme';
+
+export let appConfig: ApplicationConfig;
+appConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes,
+    provideRouter(
+      routes,
       withInMemoryScrolling({
         scrollPositionRestoration: 'disabled',
-        anchorScrolling: 'enabled'
+        anchorScrolling: 'enabled',
       }),
       withRouterConfig({
         paramsInheritanceStrategy: 'always',
-        onSameUrlNavigation: 'reload'
+        onSameUrlNavigation: 'reload',
       }),
       withComponentInputBinding(),
-      withViewTransitions()),
+      withViewTransitions(),
+    ),
     provideClientHydration(),
-    provideAnimations(),
-    provideHttpClient(withFetch(), withInterceptors([])),
-    provideImgixLoader("https://placehold.co/100x100"),
-  ]
+    provideAnimationsAsync(),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([
+        withCredentials,
+        errorCatchingInterceptor,
+        apiLoaderInterceptor,
+      ]),
+    ),
+    providePrimeNG({
+      theme: {
+        preset: NavyBlueTheme,
+      },
+    }),
+    MessageService,
+    ApiLoaderService,
+    { provide: LIB_CONFIG, useValue: environment },
+  ],
 };

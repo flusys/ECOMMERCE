@@ -14,12 +14,28 @@
         "index": "apps/ECOMMERCE-ADMIN/src/index.html",
         "main": "apps/ECOMMERCE-ADMIN/src/main.ts",
         "polyfills": ["zone.js"],
+        "stylePreprocessorOptions": {
+              "sass": {
+                "silenceDeprecations": [
+                  "mixed-decls",
+                  "color-functions",
+                  "global-builtin",
+                  "import"
+                ]
+              }
+            },
         "tsConfig": "apps/ECOMMERCE-ADMIN/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/ECOMMERCE-ADMIN/public"
+            "input": "apps/ECOMMERCE-ADMIN/public",
+                "output": "assets/"
+          },
+          {
+            "input": "node_modules/flusysng/assets",
+            "glob": "**/*",
+            "output": "lib/assets/"
           }
         ],
         "styles": ["apps/ECOMMERCE-ADMIN/src/styles.scss"],

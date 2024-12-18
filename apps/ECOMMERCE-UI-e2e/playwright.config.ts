@@ -27,7 +27,7 @@ export default defineConfig({
   webServer: {
     command: 'npx nx run ECOMMERCE-UI:serve',
     url: 'http://localhost:4200',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: !process.env.TZ,
     cwd: workspaceRoot,
   },
   projects: [
