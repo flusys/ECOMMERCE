@@ -9,106 +9,42 @@ export class MenuStateService {
     {
       name: 'Home',
       icon: 'pi pi-fw pi-home',
-      routerLink: ['/'],
+      routerLink: ['/dashboard'],
     },
     {
-      name: 'Family Tree',
+      name: 'Category',
       icon: 'pi pi-sitemap',
-      routerLink: ['/family-tree'],
+      routerLink: ['/category'],
     },
     {
-      name: 'Basic Information',
+      name: 'Brand',
       icon: 'pi pi-id-card',
-      routerLink: ['/basic-information'],
+      routerLink: ['/brand'],
     },
     {
-      name: 'Lineage',
-      icon: 'pi pi-sitemap',
-      routerLink: ['/lineage'],
+      name: 'Company',
+      icon: 'pi pi-bookmark',
+      routerLink: ['/company'],
     },
     {
-      name: 'Refer User',
-      icon: 'pi pi-users',
-      items: [
-        {
-          name: 'Generate Link',
-          icon: 'pi pi-link',
-          routerLink: ['/refer-user/generate-link'],
-        },
-        {
-          name: 'Referred Users',
-          icon: 'pi pi-users',
-          routerLink: ['/refer-user/refer-user-list'],
-        },
-      ],
+      name: 'Tag',
+      icon: 'pi pi-tags',
+      routerLink: ['/tag'],
     },
     {
-      name: 'User',
-      icon: 'pi pi-users',
-      items: [
-        {
-          name: 'User List',
-          icon: 'pi pi-list',
-          routerLink: ['/user/user-list'],
-        },
-      ],
-    },
-    {
-      name: 'Address Setup',
+      name: 'Attribute',
       icon: 'pi pi-cog',
-      items: [
-        {
-          name: 'Continent Setup',
-          icon: 'pi pi-cog',
-          routerLink: ['/address-setup/continent-setup'],
-        },
-        {
-          name: 'Country Setup',
-          icon: 'pi pi-cog',
-          routerLink: ['/address-setup/country-setup'],
-        },
-        {
-          name: 'Division Setup',
-          icon: 'pi pi-cog',
-          routerLink: ['/address-setup/division-setup'],
-        },
-        {
-          name: 'District Setup',
-          icon: 'pi pi-cog',
-          routerLink: ['/address-setup/district-setup'],
-        },
-        {
-          name: 'Sub-District Setup',
-          icon: 'pi pi-cog',
-          routerLink: ['/address-setup/sub-district-setup'],
-        },
-        {
-          name: 'Union Setup',
-          icon: 'pi pi-cog',
-          routerLink: ['/address-setup/union-setup'],
-        },
-      ],
+      routerLink: ['/attribute'],
     },
     {
-      name: 'Payment',
-      icon: 'pi pi-address-book',
-      items: [
-        {
-          name: 'Submit Payment Info',
-          icon: 'pi pi-address-book',
-          routerLink: ['/user-payment/submit-payment-information'],
-        },
-        {
-          name: 'Payment List',
-          icon: 'pi pi-align-justify',
-          routerLink: ['/user-payment/payment-information-list'],
-        },
-      ],
+      name: 'Create Product',
+      icon: 'pi pi-plus',
+      routerLink: ['/create-product'],
     },
     {
-      name: 'Reviewer',
-      icon: 'pi pi-users',
-      routerLink: ['/reviewer'],
+      name: 'Product List',
+      icon: 'pi pi-align-justify',
+      routerLink: ['/product-list'],
     },
   ];
 
