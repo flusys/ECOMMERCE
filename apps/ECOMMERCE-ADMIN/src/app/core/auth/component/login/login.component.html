@@ -1,0 +1,40 @@
+<div class="text-center mb-5">
+  <div class="text-900 text-3xl font-medium mb-3">Welcome, Flusys Ecom Admin!</div>
+  <span class="text-600 font-medium">Sign in to continue</span>
+</div>
+<form [formGroup]="loginForm">
+  <label for="email1" class="block text-900 text-xl font-medium mb-2"
+    >Username</label
+  >
+  <input
+    id="email1"
+    type="text"
+    placeholder="Email address"
+    pInputText
+    class="w-full md:w-30rem mb-5"
+    style="padding: 1rem"
+    formControlName="email"
+  />
+  <label for="password" class="block text-900 font-medium text-xl mb-2"
+    >Password</label
+  >
+  <p-password
+    id="password"
+    inputId="password"
+    formControlName="password"
+    placeholder="Password"
+    [toggleMask]="true"
+    styleClass="mb-5 w-12"
+    inputStyleClass="w-full p-3 md:w-30rem"
+    autocomplete="password"
+  />
+  <div class="flex align-items-center justify-content-end mb-5 gap-5">
+  </div>
+  <button
+    pButton
+    pRipple
+    label="Sign In"
+    class="w-full p-3 text-xl"
+    (click)="login()"
+  ></button>
+</form>

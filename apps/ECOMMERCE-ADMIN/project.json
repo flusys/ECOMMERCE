@@ -33,7 +33,8 @@
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/ECOMMERCE-ADMIN/public"
+            "input": "apps/ECOMMERCE-ADMIN/public",
+            "output": "assets/"
           }
         ],
         "styles": [

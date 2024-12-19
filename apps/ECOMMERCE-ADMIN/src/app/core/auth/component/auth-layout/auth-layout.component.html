@@ -1,0 +1,14 @@
+<div
+  class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
+>
+  <div class="flex flex-column align-items-center justify-content-center">
+    <!--    <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg"-->
+    <!--         alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">-->
+    <p-card
+      styleClass="w-full surface-card py-5 px-5 border-solid primary-border-color border-2"
+      [style]="{ 'border-radius': '30px' }"
+    >
+      <router-outlet />
+    </p-card>
+  </div>
+</div>
