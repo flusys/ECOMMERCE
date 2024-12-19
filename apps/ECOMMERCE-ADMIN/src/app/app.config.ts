@@ -27,8 +27,7 @@ import { environment } from '../environments/environment';
 import { providePrimeNG } from 'primeng/config';
 import { NavyBlueTheme } from 'flusysng/core/theme';
 
-export let appConfig: ApplicationConfig;
-appConfig = {
+export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(

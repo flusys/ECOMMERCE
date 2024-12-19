@@ -7,39 +7,47 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
-        "outputPath": "dist/apps/ECOMMERCE-ADMIN/browser",
+        "outputPath": "dist/apps/ECOMMERCE-ADMIN",
         "index": "apps/ECOMMERCE-ADMIN/src/index.html",
-        "main": "apps/ECOMMERCE-ADMIN/src/main.ts",
-        "polyfills": ["zone.js"],
-        "stylePreprocessorOptions": {
-              "sass": {
-                "silenceDeprecations": [
-                  "mixed-decls",
-                  "color-functions",
-                  "global-builtin",
-                  "import"
-                ]
-              }
-            },
+        "browser": "apps/ECOMMERCE-ADMIN/src/main.ts",
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/ECOMMERCE-ADMIN/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
+        "stylePreprocessorOptions": {
+          "sass": {
+            "silenceDeprecations": [
+              "mixed-decls",
+              "color-functions",
+              "global-builtin",
+              "import"
+            ]
+          }
+        },
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/ECOMMERCE-ADMIN/public",
-                "output": "assets/"
-          },
-          {
-            "input": "node_modules/flusysng/assets",
-            "glob": "**/*",
-            "output": "lib/assets/"
+            "input": "apps/ECOMMERCE-ADMIN/public"
           }
         ],
-        "styles": ["apps/ECOMMERCE-ADMIN/src/styles.scss"],
-        "scripts": []
+        "styles": [
+          "apps/ECOMMERCE-UI/src/styles.scss",
+          "node_modules/flusysng/assets/layout/styles/style.scss",
+          "node_modules/primeflex/primeflex.scss",
+          "node_modules/primeicons/primeicons.css"
+        ],
+        "scripts": [],
+        "server": "apps/ECOMMERCE-ADMIN/src/main.server.ts",
+        "ssr": {
+          "entry": "apps/ECOMMERCE-ADMIN/src/server.ts"
+        },
+        "outputMode": "server"
       },
       "configurations": {
         "production": {
@@ -51,19 +59,16 @@
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
             }
           ],
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true
+          "sourceMap": true
         }
       },
       "defaultConfiguration": "production"
@@ -91,7 +96,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/ECOMMERCE-ADMIN/jest.config.ts"
       }
@@ -101,62 +108,9 @@
       "options": {
         "buildTarget": "ECOMMERCE-ADMIN:build",
         "port": 4200,
+        "staticFilePath": "dist/apps/ECOMMERCE-ADMIN/browser",
         "spa": true
       }
-    },
-    "server": {
-      "dependsOn": ["build"],
-      "executor": "@angular-devkit/build-angular:server",
-      "options": {
-        "outputPath": "dist/apps/ECOMMERCE-ADMIN/server",
-        "main": "apps/ECOMMERCE-ADMIN/server.ts",
-        "tsConfig": "apps/ECOMMERCE-ADMIN/tsconfig.server.json",
-        "inlineStyleLanguage": "scss"
-      },
-      "configurations": {
-        "production": {
-          "outputHashing": "media"
-        },
-        "development": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "sourceMap": true,
-          "extractLicenses": false,
-          "vendorChunk": true
-        }
-      },
-      "defaultConfiguration": "production"
-    },
-    "serve-ssr": {
-      "executor": "@angular-devkit/build-angular:ssr-dev-server",
-      "configurations": {
-        "development": {
-          "browserTarget": "ECOMMERCE-ADMIN:build:development",
-          "serverTarget": "ECOMMERCE-ADMIN:server:development"
-        },
-        "production": {
-          "browserTarget": "ECOMMERCE-ADMIN:build:production",
-          "serverTarget": "ECOMMERCE-ADMIN:server:production"
-        }
-      },
-      "defaultConfiguration": "development"
-    },
-    "prerender": {
-      "executor": "@angular-devkit/build-angular:prerender",
-      "options": {
-        "routes": ["/"]
-      },
-      "configurations": {
-        "development": {
-          "browserTarget": "ECOMMERCE-ADMIN:build:development",
-          "serverTarget": "ECOMMERCE-ADMIN:server:development"
-        },
-        "production": {
-          "browserTarget": "ECOMMERCE-ADMIN:build:production",
-          "serverTarget": "ECOMMERCE-ADMIN:server:production"
-        }
-      },
-      "defaultConfiguration": "production"
     }
   }
 }

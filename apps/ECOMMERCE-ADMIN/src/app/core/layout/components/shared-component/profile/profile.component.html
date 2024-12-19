@@ -1,11 +1,13 @@
 <button class="p-link layout-topbar-button" (click)="op.toggle($event)">
-  <img class="w-3rem h-3rem shadow-2 flex-shrink-0 border-circle" [src]="loginUserData?.profilePic??'' " />
+  <img class="w-3rem h-3rem shadow-2 flex-shrink-0 border-circle" [src]="loginUserData?.profilePic??'' "
+  [alt]="loginUserData?.profilePic??'' " />
   <span>Profile</span>
 </button>
 
-<p-overlayPanel #op [showCloseIcon]="true" [style]="{width:'300px'}">
+<p-popover #op [showCloseIcon]="true" [style]="{width:'300px'}">
   <div class="flex flex-wrap p-2 align-items-center gap-3">
-    <img class="w-3rem h-3rem shadow-2 flex-shrink-0 border-round" [src]="loginUserData?.profilePic??'' " />
+    <img class="w-3rem h-3rem shadow-2 flex-shrink-0 border-round" [src]="loginUserData?.profilePic??'' "
+    [alt]="loginUserData?.profilePic??'' " />
     <div class="flex-1 flex flex-column gap-2">
       <span class="font-bold">{{loginUserData?.name}}</span>
       <div class="flex align-items-center gap-2">
@@ -26,4 +28,4 @@
       </ng-template>
     </p-listbox>
   </div>
-</p-overlayPanel>
+</p-popover>

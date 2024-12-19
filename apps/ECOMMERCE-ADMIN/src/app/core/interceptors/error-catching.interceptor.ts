@@ -4,8 +4,8 @@ import { map, tap } from 'rxjs/operators';
 import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthenticationStateService } from '../auth/service/authentication-state.service';
+import { environment } from 'src/environments/environment';
 import {PlatformService} from "flusysng/shared/services";
-import { environment } from 'apps/ECOMMERCE-ADMIN/src/environments/environment';
 
 export function errorCatchingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
   const messageService = inject(MessageService);

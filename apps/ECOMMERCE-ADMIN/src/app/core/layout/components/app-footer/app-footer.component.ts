@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {LayoutService} from "flusysng/layout/services";
-import { AngularModule } from 'libs/shared/src';
+import { AngularModule } from 'flusysng/shared/modules';
 
 @Component({
   selector: 'app-footer',

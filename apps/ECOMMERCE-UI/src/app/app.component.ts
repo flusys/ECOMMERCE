@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SiteHeaderComponent } from './core/components/site-header/site-header.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SiteFooterComponent } from './core/components/site-footer/site-footer.component';
 import { ProductContentComponent } from './shared/components/product-content/product-content.component';
 
@@ -11,7 +10,6 @@ import { ProductContentComponent } from './shared/components/product-content/pro
   imports: [
     RouterOutlet,
     SiteHeaderComponent,
-    DashboardComponent,
     SiteFooterComponent,
     ProductContentComponent
   ],

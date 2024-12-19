@@ -1,13 +1,12 @@
 import { Component, computed, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { ProfileComponent } from "../shared-component/profile/profile.component";
+import { SettingComponent } from "../shared-component/setting/setting.component";
 import {LayoutService} from "flusysng/layout/services";
 import {EditModeElementChangerDirective} from "flusysng/shared/directives";
 import {FormControl} from "@angular/forms";
 import {debounceTime, of, switchMap} from "rxjs";
-import { AngularModule, PrimeModule } from 'libs/shared/src';
-import { SessionService } from '../../services/session.service';
-import { environment } from 'apps/ECOMMERCE-ADMIN/src/environments/environment';
+import { AngularModule, PrimeModule } from 'flusysng/shared/modules';
 
 @Component({
   selector: 'app-top-bar',
@@ -17,8 +16,9 @@ import { environment } from 'apps/ECOMMERCE-ADMIN/src/environments/environment';
     RouterLink,
     PrimeModule,
     //Component
-    ProfileComponent
-],
+    ProfileComponent,
+    SettingComponent,
+  ],
   templateUrl: './app-top-bar.component.html',
   styleUrl: './app-top-bar.component.scss'
 })
@@ -37,7 +37,6 @@ export class AppTopBarComponent {
   })
 
   constructor(public layoutService: LayoutService,
-    private sessionService: SessionService
   ) {
   }
 
@@ -55,6 +54,7 @@ export class AppTopBarComponent {
         this.searchSuggestionDataList = data;
       });
   }
+
 
   get dropdownOption(){
     return [

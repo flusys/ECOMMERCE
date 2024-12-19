@@ -1,12 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AuthenticationStateService } from '../../../../auth/service/authentication-state.service';
 import { Listbox } from 'primeng/listbox';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { AngularModule, PrimeModule } from 'flusysng/shared/modules';
+import { AuthenticationStateService } from 'flusysng/auth/services';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [Listbox, OverlayPanelModule],
+  imports: [
+    PrimeModule,
+    AngularModule
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -14,9 +19,12 @@ export class ProfileComponent implements OnInit {
   options!: any[];
   @ViewChild('myListBox') myListBoxComponent!: Listbox;
 
-  constructor(private authenticationStateService: AuthenticationStateService) {}
+  constructor(
+    private authenticationStateService: AuthenticationStateService,
+    private router: Router) {
+  }
 
-  get loginUserData() {
+  get loginUserData():any{
     return this.authenticationStateService.loginUserData();
   }
 
@@ -27,12 +35,13 @@ export class ProfileComponent implements OnInit {
     ];
   }
 
-  clickOption(event: { value: any }) {
+  clickOption(event: { value: any; }) {
     this.myListBoxComponent.modelValue.set(null);
-    if (event.value == 'logout') this.logout();
+    if (event.value == 'logout')
+      this.logout();
   }
 
   logout() {
-    this.authenticationStateService.logout();
+    console.warn("HI")
   }
 }
