@@ -1,0 +1,111 @@
+{
+  "name": "ECOMMERCEADMIN",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/ECOMMERCEADMIN/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/ECOMMERCEADMIN",
+        "index": "apps/ECOMMERCEADMIN/src/index.html",
+        "browser": "apps/ECOMMERCEADMIN/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/ECOMMERCEADMIN/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "stylePreprocessorOptions": {
+          "sass": {
+            "silenceDeprecations": [
+              "mixed-decls",
+              "color-functions",
+              "global-builtin",
+              "import"
+            ]
+          }
+        },
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/ECOMMERCEADMIN/public",
+            "output": "assets/"
+          }
+        ],
+        "styles": [
+          "apps/ECOMMERCEADMIN/src/styles.scss",
+          "node_modules/flusysng/assets/layout/styles/style.scss",
+          "node_modules/primeflex/primeflex.scss",
+          "node_modules/primeicons/primeicons.css"
+        ],
+        "scripts": [],
+        "server": "apps/ECOMMERCEADMIN/src/main.server.ts",
+        "ssr": {
+          "entry": "apps/ECOMMERCEADMIN/src/server.ts"
+        },
+        "outputMode": "server"
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "ECOMMERCEADMIN:build:production"
+        },
+        "development": {
+          "buildTarget": "ECOMMERCEADMIN:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "ECOMMERCEADMIN:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../coverage/apps/ECOMMERCEADMIN"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "ECOMMERCEADMIN:build",
+        "port": 4200,
+        "staticFilePath": "dist/apps/ECOMMERCEADMIN/browser",
+        "spa": true
+      }
+    }
+  }
+}
