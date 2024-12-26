@@ -7,9 +7,8 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { ConfigService } from '@nestjs/config';
 import { AddBrandDto, FilterAndPaginationBrandDto, UpdateBrandDto } from '../../modules/brand/brand.dto';
-import { ResponsePayload } from '../../shared/interfaces/response-payload.interface';
+import { IResponsePayload } from "flusysng/shared/interfaces";
 import { UtilsService } from '../../shared/modules/utils/utils.service';
 import { IBrand } from '../../modules/brand/brand.interface';
 import { ErrorCodes } from '../../shared/enums/error-code.enum';
@@ -30,7 +29,7 @@ export class BrandService {
    * addBrand()
    * insertManyBrand()
    */
-  async addBrand(addBrandDto: AddBrandDto): Promise<ResponsePayload> {
+  async addBrand(addBrandDto: AddBrandDto): Promise<IResponsePayload<IBrand>> {
     try {
       const createdAtString = this.utilsService.getDateString(new Date());
       const data = new this.brandModel({ ...addBrandDto, createdAtString });
@@ -39,10 +38,8 @@ export class BrandService {
       return {
         success: true,
         message: 'Success! Data Added.',
-        data: {
-          _id: saveData._id,
-        },
-      } as ResponsePayload;
+        data: saveData,
+      } as unknown as IResponsePayload<IBrand>;
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(error.message);
@@ -58,7 +55,7 @@ export class BrandService {
   async getAllBrands(
     filterBrandDto: FilterAndPaginationBrandDto,
     searchQuery?: string,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<Array<IBrand>>> {
     const { filter } = filterBrandDto;
     const { pagination } = filterBrandDto;
     const { sort } = filterBrandDto;
@@ -155,7 +152,7 @@ export class BrandService {
         return {
           ...{ ...dataAggregates[0] },
           ...{ success: true, message: 'Success' },
-        } as ResponsePayload;
+        } as IResponsePayload<Array<IBrand>>;
       } else {
         return {
           result: dataAggregates,
@@ -163,7 +160,7 @@ export class BrandService {
           message: 'Success',
           total: dataAggregates.length,
           status:"Data Found"
-        } as ResponsePayload;
+        } as IResponsePayload<Array<IBrand>>;
       }
     } catch (err) {
       this.logger.error(err);
@@ -175,7 +172,7 @@ export class BrandService {
     }
   }
 
-  async getBrandById(id: string, select: string): Promise<ResponsePayload> {
+  async getBrandById(id: string, select: string): Promise<IResponsePayload<IBrand>> {
     try {
       const data = await this.brandModel.findById(id).select(select);
       console.log('data', data);
@@ -183,39 +180,7 @@ export class BrandService {
         success: true,
         message: 'Success',
         data,
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getBrandByName(
-    name: string,
-    select?: string,
-  ): Promise<ResponsePayload> {
-    try {
-      const data = await this.brandModel.find({ name: name });
-      // console.log('data', data);
-      return {
-        success: true,
-        message: 'Success',
-        data,
-      } as ResponsePayload;
-    } catch (err) {
-      console.log(err);
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getUserBrandById(id: string, select: string): Promise<ResponsePayload> {
-    try {
-      const data = await this.brandModel.findById(id).select(select);
-      console.log('data', data);
-      return {
-        success: true,
-        message: 'Success',
-        data,
-      } as ResponsePayload;
+      } as unknown as IResponsePayload<IBrand>;
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
@@ -229,7 +194,7 @@ export class BrandService {
   async updateBrandById(
     id: string,
     updateBrandDto: UpdateBrandDto,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<String>> {
     try {
       const finalData = { ...updateBrandDto };
 
@@ -239,78 +204,10 @@ export class BrandService {
       return {
         success: true,
         message: 'Success',
-      } as ResponsePayload;
+      } as IResponsePayload<String>;
     } catch (err) {
       throw new InternalServerErrorException();
     }
   }
 
-  async updateMultipleBrandById(
-    ids: string[],
-    updateBrandDto: UpdateBrandDto,
-  ): Promise<ResponsePayload> {
-    const mIds = ids.map((m) => new ObjectId(m));
-
-    try {
-      await this.brandModel.updateMany(
-        { _id: { $in: mIds } },
-        { $set: updateBrandDto },
-      );
-
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  /**
-   * DELETE DATA
-   * deleteBrandById()
-   * deleteMultipleBrandById()
-   */
-  async deleteBrandById(
-    id: string,
-    checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    let data;
-    try {
-      data = await this.brandModel.findById(id);
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-    if (!data) {
-      throw new NotFoundException('No Data found!');
-    }
-    if (data.readOnly) {
-      throw new NotFoundException('Sorry! Read only data can not be deleted');
-    }
-    try {
-      await this.brandModel.findByIdAndDelete(id);
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async deleteMultipleBrandById(
-    ids: string[],
-    checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    try {
-      const mIds = ids.map((m) => new ObjectId(m));
-      await this.brandModel.deleteMany({ _id: mIds });
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
 }
