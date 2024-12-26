@@ -14,6 +14,14 @@ export const BrandSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    isActive: {
+      type: Boolean,
+      required: false,
+    },
+    serial: {
+      type: Number,
+      required: false,
+    },
     createdAtString: {
       type: String,
       required: false,

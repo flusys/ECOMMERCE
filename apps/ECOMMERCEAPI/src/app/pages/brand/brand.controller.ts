@@ -24,14 +24,14 @@ import { MongoIdValidationPipe } from '../../shared/pipes/mongo-id-validation.pi
 export class BrandController {
   private logger = new Logger(BrandController.name);
 
-  constructor(private brandService: BrandService) {}
+  constructor(private brandService: BrandService) { }
 
   /**
    * ADD DATA
    * addBrand()
    * insertManyBrand()
    */
-  @Post('/add')
+  @Post('/insert')
   @UsePipes(ValidationPipe)
   async addBrand(
     @Body()

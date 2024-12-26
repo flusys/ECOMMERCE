@@ -65,7 +65,6 @@ export class FilterAndPaginationBrandDto {
   sort: object;
 
   @IsOptional()
-  @IsNotEmptyObject()
-  @IsObject()
-  select: any;
+  @IsArray()
+  select: string[];
 }

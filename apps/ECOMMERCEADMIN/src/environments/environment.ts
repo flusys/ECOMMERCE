@@ -1,8 +1,7 @@
 export const environment = {
   production: false,
 
-  apiGatewayBaseUrl: 'http://localhost:4000',
-  apiGatewayUrl: 'http://localhost:4000/auth-gateway',
+  apiGatewayUrl: 'http://localhost:8000/api',
   checkUserLoginEndPoint: '/check-user-login',
   
   appBaseUrl: '/',

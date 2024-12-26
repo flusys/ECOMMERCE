@@ -12,7 +12,7 @@ import { environment } from 'apps/ECOMMERCEADMIN/src/environments/environment';
 export class AuthenticationApiService {
   private http = inject(HttpClient);
 
-  baseUrl = environment.apiGatewayUrl + '/auth';
+  baseUrl = environment.apiGatewayUrl + '/brand';
 
   login(data: ILogin): Observable<IResponsePayload<any>> {
     return this.http.post<IResponsePayload<any>>(this.baseUrl + '/login', data);

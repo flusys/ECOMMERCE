@@ -23,7 +23,7 @@ export class BrandService {
   constructor(
     @InjectModel('Brand') private readonly brandModel: Model<IBrand>,
     private utilsService: UtilsService,
-  ) {}
+  ) { }
 
   /**
    * ADD DATA
@@ -80,14 +80,19 @@ export class BrandService {
     }
     // Sort
     if (sort) {
-      mSort = sort;
+      mSort = {};
+      Object.keys(sort).forEach(item => {
+        mSort = { ...mSort, ...{ [item]: sort['item'] == 'ASC' ? 1 : -1 } }
+      });
     } else {
       mSort = { createdAt: -1 };
     }
 
     // Select
-    if (select) {
-      mSelect = { ...select };
+    if (select && select.length) {
+      mSelect = select.reduce((prev, curr) => {
+        return prev = { ...prev, ...{ [curr]: 1 } }
+      }, {});
     } else {
       mSelect = { name: 1 };
     }
@@ -153,10 +158,11 @@ export class BrandService {
         } as ResponsePayload;
       } else {
         return {
-          data: dataAggregates,
+          result: dataAggregates,
           success: true,
           message: 'Success',
-          count: dataAggregates.length,
+          total: dataAggregates.length,
+          status:"Data Found"
         } as ResponsePayload;
       }
     } catch (err) {
