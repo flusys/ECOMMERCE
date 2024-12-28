@@ -72,13 +72,12 @@ export class BrandController {
    * updateMultipleBrandById()
    */
   @Version(VERSION_NEUTRAL)
-  @Put('/update/:id')
+  @Post('/update')
   @UsePipes(ValidationPipe)
   async updateBrandById(
-    @Param('id', MongoIdValidationPipe) id: string,
     @Body() updateBrandDto: UpdateBrandDto,
   ): Promise<IResponsePayload<String>> {
-    return await this.brandService.updateBrandById(id, updateBrandDto);
+    return await this.brandService.updateBrandById(updateBrandDto);
   }
 
 }

@@ -3,7 +3,6 @@ import { LayoutService } from 'flusysng/layout/services';
 import { IDeleteData } from 'flusysng/shared/interfaces';
 import { AngularModule, PrimeModule } from 'flusysng/shared/modules';
 import { MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
 import { take } from 'rxjs';
 import { IBrand } from '../../interfaces/brand-data.interface';
 import { BrandApiService } from '../../services/brand-api.service';

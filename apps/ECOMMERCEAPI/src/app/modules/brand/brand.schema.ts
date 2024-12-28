@@ -2,6 +2,11 @@ import * as mongoose from 'mongoose';
 
 export const BrandSchema = new mongoose.Schema(
   {
+    id: { 
+      type: Number,  // Custom `id` field as the primary key
+      required: true,
+      unique: true,  // Ensure `id` is unique
+    },
     name: {
       type: String,
       required: true,
@@ -29,10 +34,6 @@ export const BrandSchema = new mongoose.Schema(
     updatedAtString: {
       type: String,
       required: false,
-    },
-  },
-  {
-    versionKey: false,
-    timestamps: true,
-  },
+    }
+  }, { timestamps: true , _id: false  }
 );

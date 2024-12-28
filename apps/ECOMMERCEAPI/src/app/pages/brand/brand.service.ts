@@ -12,6 +12,7 @@ import { IResponsePayload } from "flusysng/shared/interfaces";
 import { UtilsService } from '../../shared/modules/utils/utils.service';
 import { IBrand } from '../../modules/brand/brand.interface';
 import { ErrorCodes } from '../../shared/enums/error-code.enum';
+import { CounterService } from '../../shared/modules/counter/counter.service';
 
 const ObjectId = Types.ObjectId;
 
@@ -22,6 +23,7 @@ export class BrandService {
   constructor(
     @InjectModel('Brand') private readonly brandModel: Model<IBrand>,
     private utilsService: UtilsService,
+    private counterService: CounterService
   ) { }
 
   /**
@@ -31,8 +33,9 @@ export class BrandService {
    */
   async addBrand(addBrandDto: AddBrandDto): Promise<IResponsePayload<IBrand>> {
     try {
+      const id = await this.counterService.getNextId('brand_id')
       const createdAtString = this.utilsService.getDateString(new Date());
-      const data = new this.brandModel({ ...addBrandDto, createdAtString });
+      const data = new this.brandModel({ ...addBrandDto, createdAtString, id: id });
       const saveData = await data.save();
 
       return {
@@ -159,7 +162,7 @@ export class BrandService {
           success: true,
           message: 'Success',
           total: dataAggregates.length,
-          status:"Data Found"
+          status: "Data Found"
         } as IResponsePayload<Array<IBrand>>;
       }
     } catch (err) {
@@ -192,13 +195,12 @@ export class BrandService {
    * updateMultipleBrandById()
    */
   async updateBrandById(
-    id: string,
     updateBrandDto: UpdateBrandDto,
   ): Promise<IResponsePayload<String>> {
     try {
       const finalData = { ...updateBrandDto };
 
-      await this.brandModel.findByIdAndUpdate(id, {
+      await this.brandModel.findByIdAndUpdate(updateBrandDto.id, {
         $set: finalData,
       });
       return {

@@ -34,14 +34,11 @@ export class OptionBrandDto {
 export class UpdateBrandDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  id: string;
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  @ArrayMinSize(1)
-  @ArrayMaxSize(50)
-  ids: string[];
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 }
 
 export class FilterAndPaginationBrandDto {

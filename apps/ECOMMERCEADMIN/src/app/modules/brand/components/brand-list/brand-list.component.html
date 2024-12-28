@@ -82,6 +82,12 @@
           <span class="ml-1 vertical-align-middle" ifRowEmpty="{{ data?.isActive }}"></span>
         </td>
         <td>
+          <p-button
+              label="Edit"
+              icon="pi pi-pencil"
+              size="small"
+              (click)="editBrand(data)"
+            />
         </td>
       </tr>
     </ng-template>

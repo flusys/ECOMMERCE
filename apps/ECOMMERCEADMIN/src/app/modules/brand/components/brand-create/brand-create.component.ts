@@ -26,13 +26,8 @@ export class BrandCreateComponent {
   isPanelCollapsed = true;
   model: IBrand | undefined;
 
-
   readonly inputForm = viewChild.required<NgForm>('inputForm');
   readonly formControls = viewChildren(FormControlName, { read: ElementRef });
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
 
   constructor() {
     effect(() => {
