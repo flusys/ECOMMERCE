@@ -1,8 +1,12 @@
 import * as mongoose from 'mongoose';
-import { Schema } from 'mongoose';
 
 export const AttributeValueSchema = new mongoose.Schema(
   {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
     readOnly: {
       type: Boolean,
       required: false,
@@ -13,13 +17,9 @@ export const AttributeValueSchema = new mongoose.Schema(
       trim: true,
     },
     attribute: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: 'Attribute',
       required: true,
     },
-  },
-  {
-    versionKey: false,
-    timestamps: true,
-  },
+  }, { timestamps: true }
 );

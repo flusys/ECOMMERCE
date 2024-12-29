@@ -3,18 +3,15 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { AddBrandDto, FilterAndPaginationBrandDto, UpdateBrandDto } from '../../modules/brand/brand.dto';
 import { IResponsePayload } from "flusysng/shared/interfaces";
 import { UtilsService } from '../../shared/modules/utils/utils.service';
 import { IBrand } from '../../modules/brand/brand.interface';
 import { ErrorCodes } from '../../shared/enums/error-code.enum';
 import { CounterService } from '../../shared/modules/counter/counter.service';
-
-const ObjectId = Types.ObjectId;
 
 @Injectable()
 export class BrandService {

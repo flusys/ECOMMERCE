@@ -1,1 +1,11 @@
-<p>company works!</p>
+@defer (on viewport) {
+<app-company-create />
+} @placeholder {
+<p>Component Load on View Port</p>
+}
+<br />
+@defer (on viewport) {
+<app-company-list />
+} @placeholder {
+<p>Component Load on View Port</p>
+}

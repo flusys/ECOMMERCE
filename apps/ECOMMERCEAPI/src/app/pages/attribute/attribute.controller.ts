@@ -8,7 +8,6 @@ import {
   Post,
   Put,
   Query,
-  UseGuards,
   UsePipes,
   ValidationPipe,
   Version,
@@ -17,8 +16,9 @@ import {
 
 import { AttributeService } from './attribute.service';
 import { AddAttributeDto, FilterAndPaginationAttributeDto, UpdateAttributeDto } from '../../modules/attribute/attribute.dto';
-import { ResponsePayload } from '../../shared/interfaces/response-payload.interface';
+import { IResponsePayload } from 'flusysng/shared/interfaces';
 import { MongoIdValidationPipe } from '../../shared/pipes/mongo-id-validation.pipe';
+import { IAttribute } from '../../modules/attribute/attribute.interface';
 
 @Controller('attribute')
 export class AttributeController {
@@ -31,12 +31,12 @@ export class AttributeController {
    * addAttribute()
    * insertManyAttribute()
    */
-  @Post('/add')
+  @Post('/insert')
   @UsePipes(ValidationPipe)
   async addAttribute(
     @Body()
     addAttributeDto: AddAttributeDto,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<IAttribute>> {
     return await this.attributeService.addAttribute(addAttributeDto);
   }
 
@@ -52,14 +52,8 @@ export class AttributeController {
   async getAllAttributes(
     @Body() filterAttributeDto: FilterAndPaginationAttributeDto,
     @Query('q') searchString: string,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<Array<IAttribute>>> {
     return this.attributeService.getAllAttributes(filterAttributeDto, searchString);
-  }
-
-  @Version(VERSION_NEUTRAL)
-  @Get('/get-by-attribute')
-  async getAttributeByName(@Query('name') name: string): Promise<ResponsePayload> {
-    return this.attributeService.getAttributeByName(name);
   }
 
   @Version(VERSION_NEUTRAL)
@@ -67,71 +61,21 @@ export class AttributeController {
   async getAttributeById(
     @Param('id', MongoIdValidationPipe) id: string,
     @Query() select: string,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<IAttribute>> {
     return await this.attributeService.getAttributeById(id, select);
-  }
-
-  @Version(VERSION_NEUTRAL)
-  @Get('get-attribute/:id')
-  @UsePipes(ValidationPipe)
-  async getUserAttributeById(
-    @Param('id', MongoIdValidationPipe) id: string,
-    @Query() select: string,
-  ): Promise<ResponsePayload> {
-    return await this.attributeService.getUserAttributeById(id, select);
   }
 
   /**
    * UPDATE DATA
    * updateAttributeById()
-   * updateMultipleAttributeById()
    */
   @Version(VERSION_NEUTRAL)
-  @Put('/update/:id')
+  @Post('/update')
   @UsePipes(ValidationPipe)
   async updateAttributeById(
-    @Param('id', MongoIdValidationPipe) id: string,
     @Body() updateAttributeDto: UpdateAttributeDto,
-  ): Promise<ResponsePayload> {
-    return await this.attributeService.updateAttributeById(id, updateAttributeDto);
+  ): Promise<IResponsePayload<String>> {
+    return await this.attributeService.updateAttributeById(updateAttributeDto);
   }
 
-  @Version(VERSION_NEUTRAL)
-  @Put('/update-multiple')
-  @UsePipes(ValidationPipe)
-  async updateMultipleAttributeById(
-    @Body() updateAttributeDto: UpdateAttributeDto,
-  ): Promise<ResponsePayload> {
-    return await this.attributeService.updateMultipleAttributeById(
-      updateAttributeDto.ids,
-      updateAttributeDto,
-    );
-  }
-
-  /**
-   * DELETE DATA
-   * deleteAttributeById()
-   * deleteMultipleAttributeById()
-   */
-  @Version(VERSION_NEUTRAL)
-  @Delete('/delete/:id')
-  async deleteAttributeById(
-    @Param('id', MongoIdValidationPipe) id: string,
-    @Query('checkUsage') checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    return await this.attributeService.deleteAttributeById(id, Boolean(checkUsage));
-  }
-
-  @Version(VERSION_NEUTRAL)
-  @Post('/delete-multiple')
-  @UsePipes(ValidationPipe)
-  async deleteMultipleAttributeById(
-    @Body() data: { ids: string[] },
-    @Query('checkUsage') checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    return await this.attributeService.deleteMultipleAttributeById(
-      data.ids,
-      Boolean(checkUsage),
-    );
-  }
 }

@@ -15,7 +15,6 @@ import {
 
 import { BrandService } from './brand.service';
 import { AddBrandDto, FilterAndPaginationBrandDto, UpdateBrandDto } from '../../modules/brand/brand.dto';
-import { ResponsePayload } from '../../shared/interfaces/response-payload.interface';
 import { MongoIdValidationPipe } from '../../shared/pipes/mongo-id-validation.pipe';
 import { IResponsePayload } from 'flusysng/shared/interfaces';
 import { IBrand } from '../../modules/brand/brand.interface';

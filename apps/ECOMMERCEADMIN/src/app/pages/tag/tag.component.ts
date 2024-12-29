@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { TagCreateComponent } from '../../modules/tag/components/tag-create/tag-create.component';
+import { TagListComponent } from '../../modules/tag/components/tag-list/tag-list.component';
 
 @Component({
   selector: 'app-tag',
-  imports: [CommonModule],
+  imports: [
+    TagCreateComponent,
+    TagListComponent
+  ],
   templateUrl: './tag.component.html',
-  styleUrl: './tag.component.css',
+  styleUrl: './tag.component.scss',
 })
-export class TagComponent {}
+export class TagComponent { }

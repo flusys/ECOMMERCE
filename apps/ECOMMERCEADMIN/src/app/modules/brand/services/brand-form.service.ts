@@ -9,11 +9,7 @@ import { IBrandForm } from '../interfaces/brand-form.interface';
 })
 export class BrandFormService extends FormCommonClass<IBrandForm> {
   protected override messageService: MessageService;
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-
+  
   constructor() {
     const messageService = inject(MessageService);
 

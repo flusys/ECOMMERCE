@@ -1,0 +1,11 @@
+const productsWithTags = await ProductModel.find()
+  .populate({
+    path: 'tagIds', // Field in ProductSchema
+    model: 'Tag',   // Referencing the Tag model
+    localField: 'tagIds', // Field in ProductSchema
+    foreignField: 'id',   // Field in TagSchema
+    select: 'id name priority', // Optional: Fields to include from Tag
+  })
+  .exec();
+
+console.log(productsWithTags);

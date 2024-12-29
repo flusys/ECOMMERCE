@@ -3,18 +3,15 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { ConfigService } from '@nestjs/config';
 import { AddAttributeDto, FilterAndPaginationAttributeDto, UpdateAttributeDto } from '../../modules/attribute/attribute.dto';
-import { ResponsePayload } from '../../shared/interfaces/response-payload.interface';
 import { UtilsService } from '../../shared/modules/utils/utils.service';
 import { IAttribute } from '../../modules/attribute/attribute.interface';
 import { ErrorCodes } from '../../shared/enums/error-code.enum';
-
-const ObjectId = Types.ObjectId;
+import { CounterService } from '../../shared/modules/counter/counter.service';
+import { IResponsePayload } from 'flusysng/shared/interfaces';
 
 @Injectable()
 export class AttributeService {
@@ -23,26 +20,25 @@ export class AttributeService {
   constructor(
     @InjectModel('Attribute') private readonly attributeModel: Model<IAttribute>,
     private utilsService: UtilsService,
-  ) {}
+    private counterService: CounterService
+  ) { }
 
   /**
    * ADD DATA
    * addAttribute()
    * insertManyAttribute()
    */
-  async addAttribute(addAttributeDto: AddAttributeDto): Promise<ResponsePayload> {
+  async addAttribute(addAttributeDto: AddAttributeDto): Promise<IResponsePayload<IAttribute>> {
     try {
+      const id = await this.counterService.getNextId('attribute_id');
       const createdAtString = this.utilsService.getDateString(new Date());
-      const data = new this.attributeModel({ ...addAttributeDto, createdAtString });
+      const data = new this.attributeModel({ ...addAttributeDto, createdAtString, id });
       const saveData = await data.save();
-
       return {
         success: true,
         message: 'Success! Data Added.',
-        data: {
-          _id: saveData._id,
-        },
-      } as ResponsePayload;
+        data: saveData,
+      } as unknown as IResponsePayload<IAttribute>;;
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(error.message);
@@ -58,21 +54,21 @@ export class AttributeService {
   async getAllAttributes(
     filterAttributeDto: FilterAndPaginationAttributeDto,
     searchQuery?: string,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<Array<IAttribute>>> {
     const { filter } = filterAttributeDto;
     const { pagination } = filterAttributeDto;
     const { sort } = filterAttributeDto;
     const { select } = filterAttributeDto;
 
     // Essential Variables
-    const aggregateStages = [];
+    const aggregateSattributees = [];
     let mFilter = {};
     let mSort = {};
     let mSelect = {};
     let mPagination = {};
 
-    // Match
-    if (filter) {
+     // Match
+     if (filter) {
       mFilter = { ...mFilter, ...filter };
     }
     if (searchQuery) {
@@ -80,29 +76,34 @@ export class AttributeService {
     }
     // Sort
     if (sort) {
-      mSort = sort;
+      mSort = {};
+      Object.keys(sort).forEach(item => {
+        mSort = { ...mSort, ...{ [item]: sort['item'] == 'ASC' ? 1 : -1 } }
+      });
     } else {
       mSort = { createdAt: -1 };
     }
 
     // Select
-    if (select) {
-      mSelect = { ...select };
+    if (select && select.length) {
+      mSelect = select.reduce((prev, curr) => {
+        return prev = { ...prev, ...{ [curr]: 1 } }
+      }, {});
     } else {
       mSelect = { name: 1 };
     }
 
     // Finalize
     if (Object.keys(mFilter).length) {
-      aggregateStages.push({ $match: mFilter });
+      aggregateSattributees.push({ $match: mFilter });
     }
 
     if (Object.keys(mSort).length) {
-      aggregateStages.push({ $sort: mSort });
+      aggregateSattributees.push({ $sort: mSort });
     }
 
     if (!pagination) {
-      aggregateStages.push({ $project: mSelect });
+      aggregateSattributees.push({ $project: mSelect });
     }
 
     // Pagination
@@ -134,9 +135,9 @@ export class AttributeService {
         };
       }
 
-      aggregateStages.push(mPagination);
+      aggregateSattributees.push(mPagination);
 
-      aggregateStages.push({
+      aggregateSattributees.push({
         $project: {
           data: 1,
           count: { $arrayElemAt: ['$metadata.total', 0] },
@@ -145,19 +146,20 @@ export class AttributeService {
     }
 
     try {
-      const dataAggregates = await this.attributeModel.aggregate(aggregateStages);
+      const dataAggregates = await this.attributeModel.aggregate(aggregateSattributees);
       if (pagination) {
         return {
           ...{ ...dataAggregates[0] },
           ...{ success: true, message: 'Success' },
-        } as ResponsePayload;
+        } as IResponsePayload<Array<IAttribute>>;
       } else {
         return {
-          data: dataAggregates,
+          result: dataAggregates,
           success: true,
           message: 'Success',
-          count: dataAggregates.length,
-        } as ResponsePayload;
+          total: dataAggregates.length,
+          status: "Data Found"
+        } as IResponsePayload<Array<IAttribute>>;
       }
     } catch (err) {
       this.logger.error(err);
@@ -169,7 +171,7 @@ export class AttributeService {
     }
   }
 
-  async getAttributeById(id: string, select: string): Promise<ResponsePayload> {
+  async getAttributeById(id: string, select: string): Promise<IResponsePayload<IAttribute>> {
     try {
       const data = await this.attributeModel.findById(id).select(select);
       console.log('data', data);
@@ -177,39 +179,7 @@ export class AttributeService {
         success: true,
         message: 'Success',
         data,
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getAttributeByName(
-    name: string,
-    select?: string,
-  ): Promise<ResponsePayload> {
-    try {
-      const data = await this.attributeModel.find({ name: name });
-      // console.log('data', data);
-      return {
-        success: true,
-        message: 'Success',
-        data,
-      } as ResponsePayload;
-    } catch (err) {
-      console.log(err);
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getUserAttributeById(id: string, select: string): Promise<ResponsePayload> {
-    try {
-      const data = await this.attributeModel.findById(id).select(select);
-      console.log('data', data);
-      return {
-        success: true,
-        message: 'Success',
-        data,
-      } as ResponsePayload;
+      } as unknown as IResponsePayload<IAttribute>;
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
@@ -221,90 +191,21 @@ export class AttributeService {
    * updateMultipleAttributeById()
    */
   async updateAttributeById(
-    id: string,
     updateAttributeDto: UpdateAttributeDto,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<String>> {
     try {
       const finalData = { ...updateAttributeDto };
-
-      await this.attributeModel.findByIdAndUpdate(id, {
+      delete finalData.id;
+      await this.attributeModel.findByIdAndUpdate(updateAttributeDto.id, {
         $set: finalData,
       });
       return {
         success: true,
         message: 'Success',
-      } as ResponsePayload;
+      } as IResponsePayload<String>;
     } catch (err) {
       throw new InternalServerErrorException();
     }
   }
 
-  async updateMultipleAttributeById(
-    ids: string[],
-    updateAttributeDto: UpdateAttributeDto,
-  ): Promise<ResponsePayload> {
-    const mIds = ids.map((m) => new ObjectId(m));
-
-    try {
-      await this.attributeModel.updateMany(
-        { _id: { $in: mIds } },
-        { $set: updateAttributeDto },
-      );
-
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  /**
-   * DELETE DATA
-   * deleteAttributeById()
-   * deleteMultipleAttributeById()
-   */
-  async deleteAttributeById(
-    id: string,
-    checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    let data;
-    try {
-      data = await this.attributeModel.findById(id);
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-    if (!data) {
-      throw new NotFoundException('No Data found!');
-    }
-    if (data.readOnly) {
-      throw new NotFoundException('Sorry! Read only data can not be deleted');
-    }
-    try {
-      await this.attributeModel.findByIdAndDelete(id);
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async deleteMultipleAttributeById(
-    ids: string[],
-    checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    try {
-      const mIds = ids.map((m) => new ObjectId(m));
-      await this.attributeModel.deleteMany({ _id: mIds });
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
 }

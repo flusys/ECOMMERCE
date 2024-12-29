@@ -1,5 +1,5 @@
 export interface ITag {
-  _id?: string;
+  id?: number;
   name?: string;
   priority?: number;
   image?: string;

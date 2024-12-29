@@ -3,18 +3,15 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { ConfigService } from '@nestjs/config';
 import { AddCompanyDto, FilterAndPaginationCompanyDto, UpdateCompanyDto } from '../../modules/company/company.dto';
-import { ResponsePayload } from '../../shared/interfaces/response-payload.interface';
 import { UtilsService } from '../../shared/modules/utils/utils.service';
 import { ICompany } from '../../modules/company/company.interface';
 import { ErrorCodes } from '../../shared/enums/error-code.enum';
-
-const ObjectId = Types.ObjectId;
+import { CounterService } from '../../shared/modules/counter/counter.service';
+import { IResponsePayload } from 'flusysng/shared/interfaces';
 
 @Injectable()
 export class CompanyService {
@@ -23,26 +20,25 @@ export class CompanyService {
   constructor(
     @InjectModel('Company') private readonly companyModel: Model<ICompany>,
     private utilsService: UtilsService,
-  ) {}
+    private counterService: CounterService
+  ) { }
 
   /**
    * ADD DATA
    * addCompany()
    * insertManyCompany()
    */
-  async addCompany(addCompanyDto: AddCompanyDto): Promise<ResponsePayload> {
+  async addCompany(addCompanyDto: AddCompanyDto): Promise<IResponsePayload<ICompany>> {
     try {
+      const id = await this.counterService.getNextId('company_id');
       const createdAtString = this.utilsService.getDateString(new Date());
-      const data = new this.companyModel({ ...addCompanyDto, createdAtString });
+      const data = new this.companyModel({ ...addCompanyDto, createdAtString, id });
       const saveData = await data.save();
-
       return {
         success: true,
         message: 'Success! Data Added.',
-        data: {
-          _id: saveData._id,
-        },
-      } as ResponsePayload;
+        data: saveData,
+      } as unknown as IResponsePayload<ICompany>;;
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(error.message);
@@ -58,7 +54,7 @@ export class CompanyService {
   async getAllCompanys(
     filterCompanyDto: FilterAndPaginationCompanyDto,
     searchQuery?: string,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<Array<ICompany>>> {
     const { filter } = filterCompanyDto;
     const { pagination } = filterCompanyDto;
     const { sort } = filterCompanyDto;
@@ -71,8 +67,8 @@ export class CompanyService {
     let mSelect = {};
     let mPagination = {};
 
-    // Match
-    if (filter) {
+     // Match
+     if (filter) {
       mFilter = { ...mFilter, ...filter };
     }
     if (searchQuery) {
@@ -80,14 +76,19 @@ export class CompanyService {
     }
     // Sort
     if (sort) {
-      mSort = sort;
+      mSort = {};
+      Object.keys(sort).forEach(item => {
+        mSort = { ...mSort, ...{ [item]: sort['item'] == 'ASC' ? 1 : -1 } }
+      });
     } else {
       mSort = { createdAt: -1 };
     }
 
     // Select
-    if (select) {
-      mSelect = { ...select };
+    if (select && select.length) {
+      mSelect = select.reduce((prev, curr) => {
+        return prev = { ...prev, ...{ [curr]: 1 } }
+      }, {});
     } else {
       mSelect = { name: 1 };
     }
@@ -150,14 +151,15 @@ export class CompanyService {
         return {
           ...{ ...dataAggregates[0] },
           ...{ success: true, message: 'Success' },
-        } as ResponsePayload;
+        } as IResponsePayload<Array<ICompany>>;
       } else {
         return {
-          data: dataAggregates,
+          result: dataAggregates,
           success: true,
           message: 'Success',
-          count: dataAggregates.length,
-        } as ResponsePayload;
+          total: dataAggregates.length,
+          status: "Data Found"
+        } as IResponsePayload<Array<ICompany>>;
       }
     } catch (err) {
       this.logger.error(err);
@@ -169,7 +171,7 @@ export class CompanyService {
     }
   }
 
-  async getCompanyById(id: string, select: string): Promise<ResponsePayload> {
+  async getCompanyById(id: string, select: string): Promise<IResponsePayload<ICompany>> {
     try {
       const data = await this.companyModel.findById(id).select(select);
       console.log('data', data);
@@ -177,39 +179,7 @@ export class CompanyService {
         success: true,
         message: 'Success',
         data,
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getCompanyByName(
-    name: string,
-    select?: string,
-  ): Promise<ResponsePayload> {
-    try {
-      const data = await this.companyModel.find({ name: name });
-      // console.log('data', data);
-      return {
-        success: true,
-        message: 'Success',
-        data,
-      } as ResponsePayload;
-    } catch (err) {
-      console.log(err);
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getUserCompanyById(id: string, select: string): Promise<ResponsePayload> {
-    try {
-      const data = await this.companyModel.findById(id).select(select);
-      console.log('data', data);
-      return {
-        success: true,
-        message: 'Success',
-        data,
-      } as ResponsePayload;
+      } as unknown as IResponsePayload<ICompany>;
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
@@ -221,90 +191,21 @@ export class CompanyService {
    * updateMultipleCompanyById()
    */
   async updateCompanyById(
-    id: string,
     updateCompanyDto: UpdateCompanyDto,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<String>> {
     try {
       const finalData = { ...updateCompanyDto };
-
-      await this.companyModel.findByIdAndUpdate(id, {
+      delete finalData.id;
+      await this.companyModel.findByIdAndUpdate(updateCompanyDto.id, {
         $set: finalData,
       });
       return {
         success: true,
         message: 'Success',
-      } as ResponsePayload;
+      } as IResponsePayload<String>;
     } catch (err) {
       throw new InternalServerErrorException();
     }
   }
 
-  async updateMultipleCompanyById(
-    ids: string[],
-    updateCompanyDto: UpdateCompanyDto,
-  ): Promise<ResponsePayload> {
-    const mIds = ids.map((m) => new ObjectId(m));
-
-    try {
-      await this.companyModel.updateMany(
-        { _id: { $in: mIds } },
-        { $set: updateCompanyDto },
-      );
-
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  /**
-   * DELETE DATA
-   * deleteCompanyById()
-   * deleteMultipleCompanyById()
-   */
-  async deleteCompanyById(
-    id: string,
-    checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    let data;
-    try {
-      data = await this.companyModel.findById(id);
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-    if (!data) {
-      throw new NotFoundException('No Data found!');
-    }
-    if (data.readOnly) {
-      throw new NotFoundException('Sorry! Read only data can not be deleted');
-    }
-    try {
-      await this.companyModel.findByIdAndDelete(id);
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async deleteMultipleCompanyById(
-    ids: string[],
-    checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    try {
-      const mIds = ids.map((m) => new ObjectId(m));
-      await this.companyModel.deleteMany({ _id: mIds });
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
 }

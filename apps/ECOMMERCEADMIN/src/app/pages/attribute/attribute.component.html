@@ -1,1 +1,29 @@
-<p>attribute works!</p>
+<p-panel header="Attribute Section" [toggleable]="true" class="line-height-3 m-0">
+    @defer (on viewport) {
+    <app-attribute-create />
+    } @placeholder {
+    <p>Component Load on View Port</p>
+    }
+    <br />
+    @defer (on viewport) {
+    <app-attribute-list />
+    } @placeholder {
+    <p>Component Load on View Port</p>
+    }
+</p-panel>
+
+<br/>
+
+<p-panel header="Attribute Value Section" [toggleable]="true" class="line-height-3 m-0">
+    @defer (on viewport) {
+    <app-attribute-value-create />
+    } @placeholder {
+    <p>Component Load on View Port</p>
+    }
+    <br />
+    @defer (on viewport) {
+    <app-attribute-value-list />
+    } @placeholder {
+    <p>Component Load on View Port</p>
+    }
+</p-panel>

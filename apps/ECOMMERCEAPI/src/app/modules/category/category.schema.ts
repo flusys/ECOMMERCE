@@ -1,8 +1,12 @@
 import * as mongoose from 'mongoose';
-import { Schema } from 'mongoose';
 
 export const CategorySchema = new mongoose.Schema(
   {
+    id: { 
+      type: Number,  // Custom `id` field as the primary key
+      required: true,
+      unique: true,  // Ensure `id` is unique
+    },
     name: {
       type: String,
       required: true,
@@ -16,7 +20,7 @@ export const CategorySchema = new mongoose.Schema(
       required: false,
     },
     parent: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: 'Category',
       required: false,
     },
@@ -30,7 +34,6 @@ export const CategorySchema = new mongoose.Schema(
     },
   },
   {
-    versionKey: false,
-    timestamps: true,
+    timestamps: true
   },
 );

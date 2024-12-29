@@ -2,6 +2,11 @@ import * as mongoose from 'mongoose';
 
 export const AttributeSchema = new mongoose.Schema(
   {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
     readOnly: {
       type: Boolean,
       required: false,
@@ -11,9 +16,5 @@ export const AttributeSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-  },
-  {
-    versionKey: false,
-    timestamps: true,
-  },
+  }, { timestamps: true }
 );

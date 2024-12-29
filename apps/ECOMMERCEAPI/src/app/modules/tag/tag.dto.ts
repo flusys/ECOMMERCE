@@ -1,6 +1,4 @@
 import {
-  ArrayMaxSize,
-  ArrayMinSize,
   IsArray,
   IsBoolean,
   IsNotEmpty,
@@ -34,14 +32,11 @@ export class OptionTagDto {
 export class UpdateTagDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  id: string;
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  @ArrayMinSize(1)
-  @ArrayMaxSize(50)
-  ids: string[];
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 }
 
 export class FilterAndPaginationTagDto {
@@ -65,7 +60,6 @@ export class FilterAndPaginationTagDto {
   sort: object;
 
   @IsOptional()
-  @IsNotEmptyObject()
-  @IsObject()
-  select: any;
+  @IsArray()
+  select: string[];
 }

@@ -1,0 +1,61 @@
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+import { Index } from 'nestjs/mongoose';
+
+// Define the schema for the Company
+@Schema({ timestamps: true })
+@Index({ id: 1 })  // Create an index on `id` field for fast lookups
+export class Company extends Document {
+  @Prop({ required: true, unique: true })
+  id: number;
+
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: false })
+  address: string;
+
+  @Prop({ required: false })
+  image: string;
+
+  @Prop({ required: false })
+  createdAtString: string;
+
+  @Prop({ required: false })
+  updatedAtString: string;
+}
+
+// Create the schema factory for the Company schema
+export const CompanySchema = SchemaFactory.createForClass(Company);
+
+
+
+
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Company, CompanySchema } from './company.schema';
+import { CompanyService } from './company.service';
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([{ name: Company.name, schema: CompanySchema }]),
+  ],
+  providers: [CompanyService],
+})
+export class CompanyModule {}
+
+
+
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Company } from './company.schema';
+
+@Injectable()
+export class CompanyService {
+  constructor(@InjectModel(Company.name) private companyModel: Model<Company>) {}
+
+  async findCompanyById(id: number) {
+    return this.companyModel.findOne({ id }).exec();
+  }
+}

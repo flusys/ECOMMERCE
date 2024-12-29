@@ -1,6 +1,4 @@
 import {
-  ArrayMaxSize,
-  ArrayMinSize,
   IsArray,
   IsBoolean,
   IsNotEmpty,
@@ -34,14 +32,11 @@ export class OptionCompanyDto {
 export class UpdateCompanyDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  id: string;
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  @ArrayMinSize(1)
-  @ArrayMaxSize(50)
-  ids: string[];
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 }
 
 export class FilterAndPaginationCompanyDto {
@@ -65,7 +60,6 @@ export class FilterAndPaginationCompanyDto {
   sort: object;
 
   @IsOptional()
-  @IsNotEmptyObject()
-  @IsObject()
-  select: any;
+  @IsArray()
+  select: string[];
 }

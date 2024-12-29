@@ -3,9 +3,9 @@ import * as mongoose from 'mongoose';
 export const BrandSchema = new mongoose.Schema(
   {
     id: { 
-      type: Number,  // Custom `id` field as the primary key
+      type: Number, 
       required: true,
-      unique: true,  // Ensure `id` is unique
+      unique: true,
     },
     name: {
       type: String,
@@ -35,5 +35,5 @@ export const BrandSchema = new mongoose.Schema(
       type: String,
       required: false,
     }
-  }, { timestamps: true , _id: false  }
+  }, { timestamps: true }
 );

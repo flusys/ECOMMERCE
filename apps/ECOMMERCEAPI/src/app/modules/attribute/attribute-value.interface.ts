@@ -1,6 +1,9 @@
+import { IAttribute } from "./attribute.interface";
+
 export interface IAttributeValue {
-  _id?: string;
+  id: number;
   name?: string;
+  attribute: IAttribute | Number,
   createdAt?: Date;
   updatedAt?: Date;
 }

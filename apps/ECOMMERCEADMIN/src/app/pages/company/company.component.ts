@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CompanyListComponent } from '../../modules/company/components/company-list/company-list.component';
+import { CompanyCreateComponent } from '../../modules/company/components/company-create/company-create.component';
 
 @Component({
   selector: 'app-company',
-  imports: [CommonModule],
+  imports: [
+    CompanyCreateComponent,
+    CompanyListComponent
+  ],
   templateUrl: './company.component.html',
-  styleUrl: './company.component.css',
+  styleUrl: './company.component.scss',
 })
-export class CompanyComponent {}
+export class CompanyComponent { }

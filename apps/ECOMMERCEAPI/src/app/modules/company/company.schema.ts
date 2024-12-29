@@ -2,6 +2,11 @@ import * as mongoose from 'mongoose';
 
 export const CompanySchema = new mongoose.Schema(
   {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
     name: {
       type: String,
       required: true,
@@ -22,9 +27,5 @@ export const CompanySchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-  },
-  {
-    versionKey: false,
-    timestamps: true,
-  },
+  }, { timestamps: true}
 );

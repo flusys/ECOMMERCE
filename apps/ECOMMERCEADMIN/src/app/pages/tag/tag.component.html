@@ -1,1 +1,11 @@
-<p>tag works!</p>
+@defer (on viewport) {
+    <app-tag-create />
+    } @placeholder {
+    <p>Component Load on View Port</p>
+    }
+    <br />
+    @defer (on viewport) {
+    <app-tag-list />
+    } @placeholder {
+    <p>Component Load on View Port</p>
+    }
