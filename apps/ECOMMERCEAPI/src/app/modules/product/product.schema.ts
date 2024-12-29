@@ -1,8 +1,12 @@
-import { Schema } from 'mongoose';
 import * as mongoose from 'mongoose';
 
 const ProductSchema = new mongoose.Schema(
   {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
     readOnly: {
       type: Boolean,
       required: true,
@@ -72,14 +76,14 @@ const ProductSchema = new mongoose.Schema(
       default: null,
     },
     parentProduct: {
-      type: Schema.Types.ObjectId,
-      ref: 'ParentProduct',
+      type: Number,
+      ref: 'parentproducts',
       required: true,
     },
     variants: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'ProductSubVariant',
+        type: Number,
+        ref: 'attributevalues',
       },
     ],
     createdAtString: {

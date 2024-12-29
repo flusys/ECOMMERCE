@@ -5,6 +5,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-create-product',
   imports: [CommonModule],
   templateUrl: './create-product.component.html',
-  styleUrl: './create-product.component.css',
+  styleUrl: './create-product.component.scss',
 })
 export class CreateProductComponent {}

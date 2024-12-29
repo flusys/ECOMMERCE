@@ -3,6 +3,11 @@ import * as mongoose from 'mongoose';
 
 const ParentProductSchema = new mongoose.Schema(
   {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
     readOnly: {
       type: Boolean,
       required: true,
@@ -66,29 +71,29 @@ const ParentProductSchema = new mongoose.Schema(
       },
     ],
     category: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: 'Category',
       default: null,
     },
     brand: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: 'Brand',
       default: null,
     },
     company: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: 'Company',
       default: null,
     },
     tags: [
       {
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: 'Tag',
       },
     ],
     products: [
       {
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: 'Product',
       },
     ],
