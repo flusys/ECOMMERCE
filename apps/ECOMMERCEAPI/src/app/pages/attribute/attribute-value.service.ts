@@ -3,17 +3,15 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { AddAttributeValueDto, FilterAndPaginationAttributeValueDto, UpdateAttributeValueDto } from '../../modules/attribute/attribute-value.dto';
-import { ResponsePayload } from '../../shared/interfaces/response-payload.interface';
 import { UtilsService } from '../../shared/modules/utils/utils.service';
 import { IAttributeValue } from '../../modules/attribute/attribute-value.interface';
 import { ErrorCodes } from '../../shared/enums/error-code.enum';
-
-const ObjectId = Types.ObjectId;
+import { CounterService } from '../../shared/modules/counter/counter.service';
+import { IResponsePayload } from 'flusysng/shared/interfaces';
 
 @Injectable()
 export class AttributeValueService {
@@ -22,26 +20,25 @@ export class AttributeValueService {
   constructor(
     @InjectModel('AttributeValue') private readonly attributeValueModel: Model<IAttributeValue>,
     private utilsService: UtilsService,
-  ) {}
+    private counterService: CounterService
+  ) { }
 
   /**
    * ADD DATA
    * addAttributeValue()
    * insertManyAttributeValue()
    */
-  async addAttributeValue(addAttributeValueDto: AddAttributeValueDto): Promise<ResponsePayload> {
+  async addAttributeValue(addAttributeValueDto: AddAttributeValueDto): Promise<IResponsePayload<IAttributeValue>> {
     try {
+      const id = await this.counterService.getNextId('attribute_value_id');
       const createdAtString = this.utilsService.getDateString(new Date());
-      const data = new this.attributeValueModel({ ...addAttributeValueDto, createdAtString });
+      const data = new this.attributeValueModel({ ...addAttributeValueDto, createdAtString, id });
       const saveData = await data.save();
-
       return {
         success: true,
         message: 'Success! Data Added.',
-        data: {
-          _id: saveData._id,
-        },
-      } as ResponsePayload;
+        data: saveData,
+      } as unknown as IResponsePayload<IAttributeValue>;;
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(error.message);
@@ -57,14 +54,14 @@ export class AttributeValueService {
   async getAllAttributeValues(
     filterAttributeValueDto: FilterAndPaginationAttributeValueDto,
     searchQuery?: string,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<Array<IAttributeValue>>> {
     const { filter } = filterAttributeValueDto;
     const { pagination } = filterAttributeValueDto;
     const { sort } = filterAttributeValueDto;
     const { select } = filterAttributeValueDto;
 
     // Essential Variables
-    const aggregateStages = [];
+    const aggregatesAttributeValuees = [];
     let mFilter = {};
     let mSort = {};
     let mSelect = {};
@@ -79,29 +76,51 @@ export class AttributeValueService {
     }
     // Sort
     if (sort) {
-      mSort = sort;
+      mSort = {};
+      Object.keys(sort).forEach(item => {
+        mSort = { ...mSort, ...{ [item]: sort['item'] == 'ASC' ? 1 : -1 } }
+      });
     } else {
       mSort = { createdAt: -1 };
     }
 
     // Select
-    if (select) {
-      mSelect = { ...select };
+    if (select && select.length) {
+      mSelect = select.reduce((prev, curr) => {
+        return prev = { ...prev, ...{ [curr]: 1 } }
+      }, {});
     } else {
       mSelect = { name: 1 };
     }
 
     // Finalize
     if (Object.keys(mFilter).length) {
-      aggregateStages.push({ $match: mFilter });
+      aggregatesAttributeValuees.push({ $match: mFilter });
     }
 
     if (Object.keys(mSort).length) {
-      aggregateStages.push({ $sort: mSort });
+      aggregatesAttributeValuees.push({ $sort: mSort });
     }
 
+    // Populate `attribute` field using `$lookup`
+    aggregatesAttributeValuees.push({
+      $lookup: {
+        from: 'attributes',
+        localField: 'attribute',
+        foreignField: 'id',
+        as: 'attribute',
+      },
+    });
+    // Unwind the array to make `attributeDetails` an object
+    aggregatesAttributeValuees.push({
+      $unwind: {
+        path: '$attribute',
+        preserveNullAndEmptyArrays: true, // Optional: Include results even if `attributeDetails` is missing
+      },
+    });
+
     if (!pagination) {
-      aggregateStages.push({ $project: mSelect });
+      aggregatesAttributeValuees.push({ $project: mSelect });
     }
 
     // Pagination
@@ -126,16 +145,16 @@ export class AttributeValueService {
             data: [
               {
                 $skip: pagination.pageSize * pagination.currentPage,
-              } /* IF PAGE START FROM 0 OR (pagination.currentPage - 1) IF PAGE 1*/,
+              },
               { $limit: pagination.pageSize },
             ],
           },
         };
       }
 
-      aggregateStages.push(mPagination);
+      aggregatesAttributeValuees.push(mPagination);
 
-      aggregateStages.push({
+      aggregatesAttributeValuees.push({
         $project: {
           data: 1,
           count: { $arrayElemAt: ['$metadata.total', 0] },
@@ -144,19 +163,20 @@ export class AttributeValueService {
     }
 
     try {
-      const dataAggregates = await this.attributeValueModel.aggregate(aggregateStages);
+      const dataAggregates = await this.attributeValueModel.aggregate(aggregatesAttributeValuees);
       if (pagination) {
         return {
           ...{ ...dataAggregates[0] },
           ...{ success: true, message: 'Success' },
-        } as ResponsePayload;
+        } as IResponsePayload<Array<IAttributeValue>>;
       } else {
         return {
-          data: dataAggregates,
+          result: dataAggregates,
           success: true,
           message: 'Success',
-          count: dataAggregates.length,
-        } as ResponsePayload;
+          total: dataAggregates.length,
+          status: "Data Found"
+        } as IResponsePayload<Array<IAttributeValue>>;
       }
     } catch (err) {
       this.logger.error(err);
@@ -168,7 +188,7 @@ export class AttributeValueService {
     }
   }
 
-  async getAttributeValueById(id: string, select: string): Promise<ResponsePayload> {
+  async getAttributeValueById(id: string, select: string): Promise<IResponsePayload<IAttributeValue>> {
     try {
       const data = await this.attributeValueModel.findById(id).select(select);
       console.log('data', data);
@@ -176,39 +196,7 @@ export class AttributeValueService {
         success: true,
         message: 'Success',
         data,
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getAttributeValueByName(
-    name: string,
-    select?: string,
-  ): Promise<ResponsePayload> {
-    try {
-      const data = await this.attributeValueModel.find({ name: name });
-      // console.log('data', data);
-      return {
-        success: true,
-        message: 'Success',
-        data,
-      } as ResponsePayload;
-    } catch (err) {
-      console.log(err);
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getUserAttributeValueById(id: string, select: string): Promise<ResponsePayload> {
-    try {
-      const data = await this.attributeValueModel.findById(id).select(select);
-      console.log('data', data);
-      return {
-        success: true,
-        message: 'Success',
-        data,
-      } as ResponsePayload;
+      } as unknown as IResponsePayload<IAttributeValue>;
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
@@ -220,90 +208,21 @@ export class AttributeValueService {
    * updateMultipleAttributeValueById()
    */
   async updateAttributeValueById(
-    id: string,
     updateAttributeValueDto: UpdateAttributeValueDto,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<String>> {
     try {
       const finalData = { ...updateAttributeValueDto };
-
-      await this.attributeValueModel.findByIdAndUpdate(id, {
+      delete finalData.id;
+      await this.attributeValueModel.findByIdAndUpdate(updateAttributeValueDto.id, {
         $set: finalData,
       });
       return {
         success: true,
         message: 'Success',
-      } as ResponsePayload;
+      } as IResponsePayload<String>;
     } catch (err) {
       throw new InternalServerErrorException();
     }
   }
 
-  async updateMultipleAttributeValueById(
-    ids: string[],
-    updateAttributeValueDto: UpdateAttributeValueDto,
-  ): Promise<ResponsePayload> {
-    const mIds = ids.map((m) => new ObjectId(m));
-
-    try {
-      await this.attributeValueModel.updateMany(
-        { _id: { $in: mIds } },
-        { $set: updateAttributeValueDto },
-      );
-
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  /**
-   * DELETE DATA
-   * deleteAttributeValueById()
-   * deleteMultipleAttributeValueById()
-   */
-  async deleteAttributeValueById(
-    id: string,
-    checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    let data;
-    try {
-      data = await this.attributeValueModel.findById(id);
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-    if (!data) {
-      throw new NotFoundException('No Data found!');
-    }
-    if (data.readOnly) {
-      throw new NotFoundException('Sorry! Read only data can not be deleted');
-    }
-    try {
-      await this.attributeValueModel.findByIdAndDelete(id);
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async deleteMultipleAttributeValueById(
-    ids: string[],
-    checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    try {
-      const mIds = ids.map((m) => new ObjectId(m));
-      await this.attributeValueModel.deleteMany({ _id: mIds });
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
 }

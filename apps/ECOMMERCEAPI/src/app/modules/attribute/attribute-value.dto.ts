@@ -34,38 +34,34 @@ export class OptionAttributeValueDto {
 export class UpdateAttributeValueDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  id: string;
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  @ArrayMinSize(1)
-  @ArrayMaxSize(50)
-  ids: string[];
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 }
 
 export class FilterAndPaginationAttributeValueDto {
   @IsOptional()
-  @IsNotEmptyObject()
-  @IsObject()
-  @ValidateNested()
-  @Type(() => FilterAttributeValueDto)
-  filter: FilterAttributeValueDto;
-
-  @IsOptional()
-  @IsNotEmptyObject()
-  @IsObject()
-  @ValidateNested()
-  @Type(() => PaginationDto)
-  pagination: PaginationDto;
-
-  @IsOptional()
-  @IsNotEmptyObject()
-  @IsObject()
-  sort: object;
-
-  @IsOptional()
-  @IsNotEmptyObject()
-  @IsObject()
-  select: any;
+    @IsNotEmptyObject()
+    @IsObject()
+    @ValidateNested()
+    @Type(() => FilterAttributeValueDto)
+    filter: FilterAttributeValueDto;
+  
+    @IsOptional()
+    @IsNotEmptyObject()
+    @IsObject()
+    @ValidateNested()
+    @Type(() => PaginationDto)
+    pagination: PaginationDto;
+  
+    @IsOptional()
+    @IsNotEmptyObject()
+    @IsObject()
+    sort: object;
+  
+    @IsOptional()
+    @IsArray()
+    select: string[];
 }

@@ -35,5 +35,5 @@ export const BrandSchema = new mongoose.Schema(
       type: String,
       required: false,
     }
-  }, { timestamps: true }
+  }, {versionKey: false, timestamps: true }
 );

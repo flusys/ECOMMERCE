@@ -33,7 +33,7 @@ export const CategorySchema = new mongoose.Schema(
       required: false,
     },
   },
-  {
+  {versionKey: false,
     timestamps: true
   },
 );

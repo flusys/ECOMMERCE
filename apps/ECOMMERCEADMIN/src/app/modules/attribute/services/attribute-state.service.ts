@@ -13,7 +13,7 @@ const InitValue: IAttributeStoreState = {
 
   filter: null,
   sort: { serial: 'ASC' },
-  select: ['_id', 'name', 'priority', 'image'],
+  select: ['id', 'name'],
 
   editModelData: null,
   loading: false,

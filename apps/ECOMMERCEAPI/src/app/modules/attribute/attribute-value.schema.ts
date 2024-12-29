@@ -21,5 +21,5 @@ export const AttributeValueSchema = new mongoose.Schema(
       ref: 'Attribute',
       required: true,
     },
-  }, { timestamps: true }
+  }, { timestamps: true,versionKey: false, }
 );

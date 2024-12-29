@@ -16,5 +16,5 @@ export const AttributeSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-  }, { timestamps: true }
+  }, { versionKey: false,timestamps: true }
 );

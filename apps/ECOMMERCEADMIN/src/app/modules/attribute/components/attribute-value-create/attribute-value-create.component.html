@@ -1,1 +1,24 @@
-<p>attribute-value-create works!</p>
+<p-panel header="Create Attribute " [toggleable]="true" [collapsed]="isPanelCollapsed" class="line-height-3 m-0">
+  <div class="col-12">
+    <form #inputForm="ngForm" [formGroup]="attributeValueFormService.formGroup" (ngSubmit)="onSubmit()">
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-4">
+          <label for="name">Name</label>
+          <input autocomplete="false" pInputText class="w-full" formControlName="name" id="name" name="Name"
+            type="text" />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label for="name">Attribute</label>
+          <p-select [options]="attributeList" formControlName="attribute" optionLabel="name" optionValue="id" [showClear]="true"
+            placeholder="Select Attribute" styleClass="w-full" id="attribute" />
+        </div>
+        <div class="field col-6 md:col-4 flex justify-content-end align-items-end">
+          <span class="flex gap-2 justify-content-end">
+            <button pButton pRipple type="submit" [label]="model ? 'Update' : 'Save'" icon="pi pi-check"></button>
+            <button pButton pRipple type="button" label="Clear" icon="pi pi-trash" (click)="clearInputForm()"></button>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</p-panel>
