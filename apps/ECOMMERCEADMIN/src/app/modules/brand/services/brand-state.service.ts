@@ -12,7 +12,7 @@ const InitValue: IBrandStoreState = {
 
   filter: null,
   sort: { serial: 'ASC' },
-  select: ['_id', 'name', 'isActive', 'description', 'image', 'serial'],
+  select: ['id', 'name', 'isActive', 'description', 'image', 'serial'],
 
   editModelData: null,
   loading: false,

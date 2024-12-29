@@ -5,6 +5,7 @@ import {
   IsBoolean,
   IsNotEmpty,
   IsNotEmptyObject,
+  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -33,8 +34,8 @@ export class OptionAttributeValueDto {
 
 export class UpdateAttributeValueDto {
   @IsNotEmpty()
-  @IsString()
-  id: string;
+  @IsNumber()
+  id: number;
 
   @IsNotEmpty()
   @IsString()

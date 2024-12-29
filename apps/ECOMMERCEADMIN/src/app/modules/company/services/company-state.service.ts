@@ -12,7 +12,7 @@ const InitValue: ICompanyStoreState = {
 
   filter: null,
   sort: { serial: 'ASC' },
-  select: ['_id', 'name', 'address', 'image'],
+  select: ['id', 'name', 'address', 'image'],
 
   editModelData: null,
   loading: false,

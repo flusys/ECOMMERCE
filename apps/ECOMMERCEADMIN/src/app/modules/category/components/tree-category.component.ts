@@ -12,7 +12,7 @@ import { ICategory } from '../interfaces/category-data.interface';
               <input autocomplete="false" type="checkbox" [checked]="category.id==parentId()" (change)="changeItem(category,$event)">
                 {{ category.name }}
               </label>
-              @if((category?.children.length??0) > 0){
+              @if(category?.children && category.children.length > 0){
                 <app-category-tree [categoryTree]="category.children" (itemSelected)="handleItemSelection($event)" [parentId]="parentId()"></app-category-tree>
               }
             </li>

@@ -213,7 +213,7 @@ export class CategoryService {
     try {
       const finalData = { ...updateCategoryDto };
       delete finalData.id;
-      await this.attributeValueModel.findByIdAndUpdate(updateCategoryDto.id, {
+      await this.attributeValueModel.findOneAndUpdate({ id: updateCategoryDto.id }, {
         $set: finalData,
       });
       return {
@@ -221,6 +221,7 @@ export class CategoryService {
         message: 'Success',
       } as IResponsePayload<String>;
     } catch (err) {
+      console.warn(err)
       throw new InternalServerErrorException();
     }
   }

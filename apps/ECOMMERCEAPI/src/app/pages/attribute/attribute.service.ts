@@ -196,7 +196,7 @@ export class AttributeService {
     try {
       const finalData = { ...updateAttributeDto };
       delete finalData.id;
-      await this.attributeModel.findByIdAndUpdate(updateAttributeDto.id, {
+      await this.attributeModel.findOneAndUpdate({id:updateAttributeDto.id}, {
         $set: finalData,
       });
       return {

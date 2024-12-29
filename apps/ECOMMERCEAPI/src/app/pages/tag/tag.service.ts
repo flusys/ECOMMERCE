@@ -196,7 +196,7 @@ export class TagService {
     try {
       const finalData = { ...updateTagDto };
       delete finalData.id;
-      await this.tagModel.findByIdAndUpdate(updateTagDto.id, {
+      await this.tagModel.findOneAndUpdate({id:updateTagDto.id}, {
         $set: finalData,
       });
       return {

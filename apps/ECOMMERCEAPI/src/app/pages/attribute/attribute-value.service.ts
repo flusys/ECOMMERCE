@@ -213,7 +213,7 @@ export class AttributeValueService {
     try {
       const finalData = { ...updateAttributeValueDto };
       delete finalData.id;
-      await this.attributeValueModel.findByIdAndUpdate(updateAttributeValueDto.id, {
+      await this.attributeValueModel.findOneAndUpdate({id:updateAttributeValueDto.id}, {
         $set: finalData,
       });
       return {

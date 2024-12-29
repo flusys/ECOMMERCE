@@ -12,7 +12,7 @@ const InitValue: ITagStoreState = {
 
   filter: null,
   sort: { serial: 'ASC' },
-  select: ['_id', 'name', 'priority', 'image'],
+  select: ['id', 'name', 'priority', 'image'],
 
   editModelData: null,
   loading: false,

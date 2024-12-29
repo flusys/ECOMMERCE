@@ -197,7 +197,7 @@ export class BrandService {
     try {
       const finalData = { ...updateBrandDto };
 
-      await this.brandModel.findByIdAndUpdate(updateBrandDto.id, {
+      await this.brandModel.findOneAndUpdate({id:updateBrandDto.id}, {
         $set: finalData,
       });
       return {

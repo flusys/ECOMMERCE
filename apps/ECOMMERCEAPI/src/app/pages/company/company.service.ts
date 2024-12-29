@@ -196,7 +196,7 @@ export class CompanyService {
     try {
       const finalData = { ...updateCompanyDto };
       delete finalData.id;
-      await this.companyModel.findByIdAndUpdate(updateCompanyDto.id, {
+      await this.companyModel.findOneAndUpdate({id:updateCompanyDto.id}, {
         $set: finalData,
       });
       return {

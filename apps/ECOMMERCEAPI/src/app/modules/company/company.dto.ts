@@ -3,6 +3,7 @@ import {
   IsBoolean,
   IsNotEmpty,
   IsNotEmptyObject,
+  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -31,8 +32,8 @@ export class OptionCompanyDto {
 
 export class UpdateCompanyDto {
   @IsNotEmpty()
-  @IsString()
-  id: string;
+  @IsNumber()
+  id: number;
 
   @IsNotEmpty()
   @IsString()

@@ -38,7 +38,7 @@ export class CategoryCreateComponent {
       if (model) {
         this.model = model;
         this.isPanelCollapsed = false;
-        this.categoryFormService.patchValue({ ...model, ...{ parent: (model.parent as ICategory).id } });
+        this.categoryFormService.patchValue({ ...model, ...{ parent: (model.parent as ICategory)?.id??null } });
       } else {
         this.model = undefined;
       }
@@ -52,7 +52,7 @@ export class CategoryCreateComponent {
   handleItemSelection(value: { item: ICategory, value: boolean }) {
     if (value.value) {
       this.categoryFormService.patchValue({
-        parent: this.parentId
+        parent: value.item.id
       })
     } else {
       this.categoryFormService.patchValue({
