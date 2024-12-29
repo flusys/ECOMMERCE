@@ -13,6 +13,7 @@ import { CompanyModule } from './pages/company/company.module';
 import { TagModule } from './pages/tag/tag.module';
 import { AttributeValueModule } from './pages/attribute/attribute-value.module';
 import { AttributeModule } from './pages/attribute/attribute.module';
+import { CategoryModule } from './pages/category/category.module';
 
 @Module({
   imports: [
@@ -29,8 +30,8 @@ import { AttributeModule } from './pages/attribute/attribute.module';
     CompanyModule,
     TagModule,
     AttributeModule,
-    AttributeValueModule
-
+    AttributeValueModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,1 +1,11 @@
-<p>category works!</p>
+@defer (on viewport) {
+<app-category-create />
+} @placeholder {
+<p>Component Load on View Port</p>
+}
+<br />
+@defer (on viewport) {
+<app-category-list />
+} @placeholder {
+<p>Component Load on View Port</p>
+}

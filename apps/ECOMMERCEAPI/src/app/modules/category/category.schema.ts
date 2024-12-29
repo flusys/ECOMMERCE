@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 
 export const CategorySchema = new mongoose.Schema(
   {
-    id: { 
+    id: {
       type: Number,  // Custom `id` field as the primary key
       required: true,
       unique: true,  // Ensure `id` is unique
@@ -33,7 +33,8 @@ export const CategorySchema = new mongoose.Schema(
       required: false,
     },
   },
-  {versionKey: false,
+  {
+    versionKey: false,
     timestamps: true
   },
 );

@@ -23,12 +23,7 @@ const InitValue: ICompanyStoreState = {
 })
 export class CompanyStateService extends Store<ICompanyStoreState> {
   private companyApiService = inject(CompanyApiService);
-
-
   withDeleted: boolean = false;
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
 
   constructor() {
     super(InitValue);

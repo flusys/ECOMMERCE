@@ -3,45 +3,42 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { AddCategoryDto, FilterAndPaginationCategoryDto, UpdateCategoryDto } from '../../modules/category/category.dto';
-import { ResponsePayload } from '../../shared/interfaces/response-payload.interface';
 import { UtilsService } from '../../shared/modules/utils/utils.service';
 import { ICategory } from '../../modules/category/category.interface';
 import { ErrorCodes } from '../../shared/enums/error-code.enum';
-
-const ObjectId = Types.ObjectId;
+import { CounterService } from '../../shared/modules/counter/counter.service';
+import { IResponsePayload } from 'flusysng/shared/interfaces';
 
 @Injectable()
 export class CategoryService {
   private logger = new Logger(CategoryService.name);
 
   constructor(
-    @InjectModel('Category') private readonly categoryModel: Model<ICategory>,
+    @InjectModel('Category') private readonly attributeValueModel: Model<ICategory>,
     private utilsService: UtilsService,
-  ) {}
+    private counterService: CounterService
+  ) { }
 
   /**
    * ADD DATA
    * addCategory()
    * insertManyCategory()
    */
-  async addCategory(addCategoryDto: AddCategoryDto): Promise<ResponsePayload> {
+  async addCategory(addCategoryDto: AddCategoryDto): Promise<IResponsePayload<ICategory>> {
     try {
+      const id = await this.counterService.getNextId('attribute_value_id');
       const createdAtString = this.utilsService.getDateString(new Date());
-      const data = new this.categoryModel({ ...addCategoryDto, createdAtString });
+      const data = new this.attributeValueModel({ ...addCategoryDto, createdAtString, id });
       const saveData = await data.save();
-
       return {
         success: true,
         message: 'Success! Data Added.',
-        data: {
-          _id: saveData._id,
-        },
-      } as ResponsePayload;
+        data: saveData,
+      } as unknown as IResponsePayload<ICategory>;;
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(error.message);
@@ -57,14 +54,14 @@ export class CategoryService {
   async getAllCategorys(
     filterCategoryDto: FilterAndPaginationCategoryDto,
     searchQuery?: string,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<Array<ICategory>>> {
     const { filter } = filterCategoryDto;
     const { pagination } = filterCategoryDto;
     const { sort } = filterCategoryDto;
     const { select } = filterCategoryDto;
 
     // Essential Variables
-    const aggregateStages = [];
+    const aggregatesCategoryes = [];
     let mFilter = {};
     let mSort = {};
     let mSelect = {};
@@ -79,29 +76,51 @@ export class CategoryService {
     }
     // Sort
     if (sort) {
-      mSort = sort;
+      mSort = {};
+      Object.keys(sort).forEach(item => {
+        mSort = { ...mSort, ...{ [item]: sort['item'] == 'ASC' ? 1 : -1 } }
+      });
     } else {
       mSort = { createdAt: -1 };
     }
 
     // Select
-    if (select) {
-      mSelect = { ...select };
+    if (select && select.length) {
+      mSelect = select.reduce((prev, curr) => {
+        return prev = { ...prev, ...{ [curr]: 1 } }
+      }, {});
     } else {
       mSelect = { name: 1 };
     }
 
     // Finalize
     if (Object.keys(mFilter).length) {
-      aggregateStages.push({ $match: mFilter });
+      aggregatesCategoryes.push({ $match: mFilter });
     }
 
     if (Object.keys(mSort).length) {
-      aggregateStages.push({ $sort: mSort });
+      aggregatesCategoryes.push({ $sort: mSort });
     }
 
+    // Populate `attribute` field using `$lookup`
+    aggregatesCategoryes.push({
+      $lookup: {
+        from: 'categories',
+        localField: 'parent',
+        foreignField: 'id',
+        as: 'parent',
+      },
+    });
+    // Unwind the array to make `attributeDetails` an object
+    aggregatesCategoryes.push({
+      $unwind: {
+        path: '$parent',
+        preserveNullAndEmptyArrays: true, // Optional: Include results even if `attributeDetails` is missing
+      },
+    });
+
     if (!pagination) {
-      aggregateStages.push({ $project: mSelect });
+      aggregatesCategoryes.push({ $project: mSelect });
     }
 
     // Pagination
@@ -126,16 +145,16 @@ export class CategoryService {
             data: [
               {
                 $skip: pagination.pageSize * pagination.currentPage,
-              } /* IF PAGE START FROM 0 OR (pagination.currentPage - 1) IF PAGE 1*/,
+              },
               { $limit: pagination.pageSize },
             ],
           },
         };
       }
 
-      aggregateStages.push(mPagination);
+      aggregatesCategoryes.push(mPagination);
 
-      aggregateStages.push({
+      aggregatesCategoryes.push({
         $project: {
           data: 1,
           count: { $arrayElemAt: ['$metadata.total', 0] },
@@ -144,19 +163,20 @@ export class CategoryService {
     }
 
     try {
-      const dataAggregates = await this.categoryModel.aggregate(aggregateStages);
+      const dataAggregates = await this.attributeValueModel.aggregate(aggregatesCategoryes);
       if (pagination) {
         return {
           ...{ ...dataAggregates[0] },
           ...{ success: true, message: 'Success' },
-        } as ResponsePayload;
+        } as IResponsePayload<Array<ICategory>>;
       } else {
         return {
-          data: dataAggregates,
+          result: dataAggregates,
           success: true,
           message: 'Success',
-          count: dataAggregates.length,
-        } as ResponsePayload;
+          total: dataAggregates.length,
+          status: "Data Found"
+        } as IResponsePayload<Array<ICategory>>;
       }
     } catch (err) {
       this.logger.error(err);
@@ -168,47 +188,15 @@ export class CategoryService {
     }
   }
 
-  async getCategoryById(id: string, select: string): Promise<ResponsePayload> {
+  async getCategoryById(id: string, select: string): Promise<IResponsePayload<ICategory>> {
     try {
-      const data = await this.categoryModel.findById(id).select(select);
+      const data = await this.attributeValueModel.findById(id).select(select);
       console.log('data', data);
       return {
         success: true,
         message: 'Success',
         data,
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getCategoryByName(
-    name: string,
-    select?: string,
-  ): Promise<ResponsePayload> {
-    try {
-      const data = await this.categoryModel.find({ name: name });
-      // console.log('data', data);
-      return {
-        success: true,
-        message: 'Success',
-        data,
-      } as ResponsePayload;
-    } catch (err) {
-      console.log(err);
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getUserCategoryById(id: string, select: string): Promise<ResponsePayload> {
-    try {
-      const data = await this.categoryModel.findById(id).select(select);
-      console.log('data', data);
-      return {
-        success: true,
-        message: 'Success',
-        data,
-      } as ResponsePayload;
+      } as unknown as IResponsePayload<ICategory>;
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
@@ -220,90 +208,21 @@ export class CategoryService {
    * updateMultipleCategoryById()
    */
   async updateCategoryById(
-    id: string,
     updateCategoryDto: UpdateCategoryDto,
-  ): Promise<ResponsePayload> {
+  ): Promise<IResponsePayload<String>> {
     try {
       const finalData = { ...updateCategoryDto };
-
-      await this.categoryModel.findByIdAndUpdate(id, {
+      delete finalData.id;
+      await this.attributeValueModel.findByIdAndUpdate(updateCategoryDto.id, {
         $set: finalData,
       });
       return {
         success: true,
         message: 'Success',
-      } as ResponsePayload;
+      } as IResponsePayload<String>;
     } catch (err) {
       throw new InternalServerErrorException();
     }
   }
 
-  async updateMultipleCategoryById(
-    ids: string[],
-    updateCategoryDto: UpdateCategoryDto,
-  ): Promise<ResponsePayload> {
-    const mIds = ids.map((m) => new ObjectId(m));
-
-    try {
-      await this.categoryModel.updateMany(
-        { _id: { $in: mIds } },
-        { $set: updateCategoryDto },
-      );
-
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  /**
-   * DELETE DATA
-   * deleteCategoryById()
-   * deleteMultipleCategoryById()
-   */
-  async deleteCategoryById(
-    id: string,
-    checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    let data;
-    try {
-      data = await this.categoryModel.findById(id);
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-    if (!data) {
-      throw new NotFoundException('No Data found!');
-    }
-    if (data.readOnly) {
-      throw new NotFoundException('Sorry! Read only data can not be deleted');
-    }
-    try {
-      await this.categoryModel.findByIdAndDelete(id);
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async deleteMultipleCategoryById(
-    ids: string[],
-    checkUsage: boolean,
-  ): Promise<ResponsePayload> {
-    try {
-      const mIds = ids.map((m) => new ObjectId(m));
-      await this.categoryModel.deleteMany({ _id: mIds });
-      return {
-        success: true,
-        message: 'Success',
-      } as ResponsePayload;
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
 }
