@@ -1,1 +1,17 @@
-<p>create-product works!</p>
+<p-panel header="{{id?'Edit':'Create'}} Product" [toggleable]="true" class="line-height-3 m-0">
+    <p-steps [model]="productPageStep" [readonly]="false" [activeIndex]="activeIndex" (activeIndexChange)="change($event)"/>
+    <form #inputForm="ngForm" [formGroup]="inputFormGroup" (ngSubmit)="onSubmit()">
+        <div class="card mt-6">
+            <app-parent-information-create *ngIf="activeIndex==0"  [parentInformation]="parentInformation"/>
+            <app-child-information-create *ngIf="activeIndex==1"  [chieldsE]="chields"/>
+        </div>
+        <div class="col-6 md:col-3 p-fluid">
+            <span class="p-buttonset gap-2">
+                <button pButton pRipple type="submit" [label]="isEdit?'Update':'Save'"
+                    icon="pi pi-check"></button>
+                <button pButton pRipple type="button" label="Clear" icon="pi pi-trash"
+                    (click)="clearInputForm()"></button>
+            </span>
+        </div>
+    </form>
+</p-panel>
