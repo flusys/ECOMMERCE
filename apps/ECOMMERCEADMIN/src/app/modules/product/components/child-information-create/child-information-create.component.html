@@ -81,7 +81,9 @@
                 </div>
                 <div class="col-3 md:col-3 field boolForm">
                     <button pButton pRipple type="button" styleClass="p-button-danger"
-                        label="Test" ></button>
+                        icon="pi pi-{{chieldArrayForm().at(i).value.variants?.length?'pencil':'check'}}"
+                        [label]="chieldArrayForm().at(i).value.variants?.length?'': 'Select Variant'"
+                        (click)="generateVariant('single',i)"></button>
                 </div>
                 <div class="field col-7 md:col-7" formArrayName="ingredients">
                     @for (data of ingredients(i).controls; track data.value.name; let j = $index) {
@@ -134,7 +136,7 @@
                 @for (child of attribute.values; track child.name; let j = $index) {
                 <div class="col-3">
                     <label>
-                        <input autocomplete="false" type="checkbox" [checked]="checkSelection(attribute.id,child.id)"
+                        <input autocomplete="false" type="checkbox" [checked]="checkSelection(child.id)"
                             (click)="clickAttribute($event,attribute,child)">
                         {{child.name}}
                     </label>

@@ -10,6 +10,10 @@
   </button>
 
   <div class="layout-topbar-menu-button">
+    <button  class="p-link layout-topbar-button" #topBarSearchButton
+             (click)="layoutService.showMobileSearchbar()" style="display: none;">
+      <i class="pi pi-search"></i>
+    </button>
     <button #topBarMenuButton class="p-link layout-topbar-button"
             (click)="layoutService.showProfileSidebar()">
       <i class="pi pi-ellipsis-v"></i>

@@ -8,6 +8,7 @@ import { IAttribute } from '../../../attribute/interfaces/attribute-data.interfa
 import { IAttributeValue } from '../../../attribute/interfaces/attribute-value-data.interface';
 import { ProductFormService } from '../../services/product-form.service';
 import { ImageModule } from 'primeng/image';
+import e from 'express';
 
 @Component({
   selector: 'app-child-information-create',
@@ -74,20 +75,46 @@ export class ChildInformationCreateComponent implements OnInit {
 
   //Attributes Manage Start
   showGenerateAttributeDialoge = false;
-  selectedAttribute: IAttributeValue[] = [];
+  selectedAttributeIds: number[] = [];
+  selectionType: string = 'single'
+  selectionIndex: number | undefined;
+
+  generateVariant(type: string, index?: number) {
+    this.showGenerateAttributeDialoge = true;
+    this.selectionType = type;
+    this.selectionIndex = index;
+    if (type == 'single' && index != undefined) {
+      if (this.chieldArrayForm().at(index).value.variants?.length) {
+        this.selectedAttributeIds = this.chieldArrayForm().at(index).value.variants ?? [];
+        this.chieldArrayForm().at(index).patchValue({
+          variants: []
+        })
+      }
+    }
+  }
+
   submitAttribute() {
-
+    if (this.selectionIndex != undefined) {
+      this.chieldArrayForm().at(this.selectionIndex).patchValue({
+        variants: this.selectedAttributeIds
+      });
+    }
+    this.showGenerateAttributeDialoge = false;
+    this.resetSelectedAttribute()
   }
 
-  clickAttribute(event: any, attribute: any, child: any) {
-
+  clickAttribute(event: any, attribute: IAttribute, child: IAttributeValue) {
+    if (event.target.checked)
+      this.selectedAttributeIds.push(child.id);
+    else
+      this.selectedAttributeIds = this.selectedAttributeIds.filter(item => item != child.id);
   }
 
-  checkSelection(parent: any, child: any): boolean {
-    return true;
+  checkSelection(child: any): boolean {
+    return this.selectedAttributeIds.find((item) => item == child) ? true : false;
   }
 
   resetSelectedAttribute() {
-    this.selectedAttribute = []
+    this.selectedAttributeIds = []
   }
 }
