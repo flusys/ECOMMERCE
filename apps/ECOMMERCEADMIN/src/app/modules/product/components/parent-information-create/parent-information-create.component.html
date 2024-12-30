@@ -39,10 +39,10 @@
             class="w-full" />
     </div>
     <div class="col-12 md:col-12">
-        <p for="description">Description - Is HTML:
-             <p-checkbox [binary]="true" inputId="isHtml"
-                formControlName="isHtml"></p-checkbox>
-        </p>
+        <div class="flex gap-2">
+            <p>Description - Is HTML:</p>
+            <p-checkbox [binary]="true" inputId="isHtml" formControlName="isHtml"></p-checkbox>
+        </div>
         @if(!formValue.isHtml){
         <p-editor formControlName="description" id="descriptionN" name="description"
             [style]="{ height: '320px'}"></p-editor>
@@ -85,7 +85,8 @@
         </div>
         }
         <div class="field col-12 md:col-12" formArrayName="specifications">
-            <div class="grid" *ngFor="let data of specifications.controls; let i = index" [formGroupName]="i">
+            @for (data of specifications.controls; track data.value.name; let i = $index) {
+            <div class="grid" [formGroupName]="i">
                 <div class="col-5 md:col-5 field">
                     <label for="name">Name *</label>
                     <input autocomplete="false" pInputText formControlName="name" id="sname+{{i}}" name="S_Name"
@@ -102,6 +103,7 @@
                         (click)="removeSpecifications(i)"></button>
                 </div>
             </div>
+            }
             <div class="col-8 md:col-8 flex align-items-end">
                 <button pButton pRipple type="button" label="Add New Specification" icon="pi pi-plus"
                     (click)="onAddNewSpecifications()"></button>
@@ -113,9 +115,11 @@
             <button pButton pRipple type="button" label="Choose Image" icon="pi pi-check" width="32"></button>
         </div>
         <div class="grid" *ngIf="images?.length">
-            <div class="col-4 md:col-3" *ngFor="let image of images">
+            @for (image of images; track image; let i = $index) {
+            <div class="col-4 md:col-3">
                 <p-image [src]="image" width="100" [preview]="true"></p-image>
             </div>
+            }
         </div>
     </div>
 </div>

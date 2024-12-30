@@ -56,6 +56,18 @@ export class AttributeController {
     return this.attributeService.getAllAttributes(filterAttributeDto, searchString);
   }
 
+
+
+  @Version(VERSION_NEUTRAL)
+  @Get('/get-all-with-values')
+  @UsePipes(ValidationPipe)
+  async getAllAttributesWithValue(): Promise<IResponsePayload<Array<IAttribute>>> {
+    return this.attributeService.getAllAttributesWithValue();
+  }
+
+
+  
+
   @Version(VERSION_NEUTRAL)
   @Get('/:id')
   async getAttributeById(

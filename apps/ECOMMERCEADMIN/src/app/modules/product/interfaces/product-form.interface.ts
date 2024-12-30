@@ -44,10 +44,10 @@ export interface IProductForm extends ICommonForm {
     ingredients: FormArray<FormGroup<IIngredientsForm>>;
     trackQuantity: FormControl<number>;
     earnPoint: FormControl<number>;
-    variants: FormArray<FormControl<number>>;
     status: FormControl<string>;
     isActive: FormControl<boolean>;
     activeOnline: FormControl<boolean>;
+    variants: FormControl<number[]>;
 }
 
 export interface IIngredientsForm {

@@ -40,7 +40,7 @@ export class ProductFormService extends FormCommonClass<IParentProductForm> {
       videoUrl: new FormControl('', { nonNullable: true }),
       videoThumbnailImage: new FormControl('', { nonNullable: true }),
       specifications: new FormArray<FormGroup<ISpecificationForm>>([this.specificationsFormGroup]),
-      chields: new FormArray<FormGroup<IProductForm>>([this.productFormGroup]),
+      chields: new FormArray<FormGroup<IProductForm>>([]),
     });
   }
 
@@ -69,7 +69,7 @@ export class ProductFormService extends FormCommonClass<IParentProductForm> {
       ingredients: new FormArray<FormGroup<IIngredientsForm>>([this.ingredientsFromGroup]),
       trackQuantity: new FormControl(0, { nonNullable: true }),
       earnPoint: new FormControl(0, { nonNullable: true }),
-      variants: new FormArray<FormControl<number>>([]),
+      variants: new FormControl([], { nonNullable: true }),
       status: new FormControl('', { nonNullable: true }),
       isActive: new FormControl(false, { nonNullable: true }),
       activeOnline: new FormControl(false, { nonNullable: true }),

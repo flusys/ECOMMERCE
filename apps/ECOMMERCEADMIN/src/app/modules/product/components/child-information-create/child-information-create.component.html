@@ -1,1 +1,148 @@
-<p>child-information-create works!</p>
+<div class="p-fluid p-formgrid grid" [formGroup]="rootFormGroup.control">
+    @if(!chieldArrayValue.length){
+    <p-button styleClass="p-button-danger mb-4" icon="pi pi-check" label="Generate Attributes"
+        (click)="showGenerateAttributeDialoge=true" />
+    }
+    <div class="col-12 md:col-12" formArrayName="chields">
+        @for (data of chieldArrayForm().controls; track data.value.id; let i = $index) {
+        <p-card styleClass="mb-4">
+            <div class="grid" [formGroupName]="i">
+                <div class="col-6 md:col-3 field">
+                    <label for="sprice+{{i}}">Price *</label>
+                    <input autocomplete="false" pInputText formControlName="price" id="sprice+{{i}}" name="C_Price"
+                        type="number" class="w-full" />
+                </div>
+                <div class="col-6 md:col-3 field">
+                    <label for="ssku+{{i}}">Sku</label>
+                    <input autocomplete="false" pInputText formControlName="sku" id="ssku+{{i}}" name="C_Sku"
+                        type="text" class="w-full" />
+                </div>
+                <div class="col-6 md:col-3 field">
+                    <label for="sbarCode+{{i}}">BarCode</label>
+                    <input autocomplete="false" pInputText formControlName="barCode" id="sbarCode+{{i}}"
+                        name="C_BarCode" type="text" class="w-full" />
+                </div>
+                <div class="col-6 md:col-3 field">
+                    <label for="strackQuantity+{{i}}">Track Quantity</label>
+                    <input autocomplete="false" pInputText formControlName="trackQuantity" id="strackQuantity+{{i}}"
+                        name="C_TrackQuantity" type="text" class="w-full" />
+                </div>
+                <div class="field col-6 md:col-3">
+                    <button pButton pRipple type="button" label="Image" icon="pi pi-check"></button>
+                    <!-- <p-image *ngIf="chields.at(i).value.image" [src]="chields.at(i).value.image" width="50"
+                            [preview]="true"></p-image> -->
+                </div>
+                <div class="col-6 md:col-3 field">
+                    <label for="swarning+{{i}}">Warning Message</label>
+                    <input autocomplete="false" pInputText formControlName="warning" id="swarning+{{i}}"
+                        name="C_Warning" type="text" class="w-full" />
+                </div>
+                <div class="col-6 md:col-3 field">
+                    <label for="swarningDay+{{i}}">Warning Day Before</label>
+                    <input autocomplete="false" pInputText formControlName="warningDay" id="swarningDay+{{i}}"
+                        name="C_warningDay" type="number" class="w-full" />
+                </div>
+                <div class="col-6 md:col-3 field">
+                    <label for="searnPoint+{{i}}">EarnPoint</label>
+                    <input autocomplete="false" pInputText formControlName="earnPoint" id="searnPoint+{{i}}"
+                        name="C_EarnPoint" type="number" class="w-full" />
+                </div>
+                <div class="field col-6 md:col-3 boolForm">
+                    <label for="refundable+{{i}}">Refundable :</label>
+                    <p-toggleswitch formControlName="refundable" inputId="refundable+{{i}}" name="Refundable"
+                        aria-label="Visibility :" />
+                </div>
+                <div class="field col-6 md:col-3 boolForm">
+                    <label for="returnable+{{i}}">Returnable :</label>
+                    <p-toggleswitch formControlName="returnable" inputId="returnable+{{i}}" name="Returnable"
+                        aria-label="Visibility :" />
+                </div>
+                <div class="field col-6 md:col-3 boolForm">
+                    <label for="isActive+{{i}}">Is Active :</label>
+                    <p-toggleswitch formControlName="isActive" inputId="isActive+{{i}}" name="isActive"
+                        aria-label="Visibility :" />
+                </div>
+                <div class="field col-6 md:col-3 boolForm">
+                    <label for="activeOnline+{{i}}">Active Online :</label>
+                    <p-toggleswitch formControlName="activeOnline" inputId="activeOnline+{{i}}" name="activeOnline"
+                        aria-label="Visibility :" />
+                </div>
+                <div class="field col-5 md:col-5">
+                    <label for="status+{{i}}">Status</label>
+                    <input autocomplete="false" pInputText formControlName="status" id="status+{{i}}" name="C_Status"
+                        type="text" class="w-full" />
+                </div>
+                <div class="col-7 md:col-7 field">
+                    <!-- <button pButton pRipple type="button" styleClass="p-button-danger"
+                        icon="pi pi-{{chields.at(i).value.attributes?.length?'pencil':'check'}}"
+                        [label]="chields.at(i).value.attributes?.length?'': buttonLabel"
+                        (click)="generateAttribute('single',i)"></button>
+                    <p *ngIf="chields.at(i).value.attributes?.length"
+                        innerHTML="{{(chields.at(i).value.attributes) | transformAttributeToName}}">
+                    </p> -->
+                </div>
+                <div class="field col-7 md:col-7" formArrayName="ingredients">
+                    @for (data of ingredients(i).controls; track data.value.name; let j = $index) {
+                    <div class="grid" [formGroupName]="j">
+                        <div class="col-5 md:col-5 field">
+                            <label for="name">Name *</label>
+                            <input autocomplete="false" pInputText formControlName="name" id="sname+{{j}}" name="S_Name"
+                                type="text" class="w-full" />
+                        </div>
+
+                        <div class="col-5 md:col-5 field">
+                            <label for="value">Value *</label>
+                            <input autocomplete="false" pInputText formControlName="value" id="svalue+{{j}}"
+                                name="S_Value" type="text" class="w-full" />
+                        </div>
+                        <div class="col-2 md:col-2 field flex align-items-end">
+                            <button pButton styleClass="p-button-danger" icon="pi pi-trash"
+                                (click)="removeIngredients(i,j)"></button>
+                        </div>
+                    </div>
+                    }
+                    <div class="col-8 md:col-8">
+                        <button pButton pRipple type="button" label="Add New Ingredients" icon="pi pi-plus"
+                            (click)="onAddNewIngredients(i)"></button>
+                    </div>
+                </div>
+                <div class="col-3 md:col-3 field">
+                    <button pButton pRipple type="button" styleClass="p-button-danger" icon="pi pi-trash"
+                        label="Remove Attribute" (click)="removeChild(i)"></button>
+                </div>
+                <div class="col-2 md:col-2 field">
+                    <button pButton pRipple type="button" styleClass="p-button-danger" icon="pi pi-copy"
+                        label="Duplicate" (click)="duplicateChild(i)"></button>
+                </div>
+            </div>
+        </p-card>
+        }
+
+    </div>
+    <div class="col-8 md:col-8">
+        <button pButton pRipple type="button" label="Add New Attribute" icon="pi pi-plus"
+            (click)="onAddNewChild()"></button>
+    </div>
+</div>
+<p-dialog header="Select Attributes" [(visible)]="showGenerateAttributeDialoge" [style]="{width: '70vw',height:'70vw'}"
+    (onHide)="resetSelectedAttribute()">
+    <div class="grid gap-5">
+        @for (attribute of attributeList; track attribute.name; let j = $index) {
+        <div class="card col-11 md:col-5 m-3" style="max-height: 400px;overflow-y: scroll;">
+            <h3>{{attribute.name}}</h3>
+            <div class="grid">
+                @for (child of attribute.values; track child.name; let j = $index) {
+                <div class="col-3">
+                    <label>
+                        <input autocomplete="false" type="checkbox" [checked]="checkSelection(attribute.id,child.id)"
+                            (click)="clickAttribute($event,attribute,child)">
+                        {{child.name}}
+                    </label>
+                </div>
+                }
+            </div>
+        </div>
+        }
+    </div>
+    <button type="button" pButton pRipple (click)="submitAttribute()">Submit</button>
+</p-dialog>

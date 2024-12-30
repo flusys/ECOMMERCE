@@ -67,8 +67,8 @@ export class AttributeService {
     let mSelect = {};
     let mPagination = {};
 
-     // Match
-     if (filter) {
+    // Match
+    if (filter) {
       mFilter = { ...mFilter, ...filter };
     }
     if (searchQuery) {
@@ -171,6 +171,36 @@ export class AttributeService {
     }
   }
 
+  async getAllAttributesWithValue(): Promise<IResponsePayload<Array<IAttribute>>> {
+    try {
+      const dataAggregates = await this.attributeModel.aggregate([
+        {
+          $lookup: {
+            from: 'attributevalues', // The collection name for AttributeValue
+            localField: 'id',
+            foreignField: 'attribute',
+            as: 'values'
+          }
+        }
+      ]);
+      
+      return {
+        result: dataAggregates,
+        success: true,
+        message: 'Success',
+        total: dataAggregates.length,
+        status: "Data Found"
+      } as IResponsePayload<Array<IAttribute>>;
+    } catch (err) {
+      this.logger.error(err);
+      if (err.code && err.code.toString() === ErrorCodes.PROJECTION_MISMATCH) {
+        throw new BadRequestException('Error! Projection mismatch');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
+  }
+
   async getAttributeById(id: string, select: string): Promise<IResponsePayload<IAttribute>> {
     try {
       const data = await this.attributeModel.findById(id).select(select);
@@ -196,7 +226,7 @@ export class AttributeService {
     try {
       const finalData = { ...updateAttributeDto };
       delete finalData.id;
-      await this.attributeModel.findOneAndUpdate({id:updateAttributeDto.id}, {
+      await this.attributeModel.findOneAndUpdate({ id: updateAttributeDto.id }, {
         $set: finalData,
       });
       return {

@@ -30,7 +30,7 @@ export class CreateProductComponent {
   readonly formControls = viewChildren(FormControlName, { read: ElementRef });
 
   //Static Data For Step
-  activeIndex = 0;
+  activeIndex = 1;
   isEdit: boolean = false;
   subscription!: Subscription;
   PRODUCT_PAGE_STEP: { label: string }[] = [
