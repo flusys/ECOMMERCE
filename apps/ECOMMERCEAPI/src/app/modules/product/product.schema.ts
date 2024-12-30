@@ -57,6 +57,10 @@ const ProductSchema = new mongoose.Schema(
       type: Boolean,
       default: null,
     },
+    stockQuantity: {
+      type: Boolean,
+      default: null,
+    },
     earnPoint: {
       type: Number,
       default: null,

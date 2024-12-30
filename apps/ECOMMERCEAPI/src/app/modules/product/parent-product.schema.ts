@@ -89,12 +89,7 @@ const ParentProductSchema = new mongoose.Schema(
       {
         type: Number,
         ref: 'Tag',
-      },
-    ],
-    products: [
-      {
-        type: Number,
-        ref: 'Product',
+        default: null,
       },
     ],
     isFeature: {
