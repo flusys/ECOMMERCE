@@ -1,1 +1,125 @@
-<p>parent-information-create works!</p>
+<div class="p-fluid p-formgrid grid" #inputForm="ngForm" [formGroup]="parentForm()">
+    <div class="field col-12 md:col-4">
+        <label for="name">Name *</label>
+        <input autocomplete="false" pInputText formControlName="name" id="name" name="Name" type="text"
+            class="w-full" />
+    </div>
+    <div class="field col-12 md:col-4 chooseImageP">
+        <label for="category">Category</label><br />
+        <p-button type="button" label="{{selectedCategoryInformation?.name??'Select Category'}}" icon="pi pi-check"
+            (click)="showCategoryTree=true" inputId="category" />
+    </div>
+    <div class="field col-12 md:col-4">
+        <label for="brand">Brand</label>
+        <p-select formControlName="brand" [options]="BRANDS" inputId="brand" name="Brand" optionLabel="name"
+            optionValue="id" class="w-full" />
+    </div>
+    <div class="field col-12 md:col-4">
+        <label for="tagIds">Tags</label>
+        <p-multiSelect formControlName="tagIds" [options]="TAGS" inputId="tagIds" name="Tags" optionLabel="name"
+            optionValue="id" class="w-full" />
+    </div>
+    <div class="field col-12 md:col-4">
+        <label for="company">Company</label>
+        <p-select formControlName="company" [options]="COMPANIES" inputId="company" autocomplete name="Company"
+            optionLabel="name" optionValue="id" class="w-full" />
+    </div>
+    <div class="field col-6 md:col-4 boolForm">
+        <p for="isFeature">Is Feature :</p>
+        <p-toggleswitch formControlName="isFeature" id="isFeature" name="isFeature" aria-label="Visibility :" />
+    </div>
+    <div class="field col-12 md:col-8">
+        <label for="shortDesc">Short Description</label>
+        <input autocomplete="false" pInputText formControlName="shortDesc" id="shortDesc" name="ShortDesc" type="text"
+            class="w-full" />
+    </div>
+    <div class="field col-12 md:col-4">
+        <label for="serial">Serial</label>
+        <input autocomplete="false" pInputText formControlName="serial" id="serial" name="serial" type="text"
+            class="w-full" />
+    </div>
+    <div class="col-12 md:col-12">
+        <p for="description">Description - Is HTML:
+             <p-checkbox [binary]="true" inputId="isHtml"
+                formControlName="isHtml"></p-checkbox>
+        </p>
+        @if(!formValue.isHtml){
+        <p-editor formControlName="description" id="descriptionN" name="description"
+            [style]="{ height: '320px'}"></p-editor>
+        }@else{
+        <textarea rows="6" cols="30" pInputTextarea id="descriptionH" name="description"
+            formControlName="description"></textarea>
+        }
+        <br />
+        @if(formValue.isHtml && formValue.description){
+        <div class="card" [innerHTML]="formValue.description"></div>
+        }
+    </div>
+    <div class="field col-12 md:col-4">
+        <label for="seoTitle">Seo Title</label>
+        <input autocomplete="false" pInputText formControlName="seoTitle" id="seoTitle" name="SeoTitle" type="text"
+            class="w-full" />
+    </div>
+    <div class="field col-12 md:col-4">
+        <label for="seoDescription">Seo Description</label>
+        <input autocomplete="false" pInputText formControlName="seoDescription" id="seoDescription"
+            name="SeoDescription" type="text" class="w-full" />
+    </div>
+    <div class="field col-12 md:col-4">
+        <label for="seoKeywords">Seo Keyword (,)</label>
+        <input autocomplete="false" pInputText formControlName="seoKeywords" id="seoKeywords" name="SeoKeyword"
+            type="text" class="w-full" />
+    </div>
+    <div class="col-12 md:col-6 grid">
+        <div class="col-12 md:col-6 field">
+            <label for="videoUrl">Video Url</label>
+            <input autocomplete="false" pInputText formControlName="videoUrl" id="videoUrl" name="VideoUrl" type="text"
+                class="w-full" />
+        </div>
+        @if(formValue.videoUrl){
+        <div class="field col-12 md:col-6 flex align-items-end">
+            <button pButton pRipple type="button" label="Image" icon="pi pi-check"></button>
+            @if(formValue.videoThumbnailImage){
+            <p-image [src]="formValue.videoThumbnailImage" [preview]="true"></p-image>
+            }
+        </div>
+        }
+        <div class="field col-12 md:col-12" formArrayName="specifications">
+            <div class="grid" *ngFor="let data of specifications.controls; let i = index" [formGroupName]="i">
+                <div class="col-5 md:col-5 field">
+                    <label for="name">Name *</label>
+                    <input autocomplete="false" pInputText formControlName="name" id="sname+{{i}}" name="S_Name"
+                        type="text" class="w-full" />
+                </div>
+
+                <div class="col-5 md:col-5 field">
+                    <label for="value">Value *</label>
+                    <input autocomplete="false" pInputText formControlName="value" id="svalue+{{i}}" name="S_Value"
+                        type="text" class="w-full" />
+                </div>
+                <div class="col-2 md:col-2 field flex align-items-end">
+                    <button pButton pRipple type="button" styleClass="p-button-danger" icon="pi pi-trash"
+                        (click)="removeSpecifications(i)"></button>
+                </div>
+            </div>
+            <div class="col-8 md:col-8 flex align-items-end">
+                <button pButton pRipple type="button" label="Add New Specification" icon="pi pi-plus"
+                    (click)="onAddNewSpecifications()"></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6">
+        <div class="col-5 md:col-5 flex align-items-end">
+            <button pButton pRipple type="button" label="Choose Image" icon="pi pi-check" width="32"></button>
+        </div>
+        <div class="grid" *ngIf="images?.length">
+            <div class="col-4 md:col-3" *ngFor="let image of images">
+                <p-image [src]="image" width="100" [preview]="true"></p-image>
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog header="Select Category" [(visible)]="showCategoryTree" [style]="{width: '50vw'}">
+    <app-category-tree [categoryTree]="CATEGORIES" (itemSelected)="handleItemSelection($event)"
+        [parentId]="categoryId"></app-category-tree>
+</p-dialog>

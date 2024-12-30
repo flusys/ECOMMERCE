@@ -7,14 +7,12 @@ import { ICompany } from '../../interfaces/company-data.interface';
 import { CompanyApiService } from '../../services/company-api.service';
 import { CompanyStateService } from '../../services/company-state.service';
 import { AngularModule, PrimeModule } from 'flusysng/shared/modules';
-import { IfRowEmptyDirective } from 'flusysng/shared/directives';
 
 @Component({
   selector: 'app-company-list',
   imports: [
     AngularModule,
     PrimeModule,
-    IfRowEmptyDirective,
   ],
   templateUrl: './company-list.component.html',
   styleUrl: './company-list.component.scss',
