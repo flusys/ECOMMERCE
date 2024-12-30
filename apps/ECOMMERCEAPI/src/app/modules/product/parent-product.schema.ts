@@ -1,4 +1,3 @@
-import { Schema } from 'mongoose';
 import * as mongoose from 'mongoose';
 
 const ParentProductSchema = new mongoose.Schema(

@@ -1,8 +1,4 @@
 <div class="p-fluid p-formgrid grid" [formGroup]="rootFormGroup.control">
-    @if(!chieldArrayValue.length){
-    <p-button styleClass="p-button-danger mb-4" icon="pi pi-check" label="Generate Attributes"
-        (click)="showGenerateAttributeDialoge=true" />
-    }
     <div class="col-12 md:col-12" formArrayName="chields">
         @for (data of chieldArrayForm().controls; track data.value.id; let i = $index) {
         <p-card styleClass="mb-4">
@@ -27,10 +23,21 @@
                     <input autocomplete="false" pInputText formControlName="trackQuantity" id="strackQuantity+{{i}}"
                         name="C_TrackQuantity" type="text" class="w-full" />
                 </div>
-                <div class="field col-6 md:col-3">
+                <div class="col-6 md:col-3 field">
+                    <label for="stockQuantity+{{i}}">Stock Quantity</label>
+                    <input autocomplete="false" pInputText formControlName="stockQuantity" id="stockQuantity+{{i}}"
+                        name="C_TrackQuantity" type="text" class="w-full" />
+                </div>
+                <div class="col-6 md:col-3 field">
+                    <label for="orderLimit+{{i}}">Order Limit</label>
+                    <input autocomplete="false" pInputText formControlName="orderLimit" id="orderLimit+{{i}}"
+                        name="C_TrackQuantity" type="text" class="w-full" />
+                </div>
+                <div class="field col-6 md:col-3 flex align-items-end">
                     <button pButton pRipple type="button" label="Image" icon="pi pi-check"></button>
-                    <!-- <p-image *ngIf="chields.at(i).value.image" [src]="chields.at(i).value.image" width="50"
-                            [preview]="true"></p-image> -->
+                    @if(chieldArrayForm().at(i).value.image){
+                    <p-image [src]="chieldArrayForm().at(i).value.image" width="50" [preview]="true" />
+                    }
                 </div>
                 <div class="col-6 md:col-3 field">
                     <label for="swarning+{{i}}">Warning Message</label>
@@ -67,29 +74,23 @@
                     <p-toggleswitch formControlName="activeOnline" inputId="activeOnline+{{i}}" name="activeOnline"
                         aria-label="Visibility :" />
                 </div>
-                <div class="field col-5 md:col-5">
+                <div class="field col-6 md:col-3">
                     <label for="status+{{i}}">Status</label>
                     <input autocomplete="false" pInputText formControlName="status" id="status+{{i}}" name="C_Status"
                         type="text" class="w-full" />
                 </div>
-                <div class="col-7 md:col-7 field">
-                    <!-- <button pButton pRipple type="button" styleClass="p-button-danger"
-                        icon="pi pi-{{chields.at(i).value.attributes?.length?'pencil':'check'}}"
-                        [label]="chields.at(i).value.attributes?.length?'': buttonLabel"
-                        (click)="generateAttribute('single',i)"></button>
-                    <p *ngIf="chields.at(i).value.attributes?.length"
-                        innerHTML="{{(chields.at(i).value.attributes) | transformAttributeToName}}">
-                    </p> -->
+                <div class="col-3 md:col-3 field boolForm">
+                    <button pButton pRipple type="button" styleClass="p-button-danger"
+                        label="Test" ></button>
                 </div>
                 <div class="field col-7 md:col-7" formArrayName="ingredients">
                     @for (data of ingredients(i).controls; track data.value.name; let j = $index) {
                     <div class="grid" [formGroupName]="j">
                         <div class="col-5 md:col-5 field">
-                            <label for="name">Name *</label>
-                            <input autocomplete="false" pInputText formControlName="name" id="sname+{{j}}" name="S_Name"
+                            <label for="key">Key *</label>
+                            <input autocomplete="false" pInputText formControlName="key" id="skey+{{j}}" name="S_Name"
                                 type="text" class="w-full" />
                         </div>
-
                         <div class="col-5 md:col-5 field">
                             <label for="value">Value *</label>
                             <input autocomplete="false" pInputText formControlName="value" id="svalue+{{j}}"
@@ -101,23 +102,22 @@
                         </div>
                     </div>
                     }
-                    <div class="col-8 md:col-8">
+                    <div class="col-8 md:col-8 boolForm">
                         <button pButton pRipple type="button" label="Add New Ingredients" icon="pi pi-plus"
                             (click)="onAddNewIngredients(i)"></button>
                     </div>
                 </div>
-                <div class="col-3 md:col-3 field">
+                <div class="col-3 md:col-3 field boolForm">
                     <button pButton pRipple type="button" styleClass="p-button-danger" icon="pi pi-trash"
                         label="Remove Attribute" (click)="removeChild(i)"></button>
                 </div>
-                <div class="col-2 md:col-2 field">
+                <div class="col-2 md:col-2 field boolForm">
                     <button pButton pRipple type="button" styleClass="p-button-danger" icon="pi pi-copy"
                         label="Duplicate" (click)="duplicateChild(i)"></button>
                 </div>
             </div>
         </p-card>
         }
-
     </div>
     <div class="col-8 md:col-8">
         <button pButton pRipple type="button" label="Add New Attribute" icon="pi pi-plus"

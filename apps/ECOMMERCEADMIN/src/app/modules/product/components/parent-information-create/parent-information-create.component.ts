@@ -13,6 +13,7 @@ import { ImageModule } from 'primeng/image';
 import { ProductFormService } from '../../services/product-form.service';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { EditorModule } from 'primeng/editor';
+import { ChipModule } from 'primeng/chip';
 
 @Component({
   selector: 'app-parent-information-create',
@@ -23,7 +24,8 @@ import { EditorModule } from 'primeng/editor';
     DialogModule,
     ImageModule,
     MultiSelectModule,
-    EditorModule
+    EditorModule,
+    ChipModule
   ],
   templateUrl: './parent-information-create.component.html',
   styleUrl: './parent-information-create.component.scss',

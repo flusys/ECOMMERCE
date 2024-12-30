@@ -4,7 +4,12 @@
         <input autocomplete="false" pInputText formControlName="name" id="name" name="Name" type="text"
             class="w-full" />
     </div>
-    <div class="field col-12 md:col-4 chooseImageP">
+    <div class="field col-12 md:col-4">
+        <label for="slug">Slug *</label>
+        <input autocomplete="false" pInputText formControlName="slug" id="slug" name="Slug" type="text"
+            class="w-full" />
+    </div>
+    <div class="field col-12 md:col-4">
         <label for="category">Category</label><br />
         <p-button type="button" label="{{selectedCategoryInformation?.name??'Select Category'}}" icon="pi pi-check"
             (click)="showCategoryTree=true" inputId="category" />
@@ -15,8 +20,8 @@
             optionValue="id" class="w-full" />
     </div>
     <div class="field col-12 md:col-4">
-        <label for="tagIds">Tags</label>
-        <p-multiSelect formControlName="tagIds" [options]="TAGS" inputId="tagIds" name="Tags" optionLabel="name"
+        <label for="tags">Tags</label>
+        <p-multiSelect formControlName="tags" [options]="TAGS" inputId="tags" name="Tags" optionLabel="name"
             optionValue="id" class="w-full" />
     </div>
     <div class="field col-12 md:col-4">
@@ -24,18 +29,18 @@
         <p-select formControlName="company" [options]="COMPANIES" inputId="company" autocomplete name="Company"
             optionLabel="name" optionValue="id" class="w-full" />
     </div>
-    <div class="field col-6 md:col-4 boolForm">
+    <div class="field col-6 md:col-2">
         <p for="isFeature">Is Feature :</p>
         <p-toggleswitch formControlName="isFeature" id="isFeature" name="isFeature" aria-label="Visibility :" />
+    </div>
+    <div class="field col-6 md:col-2">
+        <label for="serial">Serial</label>
+        <input autocomplete="false" pInputText formControlName="serial" id="serial" name="serial" type="text"
+            class="w-full" />
     </div>
     <div class="field col-12 md:col-8">
         <label for="shortDesc">Short Description</label>
         <input autocomplete="false" pInputText formControlName="shortDesc" id="shortDesc" name="ShortDesc" type="text"
-            class="w-full" />
-    </div>
-    <div class="field col-12 md:col-4">
-        <label for="serial">Serial</label>
-        <input autocomplete="false" pInputText formControlName="serial" id="serial" name="serial" type="text"
             class="w-full" />
     </div>
     <div class="col-12 md:col-12">
@@ -88,11 +93,10 @@
             @for (data of specifications.controls; track data.value.name; let i = $index) {
             <div class="grid" [formGroupName]="i">
                 <div class="col-5 md:col-5 field">
-                    <label for="name">Name *</label>
-                    <input autocomplete="false" pInputText formControlName="name" id="sname+{{i}}" name="S_Name"
+                    <label for="key">Key *</label>
+                    <input autocomplete="false" pInputText formControlName="key" id="skey+{{i}}" name="S_Name"
                         type="text" class="w-full" />
                 </div>
-
                 <div class="col-5 md:col-5 field">
                     <label for="value">Value *</label>
                     <input autocomplete="false" pInputText formControlName="value" id="svalue+{{i}}" name="S_Value"
