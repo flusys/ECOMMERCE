@@ -2,7 +2,7 @@
     <p-steps [model]="PRODUCT_PAGE_STEP" [readonly]="false" [activeIndex]="activeIndex"
         (activeIndexChange)="change($event)" />
     <form #inputForm="ngForm" [formGroup]="productFormService.formGroup" (ngSubmit)="onSubmit()">
-        <div class="card mt-6">
+        <div class="card mt-4">
             <app-parent-information-create *ngIf="activeIndex==0" [parentForm]="parentInformationFrom" />
             <app-child-information-create *ngIf="activeIndex==1"  [chieldArrayForm]="chieldArrayForm"/>
         </div>

@@ -37,7 +37,7 @@ export class CreateProductComponent {
     { label: 'Main Information' },
     { label: 'Attribute Information' },
   ]
-  
+
   //Injectin Service
   private productApiService = inject(ProductApiService);
   public productFormService = inject(ProductFormService)
@@ -62,7 +62,7 @@ export class CreateProductComponent {
   }
 
   get chieldArrayForm(): FormArray<FormGroup<IProductForm>> {
-    return this.productFormService.control("chields") as FormArray<FormGroup<IProductForm>>;	
+    return this.productFormService.control("chields") as FormArray<FormGroup<IProductForm>>;
   }
 
   change(event: number) {

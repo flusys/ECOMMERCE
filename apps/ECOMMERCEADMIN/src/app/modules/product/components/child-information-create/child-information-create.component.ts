@@ -74,13 +74,13 @@ export class ChildInformationCreateComponent implements OnInit {
 
 
   //Attributes Manage Start
-  showGenerateAttributeDialoge = false;
+  showGenerateAttributeDialog = false;
   selectedAttributeIds: number[] = [];
   selectionType: string = 'single'
   selectionIndex: number | undefined;
 
   generateVariant(type: string, index?: number) {
-    this.showGenerateAttributeDialoge = true;
+    this.showGenerateAttributeDialog = true;
     this.selectionType = type;
     this.selectionIndex = index;
     if (type == 'single' && index != undefined) {
@@ -99,7 +99,7 @@ export class ChildInformationCreateComponent implements OnInit {
         variants: this.selectedAttributeIds
       });
     }
-    this.showGenerateAttributeDialoge = false;
+    this.showGenerateAttributeDialog = false;
     this.resetSelectedAttribute()
   }
 
@@ -116,5 +116,22 @@ export class ChildInformationCreateComponent implements OnInit {
 
   resetSelectedAttribute() {
     this.selectedAttributeIds = []
+  }
+
+  getSelectedVariantsName(variantsIds:number[]|undefined){
+    if(variantsIds){
+      let result="";
+      this.attributeList.forEach((item)=>{
+        if(item.values){
+          item.values.forEach((value)=>{
+            if(variantsIds.includes(value.id)){
+              result+=item.name+":"+value.name+",";
+            }
+          })
+        }
+      })
+      return result.replace(/,$/, "");
+    }
+    return "";
   }
 }
