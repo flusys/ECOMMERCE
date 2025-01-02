@@ -23,7 +23,7 @@ export class AddParentProductDto {
 
   @IsOptional()
   @IsArray()
-  tagIds: number[];
+  tags: number[];
 
   @IsNotEmpty()
   @ValidateNested()

@@ -14,6 +14,7 @@ import { TagModule } from './pages/tag/tag.module';
 import { AttributeValueModule } from './pages/attribute/attribute-value.module';
 import { AttributeModule } from './pages/attribute/attribute.module';
 import { CategoryModule } from './pages/category/category.module';
+import { ProductModule } from './pages/product/product.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { CategoryModule } from './pages/category/category.module';
     TagModule,
     AttributeModule,
     AttributeValueModule,
-    CategoryModule
+    CategoryModule,
+    ProductModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-const ParentProductSchema = new mongoose.Schema(
+export const ParentProductSchema = new mongoose.Schema(
   {
     id: {
       type: Number,

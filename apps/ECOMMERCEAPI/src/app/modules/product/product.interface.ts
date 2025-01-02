@@ -2,7 +2,7 @@ import { IAttributeValue } from "../attribute/attribute-value.interface";
 import { IParentProduct } from "./parent-product.interface";
 
 export interface IProduct {
-  _id?: string;
+  id: number;
   readOnly: boolean;
   image: string;
   warning: string;
@@ -11,16 +11,20 @@ export interface IProduct {
   taxAmount: number;
   refundable: boolean;
   returnable: boolean;
-  price: number;
   sku: string;
   barCode: string;
+  price: number;
   orderLimit: number;
-  ingredients: { name: string; value: string }[];
+  ingredients: { name: string, value: string }[];
   trackQuantity: number;
   earnPoint: number;
-  parentProduct: IParentProduct;
+  parentInfo: IParentProduct;
   variants: IAttributeValue[];
+  variantIds: number[];
   status: string;
   isActive: boolean;
   activeOnline: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 }

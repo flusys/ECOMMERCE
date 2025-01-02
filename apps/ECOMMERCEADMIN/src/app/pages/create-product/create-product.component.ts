@@ -30,7 +30,7 @@ export class CreateProductComponent {
   readonly formControls = viewChildren(FormControlName, { read: ElementRef });
 
   //Static Data For Step
-  activeIndex = 1;
+  activeIndex = 0;
   isEdit: boolean = false;
   subscription!: Subscription;
   PRODUCT_PAGE_STEP: { label: string }[] = [
@@ -82,7 +82,12 @@ export class CreateProductComponent {
       this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Sorry!', detail: "Please Fill Form Correctly" });
       return;
     } else {
-
+      this.productApiService.createParentProduct(this.productFormService.value).subscribe(res => {
+        if (res.success)
+          this.router.navigate(['/product-list'])
+        else
+          this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Sorry!', detail: res.message });
+      })
     }
   }
 }

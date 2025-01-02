@@ -4,8 +4,8 @@ import { ICompany } from "../company/company.interface";
 import { ITag } from "../tag/tag.interface";
 import { IProduct } from "./product.interface";
 
-export interface IParentProduct  {
-  _id?: string;
+export interface IParentProduct {
+  id: number;
   readOnly: boolean;
   name: string;
   slug: string;
@@ -20,7 +20,7 @@ export interface IParentProduct  {
   videoUrl: string;
   videoThumbnailImage: string;
   unit: string;
-  specifications: { name: string; value: string }[];
+  specifications: { name: string, value: string }[];
   category: ICategory;
   brand: IBrand;
   company: ICompany;
@@ -30,4 +30,6 @@ export interface IParentProduct  {
   isFeature: boolean;
   status: string;
   isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

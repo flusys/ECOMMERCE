@@ -13,7 +13,7 @@ import { PaginationDto } from '../../shared/dtos/pagination.dto';
 export class AddProductDto {
   @IsOptional()
   @IsArray()
-  variantIds: number[];
+  variants: number[];
 }
 
 export class UpdateProductDto {
