@@ -15,6 +15,12 @@ import { AttributeValueModule } from './pages/attribute/attribute-value.module';
 import { AttributeModule } from './pages/attribute/attribute.module';
 import { CategoryModule } from './pages/category/category.module';
 import { ProductModule } from './pages/product/product.module';
+import { BannerModule } from './pages/banner/banner.module';
+import { ContactusModule } from './pages/contactus/contactus.module';
+import { FolderModule } from './pages/gallery/folder.module';
+import { GalleryModule } from './pages/gallery/gallery.module';
+import { SubscriberModule } from './pages/subscriber/subscriber.module';
+import { UploadModule } from './pages/upload/upload.module';
 
 @Module({
   imports: [
@@ -33,7 +39,13 @@ import { ProductModule } from './pages/product/product.module';
     AttributeModule,
     AttributeValueModule,
     CategoryModule,
-    ProductModule
+    ProductModule,
+    BannerModule,
+    ContactusModule,
+    FolderModule,
+    GalleryModule,
+    UploadModule,
+    SubscriberModule
   ],
   controllers: [AppController],
   providers: [AppService],
