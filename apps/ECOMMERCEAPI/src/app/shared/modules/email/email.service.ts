@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { IResponsePayload } from 'flusysng/shared/interfaces';
 import { google } from 'googleapis';
 import * as nodemailer from 'nodemailer';
-import { ResponsePayload } from '../../interfaces/response-payload.interface';
 
 @Injectable()
 export class EmailService {
@@ -13,7 +13,7 @@ export class EmailService {
    * EMAIL METHODS
    * getDateString
    */
-  async sendEmail(name, email, file): Promise<ResponsePayload> {
+  async sendEmail(name, email, file): Promise<IResponsePayload<string>> {
     try {
       const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
       const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -68,8 +68,8 @@ export class EmailService {
 
       return {
         success: true,
-        message: 'Data Added Success',
-      } as ResponsePayload;
+        message: 'Mail Send Success',
+      } as IResponsePayload<string>;
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(error.message);

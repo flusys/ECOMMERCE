@@ -12,9 +12,7 @@ import { CounterService } from '../../shared/modules/counter/counter.service';
 import { IResponsePayload } from 'flusysng/shared/interfaces';
 import { AddParentProductDto } from '../../modules/product/parent-product.dto';
 import { IParentProduct } from '../../modules/product/parent-product.interface';
-import { FilterAndPaginationProductDto } from '../../modules/product/product.dto';
 import { ErrorCodes } from '../../shared/enums/error-code.enum';
-import { ResponsePayload } from '../../shared/interfaces/response-payload.interface';
 
 @Injectable()
 export class ProductService {
