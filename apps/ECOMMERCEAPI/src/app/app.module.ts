@@ -20,7 +20,7 @@ import { ContactusModule } from './pages/contactus/contactus.module';
 import { FolderModule } from './pages/gallery/folder.module';
 import { GalleryModule } from './pages/gallery/gallery.module';
 import { SubscriberModule } from './pages/subscriber/subscriber.module';
-import { UploadModule } from './pages/upload/upload.module';
+import { UploadModule } from './pages/gallery/upload.module';
 
 @Module({
   imports: [
