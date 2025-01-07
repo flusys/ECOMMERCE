@@ -35,21 +35,18 @@ export class DeleteProductDto {
   type: 'delete' | 'restore';
 }
 
-export class FilterAndPaginationDto {
+export class FilterAndPaginationProductDto {
   @IsOptional()
-  @IsNotEmptyObject()
   @IsObject()
   filter: { [key: string]: any };
 
   @IsOptional()
-  @IsNotEmptyObject()
   @IsObject()
   @ValidateNested()
   @Type(() => PaginationDto)
   pagination: PaginationDto;
 
   @IsOptional()
-  @IsNotEmptyObject()
   @IsObject()
   sort: { [key: string]: 'ASC' | 'DESC' };
 
