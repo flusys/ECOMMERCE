@@ -37,6 +37,11 @@ export class MenuStateService {
       routerLink: ['/attribute'],
     },
     {
+      name: 'Gallery',
+      icon: 'pi pi-images',
+      routerLink: ['/gallery'],
+    },
+    {
       name: 'Create Product',
       icon: 'pi pi-plus',
       routerLink: ['/create-product'],

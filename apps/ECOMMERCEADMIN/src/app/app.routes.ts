@@ -70,6 +70,11 @@ export const routes: Routes = [
           import('./pages/tag/tag.component').then((com) => com.TagComponent),
       },
       {
+        path: 'gallery',
+        loadComponent: () =>
+          import('./pages/gallery/gallery.component').then((com) => com.GalleryComponent),
+      },
+      {
         path: 'create-product',
         loadComponent: () =>
           import('./pages/create-product/create-product.component').then(

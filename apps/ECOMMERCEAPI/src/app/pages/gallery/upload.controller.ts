@@ -22,6 +22,7 @@ import {
 import { UploadService } from './upload.service';
 import { IFileResponsePayload, IResponsePayload } from 'flusysng/shared/interfaces';
 import { ImageUploadResponse } from '../../shared/interfaces/response-payload.interface';
+import { FileMetadataInterceptor } from './file-metadata.interceptor';
 
 @Controller('upload')
 export class UploadController {
@@ -30,7 +31,7 @@ export class UploadController {
   constructor(
     private configService: ConfigService,
     private uploadService: UploadService,
-  ) {}
+  ) { }
 
   /**
    * SINGLE IMAGE
@@ -43,7 +44,7 @@ export class UploadController {
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: getUploadPath,
+        destination: (req, file, cb) => getUploadPath(req, file, cb),
         filename: editFileName,
       }),
       limits: {
@@ -62,9 +63,11 @@ export class UploadController {
     const path = file.path;
     const url = `${baseurl}/${path}`;
     return {
+      size: this.uploadService.bytesToKb(file.size),
       originalname: file.originalname,
-      filename: file.filename,
+      name: file.filename,
       url,
+      type: file.mimetype,
     };
   }
 
@@ -72,27 +75,29 @@ export class UploadController {
   @UseInterceptors(
     FilesInterceptor('imageMulti', 50, {
       storage: diskStorage({
-        destination: getUploadPath,
+        destination: (req, file, cb) => getUploadPath(req, file, cb),
         filename: editFileName,
       }),
       fileFilter: imageFileFilter,
-    }),
+    })
   )
   async uploadMultipleImages(
+    @Body('folderPath') folderPath: string,
     @UploadedFiles() files: any[],
     @Req() req,
-  ): Promise<IFileResponsePayload[]> {
+  ): Promise<any[]> {
     const isProduction = this.configService.get<boolean>('productionBuild');
     const baseurl =
       req.protocol + `${isProduction ? 's' : ''}://` + req.get('host') + '/api';
-    const response: IFileResponsePayload[] = [];
+    console.warn(folderPath)
+    const response: any[] = [];
     files.forEach((file) => {
-      console.log('hit')
       const fileResponse = {
         size: this.uploadService.bytesToKb(file.size),
         name: file.filename.split('.')[0],
         url: `${baseurl}/${file.path}`,
-      } as IFileResponsePayload;
+        type: file.mimetype,
+      } as any;
       response.push(fileResponse);
     });
     return response;

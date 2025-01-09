@@ -6,7 +6,7 @@ export interface IGallery {
   url:string;
   folder?: IFolder | number;
   size?: string;
-  type?: number;
+  type?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

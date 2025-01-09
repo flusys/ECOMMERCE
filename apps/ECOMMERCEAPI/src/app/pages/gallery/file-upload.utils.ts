@@ -19,10 +19,9 @@ export const editFileName = (req, file, callback) => {
 };
 
 export const getUploadPath = (req, file, callback) => {
-  // Destination Folder Dynamic..
-  // const { folderPath } = req.body;
-  // const dir = `./upload/images/${folderPath ? folderPath : 'others'}`;
-  const dir = `./upload/images`;
+  //Destination Folder Dynamic..
+  const { folderPath } = req.body;
+  const dir = `./upload/images/${folderPath ? folderPath : 'others'}`;
 
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });

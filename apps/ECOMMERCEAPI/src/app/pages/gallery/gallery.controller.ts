@@ -38,7 +38,14 @@ export class GalleryController {
   ): Promise<IResponsePayload<IGallery>> {
     return await this.galleryService.addGallery(addGalleryDto);
   }
-
+  @Post('/insert-many')
+  @UsePipes(ValidationPipe)
+  async insertManyGallery(
+    @Body()
+    addGalleryDto: Array<AddGalleryDto>,
+  ): Promise<IResponsePayload<string>> {
+    return await this.galleryService.insertManyGallery(addGalleryDto);
+  }
   /**
    * GET DATA
    * getAllGallerys()

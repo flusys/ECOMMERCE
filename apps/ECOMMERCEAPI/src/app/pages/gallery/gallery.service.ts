@@ -46,6 +46,24 @@ export class GalleryService {
     }
   }
 
+  async insertManyGallery(addGalleryDto: Array<AddGalleryDto>): Promise<IResponsePayload<string>> {
+    try {
+
+      await addGalleryDto.map(async (item) => {
+        const id = await this.counterService.getNextId('gallery_id')
+        const createdAtString = this.utilsService.getDateString(new Date());
+        const data = new this.galleryModel({ ...item, createdAtString, id: id });
+        await data.save();
+      })
+      return {
+        success: true,
+        message: 'Success! Data Added.',
+      } as unknown as IResponsePayload<string>;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(error.message);
+    }
+  }
   /**
    * GET DATA
    * getAllGallerys()
@@ -197,7 +215,7 @@ export class GalleryService {
     try {
       const finalData = { ...updateGalleryDto };
 
-      await this.galleryModel.findOneAndUpdate({id:updateGalleryDto.id}, {
+      await this.galleryModel.findOneAndUpdate({ id: updateGalleryDto.id }, {
         $set: finalData,
       });
       return {

@@ -1,0 +1,43 @@
+<p-panel header="Create Gallery " [toggleable]="true" [collapsed]="isPanelCollapsed" class="line-height-3 m-0">
+  <div class="col-12">
+    <form #inputForm="ngForm" [formGroup]="galleryFormService.formGroup" (ngSubmit)="onSubmit()">
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-8">
+          <div class="field col-12 md:col-12">
+            <label for="name">Folder</label>
+            <div class="flex gap-2">
+              <p-dropdown [options]="folderList" formControlName="folder" optionLabel="name" optionValue="id"
+                [showClear]="true" placeholder="Select Folder" styleClass="w-full" id="folder">
+                <ng-template let-folder pTemplate="item">
+                  <div class="w-full flex justify-content-between">
+                    <span>{{ folder.name }}</span>
+                    <i class="pi pi-pencil cursor-pointer text-gray-600 hover:text-blue-500 ml-2"
+                      (click)="addFolder(folder)">
+                    </i>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <button pButton pRipple type="button" label="Add" icon="pi pi-plus" (click)="addFolder(null)"></button>
+            </div>
+          </div>
+          <div class="field col-12 md:col-12">
+            <span class="flex gap-2 justify-content-end">
+              <button pButton pRipple type="submit" [label]="'Save'" icon="pi pi-check"></button>
+              <button pButton pRipple type="button" label="Clear" icon="pi pi-trash"
+                (click)="clearInputForm()"></button>
+            </span>
+          </div>
+        </div>
+        <div class="field col-12 md:col-4">
+          <p-fileupload (onSelect)="onSelect($event)" showUploadButton="false"
+            [multiple]="true" accept="image/*" maxFileSize="1000000" mode="advanced">
+            <ng-template #empty>
+              <div>Drag and drop files to here to upload.</div>
+            </ng-template>
+          </p-fileupload>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</p-panel>
