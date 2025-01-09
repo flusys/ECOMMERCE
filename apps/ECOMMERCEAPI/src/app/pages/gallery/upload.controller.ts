@@ -20,9 +20,7 @@ import {
   imageFileFilter,
 } from './file-upload.utils';
 import { UploadService } from './upload.service';
-import { IFileResponsePayload, IResponsePayload } from 'flusysng/shared/interfaces';
-import { ImageUploadResponse } from '../../shared/interfaces/response-payload.interface';
-import { FileMetadataInterceptor } from './file-metadata.interceptor';
+import {  IResponsePayload } from 'flusysng/shared/interfaces';
 
 @Controller('upload')
 export class UploadController {
@@ -44,7 +42,7 @@ export class UploadController {
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: (req, file, cb) => getUploadPath(req, file, cb),
+        destination: getUploadPath,
         filename: editFileName,
       }),
       limits: {
@@ -79,17 +77,15 @@ export class UploadController {
         filename: editFileName,
       }),
       fileFilter: imageFileFilter,
-    })
+    }),
   )
   async uploadMultipleImages(
-    @Body('folderPath') folderPath: string,
     @UploadedFiles() files: any[],
     @Req() req,
   ): Promise<any[]> {
     const isProduction = this.configService.get<boolean>('productionBuild');
     const baseurl =
       req.protocol + `${isProduction ? 's' : ''}://` + req.get('host') + '/api';
-    console.warn(folderPath)
     const response: any[] = [];
     files.forEach((file) => {
       const fileResponse = {
