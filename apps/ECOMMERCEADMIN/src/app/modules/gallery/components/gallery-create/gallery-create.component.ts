@@ -11,7 +11,7 @@ import { FolderStateService } from '../../services/folder-state.service';
 import { IFolder } from '../../interfaces/folder-data.interface';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FolderCreateComponent } from '../folder-create/folder-create.component';
-import { FileSelectEvent } from 'primeng/fileupload';
+import { FileSelectEvent, FileUpload } from 'primeng/fileupload';
 import { UploadApiService } from '../../services/upload-api.service';
 
 @Component({
@@ -36,6 +36,7 @@ export class GalleryCreateComponent {
 
   readonly inputForm = viewChild.required<NgForm>('inputForm');
   readonly formControls = viewChildren(FormControlName, { read: ElementRef });
+  readonly fileUploader = viewChild.required<FileUpload>('fileUploader');
 
   constructor() {
   }
@@ -80,10 +81,7 @@ export class GalleryCreateComponent {
       this.selectedFiles.forEach(file => {
         fromData.append('imageMulti', file);
       });
-      if (this.selectedFolderName)
-        fromData.append('folderPath', this.selectedFolderName);
-
-      this.uploadApiService.uploadMultipleImages(fromData).subscribe(res => {
+      this.uploadApiService.uploadMultipleImages(fromData, this.selectedFolderName ?? "").subscribe(res => {
         if (res.length) {
           const dataList = res.map(item => {
             return { ...item, ...{ folder: data.folder } };
@@ -91,7 +89,7 @@ export class GalleryCreateComponent {
           this.galleryApiService.insertMany(dataList).subscribe(res => {
             if (res.success) {
               this.messageService.add({ key: 'tst', severity: 'success', summary: 'Success!', detail: res.message });
-              this.galleryStateService.resetFilter();
+              this.clearInputForm()
             } else {
               this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Sorry!', detail: res.message });
             }
@@ -105,6 +103,8 @@ export class GalleryCreateComponent {
 
 
   clearInputForm() {
+    this.galleryStateService.resetFilter();
+    this.fileUploader().clear();
     this.galleryFormService.reset();
     this.inputForm().reset();
   }

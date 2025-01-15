@@ -19,8 +19,8 @@ export class UploadApiService {
     }>(this.baseUrl + "/single-image", data);
   }
 
-  uploadMultipleImages(data: FormData) {
-    return this.http.post<IFileResponsePayload[]>(this.baseUrl + "/multiple-image", data);
+  uploadMultipleImages(data: FormData, folderPath: string) {
+    return this.http.post<IFileResponsePayload[]>(this.baseUrl + "/multiple-image?folderPath=" + folderPath, data);
   }
 
 }

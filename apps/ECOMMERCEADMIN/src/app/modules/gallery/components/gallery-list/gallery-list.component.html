@@ -1,3 +1,6 @@
 <p-panel header="All Gallery List " [toggleable]="true" class="line-height-3 m-0">
 
+
+  <p-paginator (onPageChange)="onPageChange($event)" [first]="5" [rowsPerPageOptions]="[5, 10, 50, 100]"
+   [totalRecords]="galleryStateService.select('data')().total" />
 </p-panel>

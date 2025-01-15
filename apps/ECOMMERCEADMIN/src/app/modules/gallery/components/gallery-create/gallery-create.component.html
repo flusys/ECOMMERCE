@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="field col-12 md:col-4">
-          <p-fileupload (onSelect)="onSelect($event)" showUploadButton="false"
+          <p-fileupload (onSelect)="onSelect($event)" showUploadButton="false" #fileUploader
             [multiple]="true" accept="image/*" maxFileSize="1000000" mode="advanced">
             <ng-template #empty>
               <div>Drag and drop files to here to upload.</div>
