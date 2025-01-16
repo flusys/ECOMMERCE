@@ -20,7 +20,7 @@ import {
   imageFileFilter,
 } from './file-upload.utils';
 import { UploadService } from './upload.service';
-import {  IResponsePayload } from 'flusysng/shared/interfaces';
+import { IResponsePayload } from 'flusysng/shared/interfaces';
 
 @Controller('upload')
 export class UploadController {
@@ -99,9 +99,9 @@ export class UploadController {
     return response;
   }
 
-  @Get('images/:imageName')
-  seeUploadedFile(@Param('imageName') image, @Res() res) {
-    return res.sendFile(image, { root: './upload/images' });
+  @Get('images/:folderName/:imageName')
+  seeUploadedFile(@Param('folderName') folderName, @Param('imageName') image, @Res() res) {
+    return res.sendFile(image, { root: './upload/images' + (folderName ? '/' + folderName : '') });
   }
 
   @Post('delete-single-image')

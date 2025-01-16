@@ -7,12 +7,14 @@ import { IGalleryForm } from '../interfaces/gallery-form.interface';
 import { IGalleryStoreState } from '../interfaces/gallery-state.interfaces';
 import { GalleryApiService } from './gallery-api.service';
 
+const dataFarPage = 12;
 const InitValue: IGalleryStoreState = {
   data: getInitResponse<IGallery[]>([]),
 
   filter: null,
   sort: { serial: 'ASC' },
   select: ['id', 'name', 'url', 'image','folder.name','folder.id','size','type'],
+  pagination:{pageSize:dataFarPage,currentPage:0},
 
   loading: false,
 };
@@ -37,6 +39,7 @@ export class GalleryStateService extends Store<IGalleryStoreState> {
       this.select('select')()
       this.select('sort')()
       this.select('filter')()
+      this.select('pagination')()
       this.callApi();
     });
   }
@@ -45,7 +48,8 @@ export class GalleryStateService extends Store<IGalleryStoreState> {
     const select = this.select('select')() ?? undefined;
     const sort = this.select('sort')() ?? undefined;
     const filter = this.select('filter')() ?? undefined;
-    const body = { select, sort, filter, withDeleted: this.withDeleted }
+    const pagination = this.select('pagination')() ?? undefined;
+    const body = { select, sort, filter,pagination, withDeleted: this.withDeleted }
     this.setState({ loading: true, });
     this.galleryApiService.getAll('', body).pipe(take(1)).subscribe(res => {
       this.setState({ loading: false, });

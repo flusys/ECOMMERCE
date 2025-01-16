@@ -88,8 +88,9 @@ export class GalleryListComponent {
     }
   }
 
-  onPageChange(event:any){
-
+  onPageChange(event: any) {
+    const newData = { pageSize: event.rows, currentPage: event.page }
+    this.galleryStateService.setState({ pagination: newData })
   }
 
   clearAll() {

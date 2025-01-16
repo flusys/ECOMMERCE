@@ -168,8 +168,11 @@ export class GalleryService {
       const dataAggregates = await this.galleryModel.aggregate(aggregateStages);
       if (pagination) {
         return {
-          ...{ ...dataAggregates[0] },
-          ...{ success: true, message: 'Success' },
+          result: dataAggregates[0].data,
+          success: true,
+          message: 'Success',
+          total: dataAggregates[0].count,
+          status: "Data Found"
         } as IResponsePayload<Array<IGallery>>;
       } else {
         return {

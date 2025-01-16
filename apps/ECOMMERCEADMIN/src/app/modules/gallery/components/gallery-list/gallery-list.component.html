@@ -1,6 +1,13 @@
 <p-panel header="All Gallery List " [toggleable]="true" class="line-height-3 m-0">
 
+  <div class="grid">
+    @for (item of galleryStateService.select('data')().result; track item.url; let i = $index) {
+    <div class="col-4 md:col-3 sm:col-4 p-card">
+      <img [src]="item.url" class="w-full"/>
+    </div>
+    }
+  </div>
 
-  <p-paginator (onPageChange)="onPageChange($event)" [first]="5" [rowsPerPageOptions]="[5, 10, 50, 100]"
-   [totalRecords]="galleryStateService.select('data')().total" />
+  <p-paginator (onPageChange)="onPageChange($event)" [rows]="galleryStateService.select('pagination')().pageSize"
+    [totalRecords]="galleryStateService.select('data')().total" [rowsPerPageOptions]="[10,15,20,25]"></p-paginator>
 </p-panel>
