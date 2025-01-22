@@ -33,7 +33,6 @@ export class ProductService {
     try {
       // Generate a unique ID for the parent product
       const parentProductId = await this.counterService.getNextId('parent_product_id');
-
       // Handle the 'chields' (child products)
       const childProductIds = [];
       if (addProductDto.chields && addProductDto.chields.length > 0) {
@@ -265,7 +264,7 @@ export class ProductService {
           message: 'Success',
           total: dataAggregates.length,
         } as IResponsePayload<Array<IProduct>>;
-      }
+      }  
     } catch (err) {
       this.logger.error(err);
       if (err.code && err.code.toString() === ErrorCodes.PROJECTION_MISMATCH) {
@@ -280,8 +279,7 @@ export class ProductService {
   async getProductById(id: string, select: string): Promise<IResponsePayload<IProduct>> {
     try {
       const data = await this.productModel
-        .findById(id)
-        .select(select)
+        .findById({id})
         .populate('parentProduct')
         .populate('variants')
         .populate('parentProduct.tags')
@@ -296,6 +294,110 @@ export class ProductService {
         data,
       } as unknown as IResponsePayload<IProduct>;
     } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async getParentProductDetailsById(id: number, select: string): Promise<IResponsePayload<IParentProduct>> {
+    try {
+      const data = await this.parentProductModel.aggregate([
+        { $match: { id } },
+        {
+          $lookup: {
+            from: 'tags',
+            localField: 'tags',
+            foreignField: 'id',
+            as: 'tags',
+          },
+        },
+        {
+          $lookup: {
+            from: 'brands',
+            localField: 'brand',
+            foreignField: 'id',
+            as: 'brand',
+          },
+        },
+        {
+          $lookup: {
+            from: 'categories',
+            localField: 'category',
+            foreignField: 'id',
+            as: 'category',
+          },
+        },
+        {
+          $lookup: {
+            from: 'companies',
+            localField: 'company',
+            foreignField: 'id',
+            as: 'company',
+          },
+        },
+        {
+          $lookup: {
+            from: 'products',
+            localField: 'id',
+            foreignField: 'parentProduct',
+            as: 'products',
+          },
+        },
+        {
+          $unwind: {
+            path: '$products',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $lookup: {
+            from: 'attributevalues',
+            localField: 'products.variants',
+            foreignField: 'id',
+            as: 'products.variants',
+          },
+        },
+        {
+          $lookup: {
+            from: 'attributes',
+            localField: 'products.variants.attribute',
+            foreignField: 'id',
+            as: 'products.variants.attribute',
+          },
+        },
+        {
+          $group: {
+            _id: '$id',
+            data: { $first: '$$ROOT' },
+            products: { $push: '$products' },
+          },
+        },
+        {
+          $addFields: {
+            'data.products': '$products',
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: '$data',
+          },
+        },
+      ]);
+
+      if (!data || data.length === 0) {
+        return {
+          success: false,
+          message: 'No data found',
+          data: null,
+        } as unknown as IResponsePayload<IParentProduct>;
+      }
+
+      return {
+        success: true,
+        message: 'Success',
+        data: data[0],
+      } as unknown as IResponsePayload<IParentProduct>;
+    } catch (err) {
+      console.warn(err)
       throw new InternalServerErrorException(err.message);
     }
   }

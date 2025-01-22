@@ -18,6 +18,7 @@ import { IProduct } from '../../modules/product/product.interface';
 import { AddParentProductDto } from '../../modules/product/parent-product.dto';
 import { MongoIdValidationPipe } from '../../shared/pipes/mongo-id-validation.pipe';
 import { FilterAndPaginationProductDto } from '../../modules/product/product.dto';
+import { IParentProduct } from '../../modules/product/parent-product.interface';
 
 @Controller('product')
 export class ProductController {
@@ -59,10 +60,17 @@ export class ProductController {
     @Get('/:id')
     async getProductDetailsById(
       @Param('id', MongoIdValidationPipe) id: string,
-      @Query() select: string,
+      @Query('select') select: string,
     ): Promise<IResponsePayload<IProduct>> {
       return await this.productService.getProductById(id, select);
     }
 
-
+    @Version(VERSION_NEUTRAL)
+    @Get('parent-product/:id')
+    async getParentProductDetailsById(
+      @Param('id') id: number,
+      @Query() select: string,
+    ): Promise<IResponsePayload<IParentProduct>> {
+      return await this.productService.getParentProductDetailsById(id, select);
+    }
 }

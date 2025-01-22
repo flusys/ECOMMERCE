@@ -54,11 +54,11 @@ export const ProductSchema = new mongoose.Schema(
       },
     ],
     trackQuantity: {
-      type: Boolean,
+      type: Number,
       default: null,
     },
     stockQuantity: {
-      type: Boolean,
+      type: Number,
       default: null,
     },
     earnPoint: {
