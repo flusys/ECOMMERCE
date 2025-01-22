@@ -3,23 +3,28 @@ import { inject, Injectable } from '@angular/core';
 import { IParentProductForm } from '../interfaces/product-form.interface';
 import { ɵFormGroupValue } from '@angular/forms';
 import { environment } from 'apps/ECOMMERCEADMIN/src/environments/environment';
-import { IParentProduct } from '../interfaces/product-data.interface';
+import { IParentProduct, IProduct } from '../interfaces/product-data.interface';
 import { Observable } from 'rxjs';
-import { IResponsePayload } from 'flusysng/shared/interfaces';
+import { IFilterData, IResponsePayload } from 'flusysng/shared/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductApiService {
   private http: HttpClient = inject(HttpClient);
-  private baseUrl = environment.apiGatewayUrl+'/product';
+  private baseUrl = environment.apiGatewayUrl + '/product';
   constructor() { }
 
   createParentProduct(data: ɵFormGroupValue<IParentProductForm>): Observable<IResponsePayload<IParentProduct>> {
     return this.http.post<IResponsePayload<IParentProduct>>(this.baseUrl + "/insert", data);
   }
 
-  getParentProductById(id: number): any {
-    return 'Parent Product';
+  getParentProductById(id: string): Observable<IResponsePayload<IProduct>> {
+    return this.http.get<IResponsePayload<IProduct>>(this.baseUrl + "/parent-product/" + id);
   }
+
+  getAll(search: string, body: IFilterData): Observable<IResponsePayload<IProduct[]>> {
+    return this.http.post<IResponsePayload<IProduct[]>>(this.baseUrl + "/get-all", body);
+  }
+
 }

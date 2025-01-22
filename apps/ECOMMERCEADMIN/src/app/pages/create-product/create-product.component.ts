@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, input, viewChild, viewChildren } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, viewChild, viewChildren } from '@angular/core';
 import { AngularModule, PrimeModule } from 'flusysng/shared/modules';
 import { ParentInformationCreateComponent } from '../../modules/product/components/parent-information-create/parent-information-create.component';
 import { ChildInformationCreateComponent } from '../../modules/product/components/child-information-create/child-information-create.component';
@@ -9,6 +9,8 @@ import { ProductApiService } from '../../modules/product/services/product-api.se
 import { ProductFormService } from '../../modules/product/services/product-form.service';
 import { Router } from '@angular/router';
 import { IParentProductForm, IProductForm } from '../../modules/product/interfaces/product-form.interface';
+import { ProductStateService } from '../../modules/product/services/product-state.service';
+import { ICategory } from '../../modules/category/interfaces/category-data.interface';
 
 @Component({
   selector: 'app-create-product',
@@ -22,9 +24,6 @@ import { IParentProductForm, IProductForm } from '../../modules/product/interfac
   styleUrl: './create-product.component.scss',
 })
 export class CreateProductComponent {
-  //Get Params
-  id = input(0);
-
   // Data Form Section
   readonly inputForm = viewChild.required<NgForm>('inputForm');
   readonly formControls = viewChildren(FormControlName, { read: ElementRef });
@@ -40,14 +39,24 @@ export class CreateProductComponent {
 
   //Injectin Service
   private productApiService = inject(ProductApiService);
+  private productStateService = inject(ProductStateService);
   public productFormService = inject(ProductFormService)
   private messageService = inject(MessageService)
   private router = inject(Router)
 
-  ngOnInit() {
-    if (this.id && this.id() != 0) {
-      this.isEdit = true;
-    }
+
+  constructor() {
+    effect(() => {
+      const model: any = this.productStateService.select('editModelData')() ?? undefined;
+      if (model) {
+        this.isEdit = true;
+        this.productApiService.getParentProductById(model.parentProduct._id).subscribe(res => {
+          console.warn(res)
+        })
+      } else {
+        this.isEdit = true;
+      }
+    });
   }
 
   ngOnDestroy(): void {

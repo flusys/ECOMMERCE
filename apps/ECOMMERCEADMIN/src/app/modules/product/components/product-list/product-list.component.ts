@@ -1,10 +1,60 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { ProductStateService } from '../../services/product-state.service';
+import { AngularModule, PrimeModule } from 'flusysng/shared/modules';
+import { LayoutService } from 'flusysng/layout/services';
+import { ProductApiService } from '../../../product/services/product-api.service';
+import { IProduct } from '../../interfaces/product-data.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule],
+  imports: [
+    AngularModule,
+    PrimeModule
+  ],
   templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css',
 })
-export class ProductListComponent {}
+export class ProductListComponent {
+  productStateService = inject(ProductStateService);
+  productApiService = inject(ProductApiService);
+  router = inject(Router);
+  layoutService = inject(LayoutService);
+
+  constructor() {
+  }
+
+  selectedProduct: IProduct[] = [];
+  globalFilterField: string[] = ['name', 'menu.name'];
+
+
+  withDeletedItem(type?: number) {
+    this.selectedProduct = [];
+    this.productStateService.withDeleted = !this.productStateService.withDeleted;
+    if (!type) {
+      if (this.productStateService.withDeleted) {
+        this.productStateService.callApi();
+      } else {
+        // this.productStateService.deleteItemFromList('restore', []);
+      }
+    }
+  }
+
+
+  getInputString(event: any) {
+    return event.target.value;
+  }
+
+  editProduct(product: IProduct) {
+    console.warn(product)
+    this.productStateService.setState({ editModelData: null });
+    this.productStateService.setState({ editModelData: product });
+    this.router.navigate(['/create-product']);
+  }
+
+
+
+  clearAll() {
+    this.selectedProduct = []
+  }
+
+}

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ProductListComponent } from '../../modules/product/components/product-list/product-list.component';
 
 @Component({
-  selector: 'app-product-list',
-  imports: [CommonModule],
+  selector: 'app-product-list{root}',
+  imports: [
+    ProductListComponent
+  ],
   templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css',
 })
-export class ProductListComponent {}
+export class ProductListComponentPage {}

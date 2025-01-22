@@ -85,7 +85,7 @@ export const routes: Routes = [
         path: 'product-list',
         loadComponent: () =>
           import('./pages/product-list/product-list.component').then(
-            (com) => com.ProductListComponent
+            (com) => com.ProductListComponentPage
           ),
       },
     ],

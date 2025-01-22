@@ -41,36 +41,27 @@ export class ProductController {
   }
 
 
-    /**
-     * GET DATA
-     * getAllProducts()
-     * getProductById()
-     */
-    @Version(VERSION_NEUTRAL)
-    @Post('/get-all')
-    @UsePipes(ValidationPipe)
-    async getAllProducts(
-      @Body() filterProductDto: FilterAndPaginationProductDto,
-      @Query('q') searchString: string,
-    ): Promise<IResponsePayload<Array<IProduct>>> {
-      return this.productService.getAllProducts(filterProductDto, searchString);
-    }
+  /**
+   * GET DATA
+   * getAllProducts()
+   * getProductById()
+   */
+  @Version(VERSION_NEUTRAL)
+  @Post('/get-all')
+  @UsePipes(ValidationPipe)
+  async getAllProducts(
+    @Body() filterProductDto: FilterAndPaginationProductDto,
+    @Query('q') searchString: string,
+  ): Promise<IResponsePayload<Array<IProduct>>> {
+    return this.productService.getAllProducts(filterProductDto, searchString);
+  }
 
-    @Version(VERSION_NEUTRAL)
-    @Get('/:id')
-    async getProductDetailsById(
-      @Param('id', MongoIdValidationPipe) id: string,
-      @Query('select') select: string,
-    ): Promise<IResponsePayload<IProduct>> {
-      return await this.productService.getProductById(id, select);
-    }
-
-    @Version(VERSION_NEUTRAL)
-    @Get('parent-product/:id')
-    async getParentProductDetailsById(
-      @Param('id') id: number,
-      @Query() select: string,
-    ): Promise<IResponsePayload<IParentProduct>> {
-      return await this.productService.getParentProductDetailsById(id, select);
-    }
+  @Version(VERSION_NEUTRAL)
+  @Get('parent-product/:id')
+  async getParentProductDetailsById(
+    @Param('id', MongoIdValidationPipe) id: string,
+    @Query() select: string,
+  ): Promise<IResponsePayload<IParentProduct>> {
+    return await this.productService.getParentProductDetailsById(id, select);
+  }
 }

@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { UtilsService } from '../../shared/modules/utils/utils.service';
 import { IProduct } from '../../modules/product/product.interface';
 import { CounterService } from '../../shared/modules/counter/counter.service';
@@ -230,7 +230,38 @@ export class ProductService {
         return prev = { ...prev, ...{ [curr]: 1 } }
       }, {});
     } else {
-      mSelect = { name: 1 };
+      mSelect = {
+        price: 1,
+        image: 1,
+        warningDay: 1,
+        warning: 1,
+        refundable: 1,
+        returnable: 1,
+        sku: 1,
+        barCode: 1,
+        ingredients: 1,
+        trackQuantity: 1,
+        stockQuantity: 1,
+        earnPoint: 1,
+        isActive: 1,
+        activeOnline: 1,
+        status: 1,
+        "parentProduct._id": 1,
+        "parentProduct.name": 1,
+        "parentProduct.readOnly": 1,
+        "parentProduct.slug": 1,
+        "parentProduct.images": 1,
+        "parentProduct.description": 1,
+        "parentProduct.isHtml": 1,
+        "parentProduct.category.name": 1,
+        "parentProduct.brand.name": 1,
+        "parentProduct.company.name": 1,
+        "parentProduct.tags.name": 1,
+
+        "variants.name": 1,
+        "variants.attribute.name": 1,
+
+      };
     }
 
     aggregateStages.push({ $project: mSelect });
@@ -264,7 +295,7 @@ export class ProductService {
           message: 'Success',
           total: dataAggregates.length,
         } as IResponsePayload<Array<IProduct>>;
-      }  
+      }
     } catch (err) {
       this.logger.error(err);
       if (err.code && err.code.toString() === ErrorCodes.PROJECTION_MISMATCH) {
@@ -276,129 +307,150 @@ export class ProductService {
   }
 
 
-  async getProductById(id: string, select: string): Promise<IResponsePayload<IProduct>> {
-    try {
-      const data = await this.productModel
-        .findById({id})
-        .populate('parentProduct')
-        .populate('variants')
-        .populate('parentProduct.tags')
-        .populate('parentProduct.brand')
-        .populate('parentProduct.category')
-        .populate('parentProduct.company')
-        .populate('variants.attribute');
+  async getParentProductDetailsById(id: string, select: string): Promise<IResponsePayload<IParentProduct>> {
+    const aggregateStages = [];
+    // aggregateStages.push({ $match: { _id: new Types.ObjectId(id) } });
 
+    aggregateStages.push(
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'category',
+          foreignField: 'id',
+          as: 'category',
+        },
+      },
+      { $unwind: { path: '$category', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: 'brands',
+          localField: 'brand',
+          foreignField: 'id',
+          as: 'brand',
+        },
+      },
+      { $unwind: { path: '$brand', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: 'companies',
+          localField: 'company',
+          foreignField: 'id',
+          as: 'company',
+        },
+      },
+      { $unwind: { path: '$company', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: 'tags',
+          localField: 'tags',
+          foreignField: 'id',
+          as: 'tags',
+        },
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'id',
+          foreignField: 'parentProduct',
+          as: 'products',
+        },
+      },
+      { $unwind: { path: '$products', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: 'attributevalues',
+          localField: 'products.variants',
+          foreignField: 'id',
+          as: 'products.variants',
+        },
+      },
+      {
+        $unwind: { path: '$products.variants', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $lookup: {
+          from: 'attributes', // Join with 'attributes' collection
+          localField: 'products.variants.attribute', // Join based on attribute reference
+          foreignField: 'id',
+          as: 'products.variants.attribute',
+        },
+      },
+      {
+        $unwind: { path: '$products.variants.attribute', preserveNullAndEmptyArrays: true },
+      },
+    );
+
+
+    // Select
+    const mSelect = {
+      "_id": 1,
+      "name": 1,
+      "readOnly": 1,
+      "slug": 1,
+      "images": 1,
+      "description": 1,
+      "isHtml": 1,
+      "serial": 1,
+      "shortDesc": 1,
+      "seoTitle": 1,
+      "seoDescription": 1,
+      "seoKeywords": 1,
+      "videoUrl": 1,
+      "videoThumbnailImage": 1,
+      "specifications": 1,
+      "isFeature": 1,
+      "status": 1,
+      "isActive": 1,
+      "createdAtString": 1,
+      "updatedAtString": 1,
+      "category.id": 1,
+      "category.name": 1,
+      "brand.id": 1,
+      "brand.name": 1,
+      "company.id": 1,
+      "company.name": 1,
+      "tags.id": 1,
+      "tags.name": 1,
+
+
+      "products.price": 1,
+      "products.image": 1,
+      "products.warning": 1,
+      "products.warningDay": 1,
+      "products.refundable": 1,
+      "products.returnable": 1,
+      "products.sku": 1,
+      "products.barCode": 1,
+      "products.ingredients": 1,
+      "products.trackQuantity": 1,
+      "products.stockQuantity": 1,
+      "products.earnPoint": 1,
+      "products.isActive": 1,
+      "products.activeOnline": 1,
+      "products.status": 1,
+      
+      "products.variants.id": 1,
+      "products.variants.name": 1,
+      "products.variants.attribute.id": 1,
+      "products.variants.attribute.name": 1,
+    };;
+    aggregateStages.push({ $project: mSelect });
+
+    try {
+      const dataAggregates = await this.parentProductModel.aggregate(aggregateStages);
       return {
+        result: dataAggregates[0],
         success: true,
         message: 'Success',
-        data,
-      } as unknown as IResponsePayload<IProduct>;
+        total: dataAggregates.length,
+      } as IResponsePayload<IParentProduct>;
     } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
-
-  async getParentProductDetailsById(id: number, select: string): Promise<IResponsePayload<IParentProduct>> {
-    try {
-      const data = await this.parentProductModel.aggregate([
-        { $match: { id } },
-        {
-          $lookup: {
-            from: 'tags',
-            localField: 'tags',
-            foreignField: 'id',
-            as: 'tags',
-          },
-        },
-        {
-          $lookup: {
-            from: 'brands',
-            localField: 'brand',
-            foreignField: 'id',
-            as: 'brand',
-          },
-        },
-        {
-          $lookup: {
-            from: 'categories',
-            localField: 'category',
-            foreignField: 'id',
-            as: 'category',
-          },
-        },
-        {
-          $lookup: {
-            from: 'companies',
-            localField: 'company',
-            foreignField: 'id',
-            as: 'company',
-          },
-        },
-        {
-          $lookup: {
-            from: 'products',
-            localField: 'id',
-            foreignField: 'parentProduct',
-            as: 'products',
-          },
-        },
-        {
-          $unwind: {
-            path: '$products',
-            preserveNullAndEmptyArrays: true,
-          },
-        },
-        {
-          $lookup: {
-            from: 'attributevalues',
-            localField: 'products.variants',
-            foreignField: 'id',
-            as: 'products.variants',
-          },
-        },
-        {
-          $lookup: {
-            from: 'attributes',
-            localField: 'products.variants.attribute',
-            foreignField: 'id',
-            as: 'products.variants.attribute',
-          },
-        },
-        {
-          $group: {
-            _id: '$id',
-            data: { $first: '$$ROOT' },
-            products: { $push: '$products' },
-          },
-        },
-        {
-          $addFields: {
-            'data.products': '$products',
-          },
-        },
-        {
-          $replaceRoot: {
-            newRoot: '$data',
-          },
-        },
-      ]);
-
-      if (!data || data.length === 0) {
-        return {
-          success: false,
-          message: 'No data found',
-          data: null,
-        } as unknown as IResponsePayload<IParentProduct>;
+      this.logger.error(err);
+      if (err.code && err.code.toString() === ErrorCodes.PROJECTION_MISMATCH) {
+        throw new BadRequestException('Error! Projection mismatch');
+      } else {
+        throw new InternalServerErrorException();
       }
-
-      return {
-        success: true,
-        message: 'Success',
-        data: data[0],
-      } as unknown as IResponsePayload<IParentProduct>;
-    } catch (err) {
-      console.warn(err)
-      throw new InternalServerErrorException(err.message);
     }
   }
 }
