@@ -8,7 +8,9 @@ import { IAttribute } from '../../../attribute/interfaces/attribute-data.interfa
 import { IAttributeValue } from '../../../attribute/interfaces/attribute-value-data.interface';
 import { ProductFormService } from '../../services/product-form.service';
 import { ImageModule } from 'primeng/image';
-import e from 'express';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { GalleryDialogeComponent } from '../../../gallery/components/gallery-dialoge/gallery-dialoge.component';
+import { IGallery } from '../../../gallery/interfaces/gallery-data.interface';
 
 @Component({
   selector: 'app-child-information-create',
@@ -20,14 +22,21 @@ import e from 'express';
   ],
   templateUrl: './child-information-create.component.html',
   styleUrl: './child-information-create.component.scss',
+  providers: [DialogService]
 })
 export class ChildInformationCreateComponent implements OnInit {
   chieldArrayForm = input.required<FormArray<FormGroup<IProductForm>>>();
   attributeApiService = inject(AttributeApiService);
   productFormService = inject(ProductFormService);
   rootFormGroup = inject(FormGroupDirective);
+  dialogService = inject(DialogService);
 
   attributeList: IAttribute[] = [];
+
+
+  //Image Dialog
+  ref: DynamicDialogRef | undefined;
+
   ngOnInit(): void {
     this.attributeApiService.getAllWithValues().subscribe((res) => {
       if (res.success) {
@@ -118,14 +127,14 @@ export class ChildInformationCreateComponent implements OnInit {
     this.selectedAttributeIds = []
   }
 
-  getSelectedVariantsName(variantsIds:number[]|undefined){
-    if(variantsIds){
-      let result="";
-      this.attributeList.forEach((item)=>{
-        if(item.values){
-          item.values.forEach((value)=>{
-            if(variantsIds.includes(value.id)){
-              result+=item.name+":"+value.name+",";
+  getSelectedVariantsName(variantsIds: number[] | undefined) {
+    if (variantsIds) {
+      let result = "";
+      this.attributeList.forEach((item) => {
+        if (item.values) {
+          item.values.forEach((value) => {
+            if (variantsIds.includes(value.id)) {
+              result += item.name + ":" + value.name + ",";
             }
           })
         }
@@ -133,5 +142,31 @@ export class ChildInformationCreateComponent implements OnInit {
       return result.replace(/,$/, "");
     }
     return "";
+  }
+
+
+
+  openImageDialog(dialogFor: string, multiple: boolean,selectedIndex:number) {
+    this.ref = this.dialogService.open(GalleryDialogeComponent, {
+      data: {
+        for: 'select',
+        multiple: multiple,
+      },
+      header: 'Select a Image',
+      width: '70%',
+      showHeader: false,
+    });
+
+    this.ref.onClose.subscribe((gallery: IGallery[]) => {
+      if (gallery && gallery.length) {
+        this.chieldArrayForm().at(selectedIndex).patchValue({
+          [dialogFor]: multiple ? gallery.map((item) => item.url) : gallery[0].url
+        })
+      } else {
+        this.chieldArrayForm().at(selectedIndex).patchValue({
+          [dialogFor]: null
+        });
+      }
+    });
   }
 }

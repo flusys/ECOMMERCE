@@ -8,22 +8,29 @@ import { CategoryApiService } from '../../services/category-api.service';
 import { CategoryFormService } from '../../services/category-form.service';
 import { CategoryStateService } from '../../services/category-state.service';
 import { AppTreeCategoryComponent } from '../tree-category.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { GalleryDialogeComponent } from '../../../gallery/components/gallery-dialoge/gallery-dialoge.component';
+import { IGallery } from '../../../gallery/interfaces/gallery-data.interface';
+import { ImageModule } from 'primeng/image';
 
 @Component({
   selector: 'app-category-create',
   imports: [
     AngularModule,
     PrimeModule,
+    ImageModule,
 
     AppTreeCategoryComponent
   ],
   templateUrl: './category-create.component.html',
   styleUrl: './category-create.component.scss',
+  providers: [DialogService]
 })
 export class CategoryCreateComponent {
   categoryFormService = inject(CategoryFormService);
   categoryStateService = inject(CategoryStateService);
   categoryApiService = inject(CategoryApiService);
+  dialogService = inject(DialogService);
   private messageService = inject(MessageService);
 
   isPanelCollapsed = true;
@@ -32,13 +39,16 @@ export class CategoryCreateComponent {
   readonly inputForm = viewChild.required<NgForm>('inputForm');
   readonly formControls = viewChildren(FormControlName, { read: ElementRef });
 
+  //Image Dialog
+  ref: DynamicDialogRef | undefined;
+
   constructor() {
     effect(() => {
       const model = this.categoryStateService.select('editModelData')() ?? undefined;
       if (model) {
         this.model = model;
         this.isPanelCollapsed = false;
-        this.categoryFormService.patchValue({ ...model, ...{ parent: (model.parent as ICategory)?.id??null } });
+        this.categoryFormService.patchValue({ ...model, ...{ parent: (model.parent as ICategory)?.id ?? null } });
       } else {
         this.model = undefined;
       }
@@ -60,6 +70,37 @@ export class CategoryCreateComponent {
       })
     }
   }
+
+
+  get image(): string | undefined {
+    return this.categoryFormService?.value?.image;
+  }
+
+
+  openImageDialog(dialogFor: string, multiple: boolean) {
+    this.ref = this.dialogService.open(GalleryDialogeComponent, {
+      data: {
+        for: 'select',
+        multiple: multiple,
+      },
+      header: 'Select a Image',
+      width: '70%',
+      showHeader: false,
+    });
+
+    this.ref.onClose.subscribe((gallery: IGallery[]) => {
+      if (gallery && gallery.length) {
+        this.categoryFormService.patchValue({
+          [dialogFor]: multiple ? gallery.map((item) => item.url) : gallery[0].url
+        })
+      } else {
+        this.categoryFormService.patchValue({
+          [dialogFor]: null
+        });
+      }
+    });
+  }
+
 
   onSubmit() {
     if (this.categoryFormService.formGroup.invalid) {

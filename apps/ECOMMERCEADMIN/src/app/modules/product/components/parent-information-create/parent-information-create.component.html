@@ -116,18 +116,20 @@
     </div>
     <div class="col-12 md:col-6">
         <div class="col-5 md:col-5 flex align-items-end">
-            <button pButton pRipple type="button" label="Choose Image" icon="pi pi-check" width="32"></button>
+            <button pButton pRipple type="button" label="Choose Image" icon="pi pi-check" width="32"
+                (click)="openImageDialog('images',true)"></button>
         </div>
-        <div class="grid" *ngIf="images?.length">
+        @if(images.length){
+        <div class="grid gap-2">
             @for (image of images; track image; let i = $index) {
             <div class="col-4 md:col-3">
-                <p-image [src]="image" width="100" [preview]="true"></p-image>
+                <p-image [src]="image" width="100" height="100" [preview]="true"></p-image>
             </div>
             }
         </div>
+        }
     </div>
-</div>
-<p-dialog header="Select Category" [(visible)]="showCategoryTree" [style]="{width: '50vw'}">
-    <app-category-tree [categoryTree]="CATEGORIES" (itemSelected)="handleItemSelection($event)"
-        [parentId]="categoryId"></app-category-tree>
-</p-dialog>
+    <p-dialog header="Select Category" [(visible)]="showCategoryTree" [style]="{width: '50vw'}">
+        <app-category-tree [categoryTree]="CATEGORIES" (itemSelected)="handleItemSelection($event)"
+            [parentId]="categoryId"></app-category-tree>
+    </p-dialog>

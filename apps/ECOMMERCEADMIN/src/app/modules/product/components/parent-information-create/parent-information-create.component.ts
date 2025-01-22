@@ -14,6 +14,9 @@ import { ProductFormService } from '../../services/product-form.service';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { EditorModule } from 'primeng/editor';
 import { ChipModule } from 'primeng/chip';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { GalleryDialogeComponent } from '../../../gallery/components/gallery-dialoge/gallery-dialoge.component';
+import { IGallery } from '../../../gallery/interfaces/gallery-data.interface';
 
 @Component({
   selector: 'app-parent-information-create',
@@ -29,6 +32,7 @@ import { ChipModule } from 'primeng/chip';
   ],
   templateUrl: './parent-information-create.component.html',
   styleUrl: './parent-information-create.component.scss',
+  providers: [DialogService]
 })
 export class ParentInformationCreateComponent {
   parentForm = input.required<FormGroup<IParentProductForm>>();
@@ -37,8 +41,12 @@ export class ParentInformationCreateComponent {
   categoryStateService = inject(CategoryStateService);
   companyStateService = inject(CompanyStateService);
   tagStateService = inject(TagStateService);
+  dialogService = inject(DialogService);
 
   productFormService = inject(ProductFormService);
+
+  //Image Dialog
+  ref: DynamicDialogRef | undefined;
 
   get formValue() {
     return this.parentForm()?.value;
@@ -67,14 +75,14 @@ export class ParentInformationCreateComponent {
     if (value.value) {
       const parentForm = this.parentForm();
       if (parentForm) {
-        this.selectedCategoryInformation= value.item;
+        this.selectedCategoryInformation = value.item;
         parentForm.patchValue({
           category: value.item.id
         });
       }
     } else {
       const parentForm = this.parentForm();
-      this.selectedCategoryInformation= null;
+      this.selectedCategoryInformation = null;
       if (parentForm) {
         parentForm.patchValue({
           category: undefined
@@ -88,6 +96,29 @@ export class ParentInformationCreateComponent {
     return Array.isArray(images) ? images : [];
   }
 
+  openImageDialog(dialogFor: string, multiple: boolean) {
+    this.ref = this.dialogService.open(GalleryDialogeComponent, {
+      data: {
+        for: 'select',
+        multiple: multiple,
+      },
+      header: 'Select a Image',
+      width: '70%',
+      showHeader: false,
+    });
+
+    this.ref.onClose.subscribe((gallery: IGallery[]) => {
+      if (gallery && gallery.length) {
+        this.parentForm().patchValue({
+          [dialogFor]: multiple ? gallery.map((item) => item.url) : gallery[0].url
+        })
+      } else {
+        this.parentForm().patchValue({
+          [dialogFor]: null
+        });
+      }
+    });
+  }
 
   //Specification Section
   get specifications() {

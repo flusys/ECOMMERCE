@@ -7,20 +7,26 @@ import { IBrand } from '../../interfaces/brand-data.interface';
 import { BrandApiService } from '../../services/brand-api.service';
 import { BrandFormService } from '../../services/brand-form.service';
 import { BrandStateService } from '../../services/brand-state.service';
+import { ImageModule } from 'primeng/image';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { GalleryDialogeComponent } from '../../../gallery/components/gallery-dialoge/gallery-dialoge.component';
+import { IGallery } from '../../../gallery/interfaces/gallery-data.interface';
 
 @Component({
   selector: 'app-brand-create',
   imports: [
     AngularModule,
-    PrimeModule
+    PrimeModule,
+    ImageModule,
   ],
   templateUrl: './brand-create.component.html',
-  styleUrl: './brand-create.component.scss',
+  providers: [DialogService]
 })
 export class BrandCreateComponent {
   brandFormService = inject(BrandFormService);
   brandStateService = inject(BrandStateService);
   brandApiService = inject(BrandApiService);
+  dialogService = inject(DialogService);
   private messageService = inject(MessageService);
 
   isPanelCollapsed = true;
@@ -29,7 +35,11 @@ export class BrandCreateComponent {
   readonly inputForm = viewChild.required<NgForm>('inputForm');
   readonly formControls = viewChildren(FormControlName, { read: ElementRef });
 
-  constructor() {
+  //Image Dialog
+  ref: DynamicDialogRef | undefined;
+
+  constructor(
+  ) {
     effect(() => {
       const model = this.brandStateService.select('editModelData')() ?? undefined;
       if (model) {
@@ -41,7 +51,34 @@ export class BrandCreateComponent {
       }
     });
   }
+  get image(): string|undefined {
+    return this.brandFormService?.value?.image;
+  }
 
+
+  openImageDialog(dialogFor: string, multiple: boolean) {
+    this.ref = this.dialogService.open(GalleryDialogeComponent, {
+      data: {
+        for: 'select',
+        multiple: multiple,
+      },
+      header: 'Select a Image',
+      width: '70%',
+      showHeader: false,
+    });
+
+    this.ref.onClose.subscribe((gallery: IGallery[]) => {
+      if (gallery && gallery.length) {
+        this.brandFormService.patchValue({
+          [dialogFor]: multiple ? gallery.map((item) => item.url) : gallery[0].url
+        })
+      }else{
+        this.brandFormService.patchValue({
+          [dialogFor]: null
+        });
+      }
+    });
+  }
 
   onSubmit() {
     if (this.brandFormService.formGroup.invalid) {
