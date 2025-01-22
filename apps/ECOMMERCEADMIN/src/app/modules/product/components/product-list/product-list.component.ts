@@ -5,6 +5,7 @@ import { LayoutService } from 'flusysng/layout/services';
 import { ProductApiService } from '../../../product/services/product-api.service';
 import { IProduct } from '../../interfaces/product-data.interface';
 import { Router } from '@angular/router';
+import { IAttribute } from '../../../attribute/interfaces/attribute-data.interface';
 
 @Component({
   selector: 'app-product-list',
@@ -51,7 +52,11 @@ export class ProductListComponent {
     this.router.navigate(['/create-product']);
   }
 
-
+  getVariantName(data:IProduct){
+    return data?.variants?.reduce((prev,cur)=>{
+      return prev + (cur?.attribute as IAttribute)?.name +':'+ cur?.name + ', ';
+    },'');
+  }
 
   clearAll() {
     this.selectedProduct = []
