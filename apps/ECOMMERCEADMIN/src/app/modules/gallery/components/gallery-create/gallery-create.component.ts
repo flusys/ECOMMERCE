@@ -1,9 +1,7 @@
-import { Component, effect, ElementRef, inject, viewChild, viewChildren } from '@angular/core';
+import { Component, ElementRef, inject, viewChild, viewChildren } from '@angular/core';
 import { NgForm, FormControlName } from '@angular/forms';
 import { AngularModule, PrimeModule } from 'flusysng/shared/modules';
 import { MessageService } from 'primeng/api';
-import { take } from 'rxjs';
-import { IGallery } from '../../interfaces/gallery-data.interface';
 import { GalleryApiService } from '../../services/gallery-api.service';
 import { GalleryFormService } from '../../services/gallery-form.service';
 import { GalleryStateService } from '../../services/gallery-state.service';
