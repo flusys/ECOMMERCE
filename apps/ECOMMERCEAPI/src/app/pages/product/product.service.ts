@@ -193,24 +193,46 @@ export class ProductService {
           from: 'attributevalues',
           localField: 'variants',
           foreignField: 'id',
-          as: 'variants',
+          as: 'variantDetails',
         },
-      },
-      {
-        $unwind: { path: '$variants', preserveNullAndEmptyArrays: true },
       },
       {
         $lookup: {
-          from: 'attributes', // Join with 'attributes' collection
-          localField: 'variants.attribute', // Join based on attribute reference
+          from: 'attributes',
+          localField: 'variantDetails.attribute',
           foreignField: 'id',
-          as: 'variants.attribute',
+          as: 'attributeDetails',
         },
       },
       {
-        $unwind: { path: '$variants.attribute', preserveNullAndEmptyArrays: true },
+        $addFields: {
+          variants: {
+            $map: {
+              input: '$variantDetails',
+              as: 'variant',
+              in: {
+                id: '$$variant.id',
+                name: '$$variant.name',
+                attribute: {
+                  $arrayElemAt: [
+                    {
+                      $filter: {
+                        input: '$attributeDetails',
+                        as: 'attr',
+                        cond: { $eq: ['$$attr.id', '$$variant.attribute'] },
+                      },
+                    },
+                    0,
+                  ],
+                },
+              },
+            },
+          },
+        },
       },
+      
     );
+    
 
     // Sort
     if (sort) {
@@ -260,7 +282,6 @@ export class ProductService {
 
         "variants.name": 1,
         "variants.attribute.name": 1,
-
       };
     }
 
@@ -355,28 +376,72 @@ export class ProductService {
           as: 'products',
         },
       },
-      { $unwind: { path: '$products', preserveNullAndEmptyArrays: true } },
       {
         $lookup: {
           from: 'attributevalues',
           localField: 'products.variants',
           foreignField: 'id',
-          as: 'products.variants',
+          as: 'variantDetails',
         },
-      },
-      {
-        $unwind: { path: '$products.variants', preserveNullAndEmptyArrays: true },
       },
       {
         $lookup: {
-          from: 'attributes', // Join with 'attributes' collection
-          localField: 'products.variants.attribute', // Join based on attribute reference
+          from: 'attributes',
+          localField: 'variantDetails.attribute',
           foreignField: 'id',
-          as: 'products.variants.attribute',
+          as: 'attributeDetails',
         },
       },
       {
-        $unwind: { path: '$products.variants.attribute', preserveNullAndEmptyArrays: true },
+        $addFields: {
+          products: {
+            $map: {
+              input: '$products',
+              as: 'products',
+              in: {
+                id: '$$products.id',
+                price: '$$products.price',
+                image: '$$products.image',
+                warning: '$$products.warning',
+                warningDay: '$$products.warningDay',
+                refundable: '$$products.refundable',
+                returnable: '$$products.returnable',
+                sku: '$$products.sku',
+                barCode: '$$products.barCode',
+                ingredients: '$$products.ingredients',
+                trackQuantity: '$$products.trackQuantity',
+                stockQuantity: '$$products.stockQuantity',
+                earnPoint: '$$products.earnPoint',
+                isActive: '$$products.isActive',
+                activeOnline: '$$products.activeOnline',
+                status: '$$products.status',
+                variants: {
+                  $map: {
+                    input: '$variantDetails',
+                    as: 'variant',
+                    in: {
+                      id: '$$variant.id',
+                      name: '$$variant.name',
+                      attribute: {
+                        $arrayElemAt: [
+                          {
+                            $filter: {
+                              input: '$attributeDetails',
+                              as: 'attr',
+                              cond: { $eq: ['$$attr.id', '$$variant.attribute'] },
+                            },
+                          },
+                          0,
+                        ],
+                      },
+                    },
+                  },
+                },
+                
+              },
+            },
+          },
+        },
       },
     );
 
@@ -413,6 +478,7 @@ export class ProductService {
       "tags.name": 1,
 
 
+      "products.id": 1,
       "products.price": 1,
       "products.image": 1,
       "products.warning": 1,

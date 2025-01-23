@@ -52,10 +52,13 @@ export class ProductListComponent {
     this.router.navigate(['/create-product']);
   }
 
-  getVariantName(data:IProduct){
-    return data?.variants?.reduce((prev,cur)=>{
-      return prev + (cur?.attribute as IAttribute)?.name +':'+ cur?.name + ', ';
-    },'');
+  getVariantName(data: IProduct) {
+    if (data.variants && data.variants.length) {
+      return data?.variants?.reduce((prev, cur) => {
+        return prev + (cur?.attribute as IAttribute)?.name + ':' + cur?.name + ', ';
+      }, '');
+    }
+    return "";
   }
 
   clearAll() {
