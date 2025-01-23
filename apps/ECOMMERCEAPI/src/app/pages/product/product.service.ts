@@ -76,6 +76,33 @@ export class ProductService {
   }
 
 
+  async updateProduct(addProductDto: AddParentProductDto): Promise<IResponsePayload<IProduct>> {
+    try {
+      addProductDto.chields.forEach(async (childDto) => {
+        if (childDto.id) {
+          const childData = { ...childDto, parentProduct: addProductDto.id };
+          await this.productModel.updateOne({ id: childData.id }, childData);
+        } else {
+          const childId = await this.counterService.getNextId('product_id');
+          const childData = { ...childDto, id: childId, parentProduct: addProductDto.id };
+          const childProductModel = new this.productModel(childData); // Assuming the schema is the same
+          await childProductModel.save();
+        }
+      });
+
+      delete addProductDto.chields;
+      const updateProduct = await this.parentProductModel.updateOne({ id: addProductDto.id }, addProductDto);
+      return {
+        success: true,
+        message: 'Success! Data Updated.',
+        data: updateProduct,
+      } as unknown as IResponsePayload<IProduct>;
+    } catch (error) {
+      this.logger.error('Failed to add product with chields', error.stack);
+      throw new InternalServerErrorException('An error occurred while adding the product.');
+    }
+  }
+
 
   /**
    * getAllProducts
@@ -230,9 +257,9 @@ export class ProductService {
           },
         },
       },
-      
+
     );
-    
+
 
     // Sort
     if (sort) {
@@ -437,7 +464,7 @@ export class ProductService {
                     },
                   },
                 },
-                
+
               },
             },
           },
@@ -449,6 +476,7 @@ export class ProductService {
     // Select
     const mSelect = {
       "_id": 1,
+      "id": 1,
       "name": 1,
       "readOnly": 1,
       "slug": 1,
@@ -494,7 +522,7 @@ export class ProductService {
       "products.isActive": 1,
       "products.activeOnline": 1,
       "products.status": 1,
-      
+
       "products.variants.id": 1,
       "products.variants.name": 1,
       "products.variants.attribute.id": 1,
@@ -519,4 +547,24 @@ export class ProductService {
       }
     }
   }
+
+
+  async deleteProduct(id: number): Promise<IResponsePayload<string>> {
+    try {
+      const deleteProduct = await this.productModel.deleteOne({ id: id });  
+      return {
+        success: true,
+        message: 'Success! Data Deleted.',
+        data: deleteProduct,
+      } as unknown as IResponsePayload<string>;
+    } catch (err) {
+      this.logger.error(err);
+      if (err.code && err.code.toString() === ErrorCodes.PROJECTION_MISMATCH) {
+        throw new BadRequestException('Error! Projection mismatch');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
+  }
+  
 }

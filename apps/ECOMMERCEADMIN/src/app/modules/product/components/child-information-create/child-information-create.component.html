@@ -99,7 +99,7 @@
                                 name="S_Value" type="text" class="w-full" />
                         </div>
                         <div class="col-2 md:col-2 field flex align-items-end">
-                            <button pButton styleClass="p-button-danger" icon="pi pi-trash"
+                            <button pButton styleClass="p-button-danger" type="button" icon="pi pi-trash"
                                 (click)="removeIngredients(i,j)"></button>
                         </div>
                     </div>
@@ -110,8 +110,10 @@
                     </div>
                 </div>
                 <div class="col-3 md:col-3 field boolForm">
-                    <button pButton pRipple type="button" styleClass="p-button-danger" icon="pi pi-trash"
+                    @if(!chieldArrayForm().at(i).value.id){
+                        <button pButton pRipple type="button" styleClass="p-button-danger" icon="pi pi-trash"
                         label="Remove Attribute" (click)="removeChild(i)"></button>
+                    }
                 </div>
                 <div class="col-2 md:col-2 field boolForm">
                     <button pButton pRipple type="button" styleClass="p-button-danger" icon="pi pi-copy"

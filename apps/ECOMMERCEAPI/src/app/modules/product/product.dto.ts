@@ -3,6 +3,7 @@ import {
   IsBoolean,
   IsNotEmpty,
   IsNotEmptyObject,
+  IsNumber,
   IsObject,
   IsOptional,
   ValidateNested,
@@ -11,6 +12,10 @@ import { Type } from 'class-transformer';
 import { PaginationDto } from '../../shared/dtos/pagination.dto';
 
 export class AddProductDto {
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
+
   @IsOptional()
   @IsArray()
   variants: number[];

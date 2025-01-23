@@ -15,6 +15,7 @@ const InitValue: IProductStoreState = {
   pagination: { pageSize: dataFarPage, currentPage: 0 },
 
   editModelData: null,
+  editModelParentData:null,
   loading: false,
 };
 

@@ -83,7 +83,8 @@
         </div>
         @if(formValue.videoUrl){
         <div class="field col-12 md:col-6 flex align-items-end">
-            <button pButton pRipple type="button" label="Image" icon="pi pi-check"></button>
+            <button pButton pRipple type="button" label="Image" icon="pi pi-check"
+                (click)="openImageDialog('videoThumbnailImage',false)"></button>
             @if(formValue.videoThumbnailImage){
             <p-image [src]="formValue.videoThumbnailImage" [preview]="true"></p-image>
             }

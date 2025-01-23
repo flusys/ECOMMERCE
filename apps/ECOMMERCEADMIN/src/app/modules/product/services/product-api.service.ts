@@ -19,6 +19,10 @@ export class ProductApiService {
     return this.http.post<IResponsePayload<IParentProduct>>(this.baseUrl + "/insert", data);
   }
 
+  updateParentProduct(data: ɵFormGroupValue<IParentProductForm>): Observable<IResponsePayload<IParentProduct>> {
+    return this.http.post<IResponsePayload<IParentProduct>>(this.baseUrl + "/update", data);
+  }
+
   getParentProductById(id: string): Observable<IResponsePayload<IParentProduct>> {
     return this.http.get<IResponsePayload<IParentProduct>>(this.baseUrl + "/parent-product/" + id);
   }
@@ -27,4 +31,7 @@ export class ProductApiService {
     return this.http.post<IResponsePayload<IProduct[]>>(this.baseUrl + "/get-all", body);
   }
 
+  deleteProduct(id: number): Observable<IResponsePayload<string>> {
+    return this.http.delete<IResponsePayload<string>>(this.baseUrl + "/delete/" + id);
+  }
 }

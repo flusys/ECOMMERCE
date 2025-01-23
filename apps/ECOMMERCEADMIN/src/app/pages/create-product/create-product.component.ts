@@ -53,6 +53,7 @@ export class CreateProductComponent {
         this.isEdit = true;
         this.productApiService.getParentProductById(model.parentProduct._id).subscribe(res => {
           const data = res.result;
+          this.productStateService.setState({ editModelParentData: data });
           this.productFormService.patchValue({
             ...data,
             ...{
@@ -101,12 +102,21 @@ export class CreateProductComponent {
       this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Sorry!', detail: "Please Fill Form Correctly" });
       return;
     } else {
-      this.productApiService.createParentProduct(this.productFormService.value).subscribe(res => {
-        if (res.success)
-          this.router.navigate(['/product-list'])
-        else
-          this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Sorry!', detail: res.message });
-      })
+      if (this.isEdit) {
+        this.productApiService.updateParentProduct(this.productFormService.value).subscribe(res => {
+          if (res.success)
+            this.router.navigate(['/product-list'])
+          else
+            this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Sorry!', detail: res.message });
+        })
+      } else {
+        this.productApiService.createParentProduct(this.productFormService.value).subscribe(res => {
+          if (res.success)
+            this.router.navigate(['/product-list'])
+          else
+            this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Sorry!', detail: res.message });
+        })
+      }
     }
   }
 }

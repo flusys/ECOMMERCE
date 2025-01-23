@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Logger,
   Param,
@@ -40,6 +41,14 @@ export class ProductController {
     return await this.productService.addProduct(addProductDto);
   }
 
+  @Post('/update')
+  @UsePipes(ValidationPipe)
+  async updateProduct(
+    @Body()
+    addProductDto: AddParentProductDto,
+  ): Promise<IResponsePayload<IProduct>> {
+    return await this.productService.updateProduct(addProductDto);
+  }
 
   /**
    * GET DATA
@@ -63,5 +72,15 @@ export class ProductController {
     @Query() select: string,
   ): Promise<IResponsePayload<IParentProduct>> {
     return await this.productService.getParentProductDetailsById(id, select);
+  }
+
+
+
+  @Version(VERSION_NEUTRAL)
+  @Delete('delete/:id')
+  async deleteProduct(
+    @Param('id') id: number,
+  ): Promise<IResponsePayload<string>> {
+    return await this.productService.deleteProduct(id);
   }
 }

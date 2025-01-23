@@ -3,6 +3,7 @@ import {
   IsBoolean,
   IsNotEmpty,
   IsNotEmptyObject,
+  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -13,6 +14,10 @@ import { AddProductDto } from './product.dto';
 import { PaginationDto } from '../../shared/dtos/pagination.dto';
 
 export class AddParentProductDto {
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
+
   @IsNotEmpty()
   @IsString()
   name: string;

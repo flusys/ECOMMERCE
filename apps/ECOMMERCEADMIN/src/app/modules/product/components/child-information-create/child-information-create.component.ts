@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, effect, inject, input, OnInit } from '@angular/core';
 import { IProductForm } from '../../interfaces/product-form.interface';
 import { FormArray, FormGroup, FormGroupDirective } from '@angular/forms';
 import { AngularModule, PrimeModule } from 'flusysng/shared/modules';
@@ -11,6 +11,8 @@ import { ImageModule } from 'primeng/image';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GalleryDialogeComponent } from '../../../gallery/components/gallery-dialoge/gallery-dialoge.component';
 import { IGallery } from '../../../gallery/interfaces/gallery-data.interface';
+import { ProductStateService } from '../../services/product-state.service';
+import { ProductApiService } from '../../services/product-api.service';
 
 @Component({
   selector: 'app-child-information-create',
@@ -28,14 +30,38 @@ export class ChildInformationCreateComponent implements OnInit {
   chieldArrayForm = input.required<FormArray<FormGroup<IProductForm>>>();
   attributeApiService = inject(AttributeApiService);
   productFormService = inject(ProductFormService);
+  productApiService = inject(ProductApiService);
   rootFormGroup = inject(FormGroupDirective);
   dialogService = inject(DialogService);
 
   attributeList: IAttribute[] = [];
+  productStateService = inject(ProductStateService);
 
 
   //Image Dialog
   ref: DynamicDialogRef | undefined;
+
+
+  constructor() {
+    effect(() => {
+      const model: any = this.productStateService.select('editModelParentData')() ?? undefined;
+      if (model) {
+        this.chieldArrayForm().clear();
+        model.products.forEach((item: any, i: number) => {
+          const f = this.productFormService.productFormGroup;
+          item.variants = item.variants.map((item: any) => item.id);
+          f.patchValue(item);
+          this.chieldArrayForm().push(f);
+          this.ingredients(i).clear();
+          item.ingredients = item.ingredients?.forEach((item: any) => {
+            const ingredient = this.productFormService.ingredientsFromGroup;
+            ingredient.patchValue({ key: item.key, value: item.value });
+            this.ingredients(i).push(ingredient);
+          });
+        });
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.attributeApiService.getAllWithValues().subscribe((res) => {
@@ -53,19 +79,31 @@ export class ChildInformationCreateComponent implements OnInit {
     this.chieldArrayForm().push(f);
   }
   duplicateChild(index: number) {
-    const data = this.chieldArrayValue.at(index);
+    const data = this.chieldArrayForm().at(index).value;
     const f = this.productFormService.productFormGroup;
+    data.id = 0;
+    data.barCode = "";
+    f.patchValue(data);
     this.chieldArrayForm().push(f);
     this.ingredients(this.chieldArrayForm().length - 1).clear()
     if (data && data.ingredients && data.ingredients.length) {
       data.ingredients.map(ing => {
         const j = this.productFormService.ingredientsFromGroup;
+        j.patchValue(ing);
         this.ingredients(this.chieldArrayForm().length - 1).push(j);
       });
     }
   }
+
   removeChild(index: number) {
-    this.chieldArrayForm()?.removeAt(index);
+    const id = this.chieldArrayForm().at(index).value.id;
+    if (id) {
+      this.productApiService.deleteProduct(id).subscribe((res) => {
+        this.chieldArrayForm()?.removeAt(index);
+      });
+    } else {
+      this.chieldArrayForm()?.removeAt(index);
+    }
   }
 
   //Ingredients Manage Start
@@ -146,7 +184,7 @@ export class ChildInformationCreateComponent implements OnInit {
 
 
 
-  openImageDialog(dialogFor: string, multiple: boolean,selectedIndex:number) {
+  openImageDialog(dialogFor: string, multiple: boolean, selectedIndex: number) {
     this.ref = this.dialogService.open(GalleryDialogeComponent, {
       data: {
         for: 'select',

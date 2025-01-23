@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { AngularModule, PrimeModule } from 'flusysng/shared/modules';
 import { IParentProductForm } from '../../interfaces/product-form.interface';
 import { FormGroup, FormArray } from '@angular/forms';
@@ -17,6 +17,7 @@ import { ChipModule } from 'primeng/chip';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GalleryDialogeComponent } from '../../../gallery/components/gallery-dialoge/gallery-dialoge.component';
 import { IGallery } from '../../../gallery/interfaces/gallery-data.interface';
+import { ProductStateService } from '../../services/product-state.service';
 
 @Component({
   selector: 'app-parent-information-create',
@@ -44,9 +45,23 @@ export class ParentInformationCreateComponent {
   dialogService = inject(DialogService);
 
   productFormService = inject(ProductFormService);
+  productStateService = inject(ProductStateService);
 
   //Image Dialog
   ref: DynamicDialogRef | undefined;
+
+  constructor() {
+    effect(() => {
+      const model: any = this.productStateService.select('editModelParentData')() ?? undefined;
+      if (model) {
+        this.selectedCategoryInformation = model.category;
+        this.specifications.clear(); 
+        model.specifications.forEach((item: any) => {
+          this.onAddNewSpecifications(item);
+        });
+      }
+    });
+  }
 
   get formValue() {
     return this.parentForm()?.value;
@@ -71,6 +86,7 @@ export class ParentInformationCreateComponent {
   get categoryId(): number {
     return this.parentForm()?.value?.category ?? 0;
   }
+
   handleItemSelection(value: { item: ICategory, value: boolean }) {
     if (value.value) {
       const parentForm = this.parentForm();
@@ -124,10 +140,15 @@ export class ParentInformationCreateComponent {
   get specifications() {
     return this.parentForm()?.get('specifications') as FormArray;
   }
-  onAddNewSpecifications() {
-    const f = this.productFormService.specificationsFormGroup
+
+  onAddNewSpecifications(data?: { key: string, value: string }) {
+    const f = this.productFormService.specificationsFormGroup;
+    if (data) {
+      f.patchValue(data);
+    }
     this.specifications.push(f);
   }
+
   removeSpecifications(index: number) {
     this.specifications?.removeAt(index);
   }

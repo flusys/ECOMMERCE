@@ -1,5 +1,5 @@
 import { IResponsePayload, IFilter, ISort, IPagination } from "flusysng/shared/interfaces";
-import { IProduct } from "./product-data.interface";
+import { IParentProduct, IProduct } from "./product-data.interface";
 
 export interface IProductStoreState {
   data: IResponsePayload<IProduct[]>,
@@ -10,6 +10,7 @@ export interface IProductStoreState {
 
 
   editModelData: IProduct | null,
+  editModelParentData: IParentProduct | null,
 
   loading: boolean,
 }
