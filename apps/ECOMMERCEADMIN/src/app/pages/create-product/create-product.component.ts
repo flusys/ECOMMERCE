@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { IParentProductForm, IProductForm } from '../../modules/product/interfaces/product-form.interface';
 import { ProductStateService } from '../../modules/product/services/product-state.service';
 import { ICategory } from '../../modules/category/interfaces/category-data.interface';
+import { ITag } from '../../modules/tag/interfaces/tag-data.interface';
 
 @Component({
   selector: 'app-create-product',
@@ -51,10 +52,19 @@ export class CreateProductComponent {
       if (model) {
         this.isEdit = true;
         this.productApiService.getParentProductById(model.parentProduct._id).subscribe(res => {
-          console.warn(res)
+          const data = res.result;
+          this.productFormService.patchValue({
+            ...data,
+            ...{
+              brand: data.brand?.id,
+              company: data.company?.id,
+              category: data.category?.id,
+              tags: data.tags?.map((tag: ITag) => tag.id),
+            }
+          });
         })
       } else {
-        this.isEdit = true;
+        this.isEdit = false;
       }
     });
   }

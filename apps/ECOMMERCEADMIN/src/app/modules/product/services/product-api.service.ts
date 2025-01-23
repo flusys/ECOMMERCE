@@ -19,8 +19,8 @@ export class ProductApiService {
     return this.http.post<IResponsePayload<IParentProduct>>(this.baseUrl + "/insert", data);
   }
 
-  getParentProductById(id: string): Observable<IResponsePayload<IProduct>> {
-    return this.http.get<IResponsePayload<IProduct>>(this.baseUrl + "/parent-product/" + id);
+  getParentProductById(id: string): Observable<IResponsePayload<IParentProduct>> {
+    return this.http.get<IResponsePayload<IParentProduct>>(this.baseUrl + "/parent-product/" + id);
   }
 
   getAll(search: string, body: IFilterData): Observable<IResponsePayload<IProduct[]>> {

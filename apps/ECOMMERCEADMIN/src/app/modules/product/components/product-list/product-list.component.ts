@@ -46,7 +46,6 @@ export class ProductListComponent {
   }
 
   editProduct(product: IProduct) {
-    console.warn(product)
     this.productStateService.setState({ editModelData: null });
     this.productStateService.setState({ editModelData: product });
     this.router.navigate(['/create-product']);
