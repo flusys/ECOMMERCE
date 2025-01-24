@@ -33,7 +33,7 @@
           {
             "glob": "**/*",
             "input": "apps/ECOMMERCEUI/public",
-            "output": "assets/"
+            "output": "/"
           },
           {
             "input": "node_modules/flusysng/assets",

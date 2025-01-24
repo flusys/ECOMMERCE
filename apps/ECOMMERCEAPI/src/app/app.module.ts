@@ -21,6 +21,8 @@ import { FolderModule } from './pages/gallery/folder.module';
 import { GalleryModule } from './pages/gallery/gallery.module';
 import { SubscriberModule } from './pages/subscriber/subscriber.module';
 import { UploadModule } from './pages/gallery/upload.module';
+import { PostModule } from './pages/post/post.module';
+import { PostCategoryModule } from './pages/post/post-category.module';
 
 @Module({
   imports: [
@@ -45,7 +47,9 @@ import { UploadModule } from './pages/gallery/upload.module';
     FolderModule,
     GalleryModule,
     UploadModule,
-    SubscriberModule
+    SubscriberModule,
+    PostCategoryModule,
+    PostModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -51,6 +51,11 @@ export class MenuStateService {
       icon: 'pi pi-align-justify',
       routerLink: ['/product-list'],
     },
+    {
+      name: 'Posts',
+      icon: 'pi pi-address-book',
+      routerLink: ['/post'],
+    },
   ];
 
   constructor() {}

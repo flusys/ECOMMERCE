@@ -65,6 +65,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'post',
+        loadComponent: () =>
+          import('./pages/post/post.component').then(
+            (com) => com.PostComponent
+          ),
+      },
+      {
         path: 'tag',
         loadComponent: () =>
           import('./pages/tag/tag.component').then((com) => com.TagComponent),

@@ -7,6 +7,14 @@ export const BannerSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    type: {
+      type: String,
+      required: false,
+    },
+    url: {
+      type: String,
+      required: false,
+    },
     title: {
       type: String,
       required: true,

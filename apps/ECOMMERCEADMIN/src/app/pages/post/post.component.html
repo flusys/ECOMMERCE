@@ -1,0 +1,29 @@
+<p-panel header="Post Category Section" [toggleable]="true" class="line-height-3 m-0">
+    @defer (on viewport) {
+    <app-post-category-create />
+    } @placeholder {
+    <p>Component Load on View Port</p>
+    }
+    <br />
+    @defer (on viewport) {
+    <app-post-category-list />
+    } @placeholder {
+    <p>Component Load on View Port</p>
+    }
+</p-panel>
+
+<br/>
+
+<p-panel header="Post Section" [toggleable]="true" class="line-height-3 m-0">
+    @defer (on viewport) {
+    <app-post-create />
+    } @placeholder {
+    <p>Component Load on View Port</p>
+    }
+    <br />
+    @defer (on viewport) {
+    <app-post-list />
+    } @placeholder {
+    <p>Component Load on View Port</p>
+    }
+</p-panel>
