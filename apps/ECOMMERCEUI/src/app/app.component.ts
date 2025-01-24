@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { SiteHeaderComponent } from './core/components/site-header/site-header.component';
 import { SiteFooterComponent } from './core/components/site-footer/site-footer.component';
 import { ProductContentComponent } from './shared/components/product-content/product-content.component';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,8 @@ import { ProductContentComponent } from './shared/components/product-content/pro
     RouterOutlet,
     SiteHeaderComponent,
     SiteFooterComponent,
-    ProductContentComponent
+    ProductContentComponent,
+    ToastModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

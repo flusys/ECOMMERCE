@@ -32,12 +32,21 @@
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/ECOMMERCEUI/public"
+            "input": "apps/ECOMMERCEUI/public",
+            "output": "assets/"
+          },
+          {
+            "input": "node_modules/flusysng/assets",
+            "glob": "**/*",
+            "output": "lib/assets/"
           }
         ],
         "styles": [
           "apps/ECOMMERCEUI/src/styles.scss",
-          "node_modules/nouislider/dist/nouislider.css"
+          "node_modules/nouislider/dist/nouislider.css",
+          "node_modules/flusysng/assets/layout/styles/style.scss",
+          "node_modules/primeflex/primeflex.scss",
+          "node_modules/primeicons/primeicons.css"
         ],
         "scripts": [],
         "server": "apps/ECOMMERCEUI/src/main.server.ts",
