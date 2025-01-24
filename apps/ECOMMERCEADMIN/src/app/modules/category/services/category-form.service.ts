@@ -25,6 +25,7 @@ export class CategoryFormService extends FormCommonClass<ICategoryForm> {
       name: new FormControl('', { nonNullable: true }),
       description: new FormControl('', { nonNullable: true }),
       image: new FormControl('', { nonNullable: true }),
+      isPopular: new FormControl(true, { nonNullable: true }),
       parent: new FormControl(0, { nonNullable: true }),
     });
   }

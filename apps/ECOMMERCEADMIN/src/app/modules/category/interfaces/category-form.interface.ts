@@ -5,5 +5,6 @@ export interface ICategoryForm extends ICommonForm {
     name: FormControl<string>;
     image: FormControl<string>;
     description: FormControl<string>;
+    isPopular: FormControl<boolean>;
     parent: FormControl<number>;
 }

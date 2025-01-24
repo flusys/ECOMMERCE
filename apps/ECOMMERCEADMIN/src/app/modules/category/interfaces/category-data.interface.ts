@@ -5,6 +5,7 @@ export interface ICategory extends ICommonData {
     parent?: ICategory | number;
     image?: string;
     description?: string;
+    isPopular?: boolean;
 
     //UI Helper
     children: Array<ICategory>

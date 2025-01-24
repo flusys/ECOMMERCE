@@ -24,6 +24,10 @@ export const CategorySchema = new mongoose.Schema(
       ref: 'Category',
       required: false,
     },
+    isPopular: {
+      type: Boolean,
+      required: false,
+    },
     createdAtString: {
       type: String,
       required: false,
