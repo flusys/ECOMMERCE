@@ -27,6 +27,10 @@ export const BannerSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    mblImage: {
+      type: String,
+      required: false,
+    },
     serial: {
       type: Number,
       required: false,

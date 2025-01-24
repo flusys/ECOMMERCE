@@ -55,6 +55,10 @@ export class BannerCreateComponent {
     return this.bannerFormService?.value?.image;
   }
 
+  get mblImage(): string | undefined {
+    return this.bannerFormService?.value?.mblImage;
+  }
+  
   get typeList() {
     return [
       { level: 'Top', value: 'top' },

@@ -3,22 +3,20 @@
       <a href="#" class="block-banner__body"
         ><div
           class="block-banner__image block-banner__image--desktop"
-          style="background-image: url('images/banners/banner-1.jpg')"
+          style="background-image: url('{{ slide?.image }}')"
         ></div>
         <div
           class="block-banner__image block-banner__image--mobile"
           style="
-            background-image: url('images/banners/banner-1-mobile.jpg');
+             background-image: url('{{ slide?.mblImage }}');
           "
         ></div>
-        <div class="block-banner__title">
-          Hundreds<br class="block-banner__mobile-br" />Hand Tools
+        <div class="block-banner__title" [innerHtml]="slide?.title">
         </div>
-        <div class="block-banner__text">
-          Hammers, Chisels, Universal Pliers, Nippers, Jigsaws, Saws
+        <div class="block-banner__text" [innerHtml]="slide?.subTitle">
         </div>
         <div class="block-banner__button">
-          <span class="btn btn-sm btn-primary">Shop Now</span>
+          <span class="btn btn-sm btn-primary" (click)="clickBtn( slide?.url)">Shop Now</span>
         </div></a
       >
     </div>

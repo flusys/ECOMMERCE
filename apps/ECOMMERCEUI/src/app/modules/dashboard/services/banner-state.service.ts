@@ -12,7 +12,7 @@ const InitValue: IBannerStoreState = {
 
   filter: null,
   sort: { serial: 'ASC' },
-  select: ['id', 'type', 'url', 'title', 'image', 'mblImage', 'serial'],
+  select: ['id', 'type', 'url', 'title', 'image', 'mblImage', 'subTitle','serial'],
 
   editModelData: null,
   loading: false,

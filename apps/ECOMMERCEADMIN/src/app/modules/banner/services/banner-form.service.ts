@@ -27,6 +27,7 @@ export class BannerFormService extends FormCommonClass<IBannerForm> {
       title: new FormControl('', { nonNullable: true }),
       subTitle: new FormControl('', { nonNullable: true }),
       image: new FormControl('', { nonNullable: true }),
+      mblImage: new FormControl('', { nonNullable: true }),
       serial: new FormControl(0, { nonNullable: true }),
     });
   }

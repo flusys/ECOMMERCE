@@ -1,29 +1,41 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnInit } from '@angular/core';
+import { BannerStateService } from '../../services/banner-state.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-block-slideshow',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './block-slideshow.component.html',
   styleUrl: './block-slideshow.component.scss',
 })
 export class BlockSlideshowComponent {
-  slides = [
-    {
-      pcImage: 'images/slides/slide-1.jpg',
-      mblImage: 'images/slides/slide-1-mobile.jpg',
-      description: 'We will help you 1',
-    },
-    {
-      pcImage: 'images/slides/slide-2.jpg',
-      mblImage: 'images/slides/slide-2-mobile.jpg',
-      description: 'We will help you 2',
-    },
-    {
-      pcImage: 'images/slides/slide-3.jpg',
-      mblImage: 'images/slides/slide-3-mobile.jpg',
-      description: 'We will help you 3',
-    },
-  ];
+
+  bannerStateService = inject(BannerStateService)
+  slides:any[]=[];
+
+  constructor(){
+    effect(() => {
+      const model = this.bannerStateService.select('data')() ?? undefined;
+      if (model) {
+        const data=model.result;
+        this.slides= data.filter(res => res.type == 'top').map((res) => {
+          return {
+            image: res.image,
+            mblImage: res.mblImage,
+            title: res.title,
+            subTitle: res.subTitle
+          }
+        });
+      } else {
+        this.slides = [];
+      }
+    });
+  }
+  clickBtn(url:string){
+    window.open(url);
+  }
 }
