@@ -95,6 +95,13 @@ export const routes: Routes = [
             (com) => com.ProductListComponentPage
           ),
       },
+      {
+        path: 'banner',
+        loadComponent: () =>
+          import('./pages/banner/banner.component').then(
+            (com) => com.BannerComponent
+          ),
+      },
     ],
   },
   {

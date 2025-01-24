@@ -56,6 +56,11 @@ export class MenuStateService {
       icon: 'pi pi-address-book',
       routerLink: ['/post'],
     },
+    {
+      name: 'Banner',
+      icon: 'pi pi-address-book',
+      routerLink: ['/banner'],
+    },
   ];
 
   constructor() {}

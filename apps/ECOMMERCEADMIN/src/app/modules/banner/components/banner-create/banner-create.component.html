@@ -1,0 +1,47 @@
+<p-panel header="Create Banner " [toggleable]="true" [collapsed]="isPanelCollapsed" class="line-height-3 m-0">
+  <div class="col-12">
+    <form #inputForm="ngForm" [formGroup]="bannerFormService.formGroup" (ngSubmit)="onSubmit()">
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-4">
+          <label for="type">Type</label>
+          <p-select [options]="typeList" formControlName="type" optionLabel="level" optionValue="value" [showClear]="true"
+            placeholder="Select Type" styleClass="w-full" id="type" />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label for="url">Url</label>
+          <input autocomplete="false" pInputText class="w-full" formControlName="url" id="url"
+            name="Url" type="text" />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label for="title">Title</label>
+          <input autocomplete="false" pInputText class="w-full" formControlName="title" id="title"
+            name="Title" type="text" />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label for="subTitle">Sub-Title</label>
+          <input autocomplete="false" pInputText class="w-full" formControlName="subTitle" id="subTitle"
+            name="Sub-Title" type="text" />
+        </div>
+        <div class="field col-6 md:col-2">
+          <label for="name">Serial</label>
+          <input autocomplete="false" pInputText formControlName="serial" id="name" name="Name" class="w-full"
+            type="number" appZeroToNull />
+        </div>
+        <div class="field col-6 md:col-6 flex">
+          <div class="col-5 md:col-5 flex align-items-end">
+            <button pButton pRipple type="button" label="Choose Image" icon="pi pi-check" width="32"  (click)="openImageDialog('image',false)"></button>
+          </div>
+          @if(image){
+            <p-image [src]="image" width="100" [preview]="true"></p-image>
+          }
+        </div>
+        <div class="field col-6 md:col-4">
+          <span class="flex gap-2 justify-content-end">
+            <button pButton pRipple type="submit" [label]="model ? 'Update' : 'Save'" icon="pi pi-check"></button>
+            <button pButton pRipple type="button" label="Clear" icon="pi pi-trash" (click)="clearInputForm()"></button>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</p-panel>
