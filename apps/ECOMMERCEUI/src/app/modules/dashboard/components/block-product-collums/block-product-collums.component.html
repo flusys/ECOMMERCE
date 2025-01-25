@@ -1,57 +1,45 @@
 <div class="block block-product-columns d-lg-block d-none">
-    <div class="container">
-      <div class="row">
-        <div class="col-4">
-          <div class="block-header">
-            <h3 class="block-header__title">Top Rated Products</h3>
-            <div class="block-header__divider"></div>
-          </div>
-          <div class="block-product-columns__column">
-            <div class="block-product-columns__item">
-                <app-product-horizontal-mini-card/>
-              </div>
-              <div class="block-product-columns__item">
-                <app-product-horizontal-mini-card/>
-              </div>
-            <div class="block-product-columns__item">
-              <app-product-horizontal-mini-card/>
-            </div>
-          </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <div class="block-header">
+          <h3 class="block-header__title">Top Rated Products</h3>
+          <div class="block-header__divider"></div>
         </div>
-        <div class="col-4">
-          <div class="block-header">
-            <h3 class="block-header__title">Special Offers</h3>
-            <div class="block-header__divider"></div>
-          </div>
-          <div class="block-product-columns__column">
+        <div class="block-product-columns__column">
+          @for (product of topRatedProducts(); track product; let i = $index) {
             <div class="block-product-columns__item">
-                <app-product-horizontal-mini-card/>
-              </div>
-              <div class="block-product-columns__item">
-                <app-product-horizontal-mini-card/>
-              </div>
-            <div class="block-product-columns__item">
-              <app-product-horizontal-mini-card/>
+              <app-product-horizontal-mini-card [product]="product"/>
             </div>
-          </div>
+          }
         </div>
-        <div class="col-4">
-          <div class="block-header">
-            <h3 class="block-header__title">Bestsellers</h3>
-            <div class="block-header__divider"></div>
-          </div>
-          <div class="block-product-columns__column">
+      </div>
+      <div class="col-4">
+        <div class="block-header">
+          <h3 class="block-header__title">Special Offers</h3>
+          <div class="block-header__divider"></div>
+        </div>
+        <div class="block-product-columns__column">
+          @for (product of specialProducts(); track product; let i = $index) {
             <div class="block-product-columns__item">
-                <app-product-horizontal-mini-card/>
-              </div>
-              <div class="block-product-columns__item">
-                <app-product-horizontal-mini-card/>
-              </div>
-            <div class="block-product-columns__item">
-              <app-product-horizontal-mini-card/>
+              <app-product-horizontal-mini-card [product]="product"/>
             </div>
-          </div>
+          }
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="block-header">
+          <h3 class="block-header__title">Bestsellers</h3>
+          <div class="block-header__divider"></div>
+        </div>
+        <div class="block-product-columns__column">
+          @for (product of bestSallerProducts(); track product; let i = $index) {
+            <div class="block-product-columns__item">
+              <app-product-horizontal-mini-card [product]="product"/>
+            </div>
+          }
         </div>
       </div>
     </div>
   </div>
+</div>

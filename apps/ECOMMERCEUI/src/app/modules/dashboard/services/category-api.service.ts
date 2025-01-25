@@ -13,4 +13,8 @@ export class CategoryApiService extends ApiService<any,any> {
     super("category", http)
     this.http = http;
   }
+
+  getAllCategorys(){
+    return this.http.get<any>(this.baseUrl+'/get-tree-category');
+  }
 }

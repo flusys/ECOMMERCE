@@ -37,18 +37,22 @@ export class ProductService {
       const childProductIds = [];
       if (addProductDto.chields && addProductDto.chields.length > 0) {
         for (const childDto of addProductDto.chields) {
-          // Generate unique ID for each child
-          const childId = await this.counterService.getNextId('product_id');
+          try {
+            // Generate unique ID for each child
+            const childId = await this.counterService.getNextId('product_id');
 
-          // Merge child ID with its data
-          const childData = { ...childDto, id: childId, parentProduct: parentProductId };
+            // Merge child ID with its data
+            const childData = { ...childDto, id: childId, parentProduct: parentProductId };
 
-          // Save the child product in the database
-          const childProductModel = new this.productModel(childData); // Assuming the schema is the same
-          const savedChild = await childProductModel.save();
+            // Save the child product in the database
+            const childProductModel = new this.productModel(childData); // Assuming the schema is the same
+            const savedChild = await childProductModel.save();
 
-          // Store the child ID
-          childProductIds.push(savedChild.id);
+            // Store the child ID
+            childProductIds.push(savedChild.id);
+          } catch (error) {
+            this.logger.error('Failed to add product with chields', error.stack);
+          }
         }
       }
 
@@ -79,14 +83,19 @@ export class ProductService {
   async updateProduct(addProductDto: AddParentProductDto): Promise<IResponsePayload<IProduct>> {
     try {
       addProductDto.chields.forEach(async (childDto) => {
-        if (childDto.id) {
-          const childData = { ...childDto, parentProduct: addProductDto.id };
-          await this.productModel.updateOne({ id: childData.id }, childData);
-        } else {
-          const childId = await this.counterService.getNextId('product_id');
-          const childData = { ...childDto, id: childId, parentProduct: addProductDto.id };
-          const childProductModel = new this.productModel(childData); // Assuming the schema is the same
-          await childProductModel.save();
+        try {
+          if (childDto.id) {
+            const childData = { ...childDto, parentProduct: addProductDto.id };
+            await this.productModel.updateOne({ id: childData.id }, childData);
+          } else {
+            const childId = await this.counterService.getNextId('product_id');
+            const childData = { ...childDto, id: childId, parentProduct: addProductDto.id };
+            const childProductModel = new this.productModel(childData); // Assuming the schema is the same
+            await childProductModel.save();
+          }
+        } catch (error) {
+          console.warn(childDto)
+          this.logger.error('Failed to add product with chields', error.stack);
         }
       });
 
@@ -122,15 +131,18 @@ export class ProductService {
 
     // Modify Id as Object ID
     if (filter && filter['categoryId']) {
-      filter['parentProduct.category'] = filter['categoryId'];
+      filter['parentProduct.category.id'] = filter['categoryId'];
+      delete filter['categoryId'];
     }
 
     if (filter && filter['brandId']) {
-      filter['parentProduct.brand'] = filter['brandId'];
+      filter['parentProduct.brand.id'] = filter['brandId'];
+      delete filter['brandId'];
     }
 
     if (filter && filter['tagsId']) {
-      filter['parentProduct.tags'] = filter['tagsId'];
+      filter['parentProduct.tags.id'] = filter['tagsId'];
+      delete filter['tagsId'];
     }
 
     // Aggregate Stages
@@ -162,8 +174,6 @@ export class ProductService {
         ],
       };
     }
-
-    aggregateStages.push({ $match: mFilter });
 
     // Lookup for Joining Parent Product and Related Data
     aggregateStages.push(
@@ -257,15 +267,13 @@ export class ProductService {
           },
         },
       },
-
     );
-
 
     // Sort
     if (sort) {
       mSort = {};
       Object.keys(sort).forEach(item => {
-        mSort = { ...mSort, ...{ [item]: sort['item'] == 'ASC' ? 1 : -1 } }
+        mSort = { ...mSort, ...{ [item]: sort[item] === 'ASC' ? 1 : -1 } };
       });
     } else {
       mSort = { createdAt: -1 };
@@ -273,10 +281,15 @@ export class ProductService {
 
     aggregateStages.push({ $sort: mSort });
 
+
+    if (Object.keys(mFilter).length) {
+      aggregateStages.push({ $match: mFilter });
+    }
+
     // Select
     if (select && select.length) {
       mSelect = select.reduce((prev, curr) => {
-        return prev = { ...prev, ...{ [curr]: 1 } }
+        return { ...prev, ...{ [curr]: 1 } };
       }, {});
     } else {
       mSelect = {
@@ -302,11 +315,14 @@ export class ProductService {
         "parentProduct.images": 1,
         "parentProduct.description": 1,
         "parentProduct.isHtml": 1,
+        "parentProduct.category.id": 1,
+        "parentProduct.brand.id": 1,
+        "parentProduct.company.id": 1,
+        "parentProduct.tags.id": 1,
         "parentProduct.category.name": 1,
         "parentProduct.brand.name": 1,
         "parentProduct.company.name": 1,
         "parentProduct.tags.name": 1,
-
         "variants.name": 1,
         "variants.attribute.name": 1,
       };
@@ -551,7 +567,7 @@ export class ProductService {
 
   async deleteProduct(id: number): Promise<IResponsePayload<string>> {
     try {
-      const deleteProduct = await this.productModel.deleteOne({ id: id });  
+      const deleteProduct = await this.productModel.deleteOne({ id: id });
       return {
         success: true,
         message: 'Success! Data Deleted.',
@@ -566,5 +582,5 @@ export class ProductService {
       }
     }
   }
-  
+
 }

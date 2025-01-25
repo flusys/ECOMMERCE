@@ -1,6 +1,7 @@
-import { Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, OnInit, Renderer2, signal, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularModule } from '../../../shared/modules/angular.module';
+import { CategoryStateService } from '../../../modules/dashboard/services/category-state.service';
 
 @Component({
   selector: 'app-site-header',
@@ -11,7 +12,7 @@ import { AngularModule } from '../../../shared/modules/angular.module';
   templateUrl: './site-header.component.html',
   styleUrl: './site-header.component.scss',
 })
-export class SiteHeaderComponent {
+export class SiteHeaderComponent implements OnInit{
   showCart = false;
   @ViewChild('mobileMenu') mobileMenu!: ElementRef;
   @ViewChild('mobileMenuOpenButton') mobileMenuOpenButton!: ElementRef;
@@ -25,9 +26,19 @@ export class SiteHeaderComponent {
   @ViewChild('departmentsMenuOpenBtn') departmentsMenuOpenBtn!: ElementRef;
   isOpenDepartmentMenu=false;
 
+
+  categoryStateService=inject(CategoryStateService);
+  categories = signal<any[]>([])
   constructor(private renderer: Renderer2,private router: Router,) {
   }
 
+  get categoryTree(){
+    return this.categoryStateService.categoryTree();
+  }
+
+  ngOnInit(): void {
+  }
+  
   get isHomePage(){
     return this.router.url=='/';
   }

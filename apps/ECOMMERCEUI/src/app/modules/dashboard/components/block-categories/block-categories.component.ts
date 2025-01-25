@@ -13,9 +13,7 @@ import { CategoryApiService } from '../../services/category-api.service';
 })
 export class BlockCategoriesComponent implements OnInit {
   categoryApiService = inject(CategoryApiService);
-  categoryData: any[] = [];
-
-  categories = signal<any[]>([])
+  categories = signal<any[]>([]);
 
   ngOnInit() {
     this.getAll()

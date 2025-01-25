@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ProductVerticalCardComponent } from '../product-vertical-card/product-vertical-card.component';
 
 @Component({
@@ -11,5 +11,5 @@ import { ProductVerticalCardComponent } from '../product-vertical-card/product-v
   styleUrl: './product-horizontal-card.component.scss'
 })
 export class ProductHorizontalCardComponent {
-
+  product = input<any>();
 }

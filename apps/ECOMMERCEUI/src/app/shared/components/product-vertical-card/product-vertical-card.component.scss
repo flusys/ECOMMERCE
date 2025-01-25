@@ -152,7 +152,9 @@
 
 .product-card__name a {
   color: inherit;
-  transition: .15s
+  transition: .15s;
+  height: 38px;
+  display: block;
 }
 
 .product-card__name a:hover {

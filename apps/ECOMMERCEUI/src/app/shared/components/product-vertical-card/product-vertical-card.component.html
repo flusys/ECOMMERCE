@@ -6,54 +6,47 @@
     <span class="fake-svg-icon"></span>
   </button>
   <div class="product-card__badges-list">
-    <div class="product-card__badge product-card__badge--new">New</div>
-    <div class="product-card__badge product-card__badge--hot">Hot</div>
+    @for (tag of product()?.parentProduct?.tags; track product; let i = $index) {
+    <div class="product-card__badge" [ngClass]="{'product-card__badge--new': i % 2 === 0, 'product-card__badge--hot': i % 2 !== 0}">
+      {{tag?.name}}
+    </div>
+    }
   </div>
   <div class="product-card__image">
-    <a href="product.html"
-      ><img src="images/products/product-1.jpg" alt=""
-    /></a>
+    <a href="product.html"><img [src]="product()?.image" alt="" /></a>
   </div>
   <div class="product-card__info">
     <div class="product-card__name">
-      <a href="product.html">Electric Planer Brandix KL370090G 300 Watts</a>
+      <a href="product.html"> {{product()?.parentProduct?.name}} {{getVariantName()}}</a>
     </div>
-    <app-product-rating-bar [star]="1"/>
+    <app-product-rating-bar [star]="1" />
     @if(showFeatures()){
     <ul class="product-card__features-list">
-      <li>Speed: 750 RPM</li>
-      <li>Power Source: Cordless-Electric</li>
-      <li>Battery Cell Type: Lithium</li>
-      <li>Voltage: 20 Volts</li>
-      <li>Battery Capacity: 2 Ah</li>
+      @for (ingredient of product()?.ingredients; track product; let i = $index) {
+      <li>{{ingredient?.key}}: {{ingredient?.value}}</li>
+      }
     </ul>
     }
   </div>
   <div class="product-card__actions">
     <div class="product-card__availability">
-      Availability: <span class="text-success">In Stock</span>
+      Availability: <span class="text-success">{{product()?.activeOnline?'':'Not '}}In Stock</span>
     </div>
     <div class="product-card__prices">
-      <span class="product-card__new-price">$949.00</span>
+      <span class="product-card__new-price">{{product()?.price}}</span>
       <span class="product-card__old-price">$1189.00</span>
     </div>
     <div class="product-card__buttons">
       <button class="btn btn-primary product-card__addtocart" type="button">
         Add To Cart
       </button>
-      <button
-        class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
-        type="button"
-      >
+      <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="button">
         <svg width="16px" height="16px">
           <use xlink:href="images/sprite.svg#wishlist-16"></use>
         </svg>
         <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span>
       </button>
-      <button
-        class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare"
-        type="button"
-      >
+      <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare" type="button">
         <svg width="16px" height="16px">
           <use xlink:href="images/sprite.svg#compare-16"></use>
         </svg>

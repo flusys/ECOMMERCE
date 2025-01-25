@@ -190,6 +190,59 @@ export class CategoryService {
     }
   }
 
+  async getTreeCategorys(): Promise<IResponsePayload<Array<ICategory>>> {
+    try {
+      const categories = await this.attributeValueModel.aggregate([
+        {
+          $match: { parent: null } // Start with root categories
+        },
+        {
+          $graphLookup: {
+            from: 'categories',
+            startWith: '$id',
+            connectFromField: 'id',
+            connectToField: 'parent',
+            as: 'children',
+            depthField: 'level'
+          }
+        },
+        {
+          $sort: { level: 1 } // Optional: Sort by level if needed
+        },
+        {
+          $project: {
+            id: 1,
+            name: 1,
+            description: 1,
+            image: 1,
+            parent:1,
+            children: {
+              id: 1,
+              name: 1,
+              description: 1,
+              image: 1,
+              parent:1,
+            }
+          }
+        }
+      ]);
+      return {
+        success: true,
+        message: 'Success',
+        result: categories,
+        total: categories.length,
+      } as IResponsePayload<Array<ICategory>>;
+
+    } catch (err) {
+      this.logger.error(err);
+      if (err.code && err.code.toString() === ErrorCodes.PROJECTION_MISMATCH) {
+        throw new BadRequestException('Error! Projection mismatch');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
+  }
+
   async getCategoryById(id: string, select: string): Promise<IResponsePayload<ICategory>> {
     try {
       const data = await this.attributeValueModel.findById(id).select(select);

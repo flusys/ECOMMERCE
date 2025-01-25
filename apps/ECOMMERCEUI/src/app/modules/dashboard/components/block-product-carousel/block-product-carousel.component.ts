@@ -7,12 +7,14 @@ import {
   input,
   PLATFORM_ID,
   Renderer2,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ProductVerticalCardComponent } from '../../../../shared/components/product-vertical-card/product-vertical-card.component';
 import { SwiperContainer } from 'swiper/element';
 import { ProductHorizontalMiniCardComponent } from '../../../../shared/components/product-horizontal-mini-card/product-horizontal-mini-card.component';
 import { isPlatformBrowser } from '@angular/common';
+import { ProductApiService } from '../../services/product-api.service';
 
 @Component({
   selector: 'app-block-product-carousel',
@@ -29,6 +31,10 @@ export class BlockProductCarouselComponent {
   slidesPerView = 4;
   spaceBetween = 10;
 
+  productApiService = inject(ProductApiService);
+  products = signal<any[]>([]);
+
+
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 
   ngOnInit() {
@@ -36,6 +42,15 @@ export class BlockProductCarouselComponent {
       this.updateSwiperSettings();
       window.addEventListener('resize', this.updateSwiperSettings.bind(this));
     }
+    let tagId = 0;
+    if (this.type() == 'featured') {
+      tagId = 1;
+    } else {
+      tagId = 3;
+    }
+    this.productApiService.getAll('', { filter: { tagsId: tagId } }).subscribe(res => {
+      this.products.set(res.result);
+    })
   }
 
   updateSwiperSettings() {

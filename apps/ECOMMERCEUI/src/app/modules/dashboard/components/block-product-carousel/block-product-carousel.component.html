@@ -36,35 +36,16 @@
     </div>
     @if(type()=='featured'){
     <swiper-container #swiper [slidesPerView]="slidesPerView" [spaceBetween]="spaceBetween">
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
-      <swiper-slide><app-product-vertical-card [showFeatures]="false" /></swiper-slide>
+      @for (product of products(); track product; let i = $index) {
+      <swiper-slide><app-product-vertical-card [showFeatures]="false" [product]="product"/></swiper-slide>
+      }
     </swiper-container>
     } @if(type()=='new'){
-    <swiper-container #swiper [grid]="{ rows: 2,fill:'row' }"  [slidesPerView]="slidesPerView" [spaceBetween]="spaceBetween">
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
-      <swiper-slide><app-product-horizontal-mini-card /></swiper-slide>
+    <swiper-container #swiper [grid]="{ rows: 2,fill:'row' }" [slidesPerView]="slidesPerView"
+      [spaceBetween]="spaceBetween">
+      @for (product of products(); track product; let i = $index) {
+      <swiper-slide><app-product-horizontal-mini-card [product]="product"/></swiper-slide>
+      }
     </swiper-container>
     }
   </div>

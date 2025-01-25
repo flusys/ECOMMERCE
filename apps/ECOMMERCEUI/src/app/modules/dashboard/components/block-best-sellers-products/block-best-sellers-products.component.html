@@ -7,29 +7,16 @@
     <div class="block-products__body">
       <div class="block-products__featured">
         <div class="block-products__featured-item">
-          <app-product-vertical-card [showFeatures]="true" />
-          <app-product-horizontal-card />
+          <app-product-vertical-card [showFeatures]="true" [product]="mainProduct()" />
+          <app-product-horizontal-card [product]="mainProduct()" />
         </div>
       </div>
       <div class="block-products__list">
+        @for (product of products(); track product; let i = $index) {
         <div class="block-products__list-item">
-          <app-product-vertical-card [showFeatures]="false" />
+          <app-product-vertical-card [showFeatures]="false" [product]="product" />
         </div>
-        <div class="block-products__list-item">
-          <app-product-vertical-card [showFeatures]="false" />
-        </div>
-        <div class="block-products__list-item">
-          <app-product-vertical-card [showFeatures]="false" />
-        </div>
-        <div class="block-products__list-item">
-          <app-product-vertical-card [showFeatures]="false" />
-        </div>
-        <div class="block-products__list-item">
-          <app-product-vertical-card [showFeatures]="false" />
-        </div>
-        <div class="block-products__list-item">
-          <app-product-vertical-card [showFeatures]="false" />
-        </div>
+        }
       </div>
     </div>
   </div>

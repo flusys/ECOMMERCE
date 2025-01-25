@@ -160,164 +160,45 @@
               <div class="departments__body">
                 <div class="departments__links-wrapper">
                   <ul class="departments__links">
-                    <li class="departments__item departments__item--menu"><a href="#">Electrical <svg
-                          class="departments__link-arrow" width="6px" height="9px">
+                    @for (category of categoryTree; track category; let i = $index) {
+                    <li class="departments__item departments__item--menu">
+                      <a href="#">{{category.name}}
+                        @if(category.children && category.children.length){
+                        <svg class="departments__link-arrow" width="6px" height="9px">
                           <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
                           </use>
-                        </svg></a>
+                        </svg>
+                        }
+                      </a>
+                      @if(category.children && category.children.length){
                       <div class="departments__menu"><!-- .menu -->
                         <ul class="menu menu--layout--classic">
-                          <li><a href="#">Soldering Equipment <svg class="menu__arrow" width="6px" height="9px">
+                          @for (categoryone of category.children; track categoryone; let i = $index) {
+                          <li>
+                            <a href="#">{{categoryone.name}}
+                              @if(categoryone.children && categoryone.children.length){
+                              <svg class="menu__arrow" width="6px" height="9px">
                                 <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
                                 </use>
-                              </svg></a>
+                              </svg>
+                              }
+                            </a>
+                            @if(categoryone.children && categoryone.children.length){
                             <div class="menu__submenu"><!-- .menu -->
                               <ul class="menu menu--layout--classic">
-                                <li><a href="#">Soldering Station</a></li>
-                                <li><a href="#">Soldering Dryers</a></li>
-                                <li><a href="#">Gas Soldering Iron</a></li>
-                                <li><a href="#">Electric Soldering Iron</a>
-                                </li>
-                              </ul><!-- .menu / end -->
+                                @for (categorytwo of categoryone.children; track categorytwo; let i = $index) {
+                                <li><a href="#">{{categorytwo.name}}</a></li>
+                                }
+                              </ul>
                             </div>
+                            }
                           </li>
-                          <li><a href="#">Light Bulbs</a></li>
-                          <li><a href="#">Batteries</a></li>
-                          <li><a href="#">Light Fixtures</a></li>
-                          <li><a href="#">Warm Floor</a></li>
-                          <li><a href="#">Generators</a></li>
-                          <li><a href="#">UPS</a></li>
-                        </ul><!-- .menu / end -->
+                          }
+                        </ul>
                       </div>
+                      }
                     </li>
-                    <li class="departments__item departments__item--menu"><a href="#">Electrical <svg
-                          class="departments__link-arrow" width="6px" height="9px">
-                          <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
-                          </use>
-                        </svg></a>
-                      <div class="departments__menu"><!-- .menu -->
-                        <ul class="menu menu--layout--classic">
-                          <li><a href="#">Soldering Equipment <svg class="menu__arrow" width="6px" height="9px">
-                                <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
-                                </use>
-                              </svg></a>
-                            <div class="menu__submenu"><!-- .menu -->
-                              <ul class="menu menu--layout--classic">
-                                <li><a href="#">Soldering Station</a></li>
-                                <li><a href="#">Soldering Dryers</a></li>
-                                <li><a href="#">Gas Soldering Iron</a></li>
-                                <li><a href="#">Electric Soldering Iron</a>
-                                </li>
-                              </ul><!-- .menu / end -->
-                            </div>
-                          </li>
-                          <li><a href="#">Light Bulbs</a></li>
-                          <li><a href="#">Batteries</a></li>
-                          <li><a href="#">Light Fixtures</a></li>
-                          <li><a href="#">Warm Floor</a></li>
-                          <li><a href="#">Generators</a></li>
-                          <li><a href="#">UPS</a></li>
-                        </ul><!-- .menu / end -->
-                      </div>
-                    </li>
-                    <li class="departments__item departments__item--menu"><a href="#">Electrical <svg
-                          class="departments__link-arrow" width="6px" height="9px">
-                          <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
-                          </use>
-                        </svg></a>
-                      <div class="departments__menu"><!-- .menu -->
-                        <ul class="menu menu--layout--classic">
-                          <li><a href="#">Soldering Equipment <svg class="menu__arrow" width="6px" height="9px">
-                                <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
-                                </use>
-                              </svg></a>
-                            <div class="menu__submenu"><!-- .menu -->
-                              <ul class="menu menu--layout--classic">
-                                <li><a href="#">Soldering Station</a></li>
-                                <li><a href="#">Soldering Dryers</a></li>
-                                <li><a href="#">Gas Soldering Iron</a></li>
-                                <li><a href="#">Electric Soldering Iron</a>
-                                </li>
-                              </ul><!-- .menu / end -->
-                            </div>
-                          </li>
-                          <li><a href="#">Light Bulbs</a></li>
-                          <li><a href="#">Batteries</a></li>
-                          <li><a href="#">Light Fixtures</a></li>
-                          <li><a href="#">Warm Floor</a></li>
-                          <li><a href="#">Generators</a></li>
-                          <li><a href="#">UPS</a></li>
-                        </ul><!-- .menu / end -->
-                      </div>
-                    </li>
-                    <li class="departments__item departments__item--menu"><a href="#">Electrical <svg
-                          class="departments__link-arrow" width="6px" height="9px">
-                          <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
-                          </use>
-                        </svg></a>
-                      <div class="departments__menu"><!-- .menu -->
-                        <ul class="menu menu--layout--classic">
-                          <li><a href="#">Soldering Equipment <svg class="menu__arrow" width="6px" height="9px">
-                                <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
-                                </use>
-                              </svg></a>
-                            <div class="menu__submenu"><!-- .menu -->
-                              <ul class="menu menu--layout--classic">
-                                <li><a href="#">Soldering Station</a></li>
-                                <li><a href="#">Soldering Dryers</a></li>
-                                <li><a href="#">Gas Soldering Iron</a></li>
-                                <li><a href="#">Electric Soldering Iron</a>
-                                </li>
-                              </ul><!-- .menu / end -->
-                            </div>
-                          </li>
-                          <li><a href="#">Light Bulbs</a></li>
-                          <li><a href="#">Batteries</a></li>
-                          <li><a href="#">Light Fixtures</a></li>
-                          <li><a href="#">Warm Floor</a></li>
-                          <li><a href="#">Generators</a></li>
-                          <li><a href="#">UPS</a></li>
-                        </ul><!-- .menu / end -->
-                      </div>
-                    </li>
-                    <li class="departments__item departments__item--menu"><a href="#">Electrical <svg
-                          class="departments__link-arrow" width="6px" height="9px">
-                          <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
-                          </use>
-                        </svg></a>
-                      <div class="departments__menu"><!-- .menu -->
-                        <ul class="menu menu--layout--classic">
-                          <li><a href="#">Soldering Equipment <svg class="menu__arrow" width="6px" height="9px">
-                                <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9">
-                                </use>
-                              </svg></a>
-                            <div class="menu__submenu"><!-- .menu -->
-                              <ul class="menu menu--layout--classic">
-                                <li><a href="#">Soldering Station</a></li>
-                                <li><a href="#">Soldering Dryers</a></li>
-                                <li><a href="#">Gas Soldering Iron</a></li>
-                                <li><a href="#">Electric Soldering Iron</a>
-                                </li>
-                              </ul><!-- .menu / end -->
-                            </div>
-                          </li>
-                          <li><a href="#">Light Bulbs</a></li>
-                          <li><a href="#">Batteries</a></li>
-                          <li><a href="#">Light Fixtures</a></li>
-                          <li><a href="#">Warm Floor</a></li>
-                          <li><a href="#">Generators</a></li>
-                          <li><a href="#">UPS</a></li>
-                        </ul><!-- .menu / end -->
-                      </div>
-                    </li>
-                    <li class="departments__item"><a href="#">Power Machinery</a></li>
-                    <li class="departments__item"><a href="#">Measurement</a></li>
-                    <li class="departments__item"><a href="#">Clothes & PPE</a></li>
-                    <li class="departments__item"><a href="#">Plumbing</a></li>
-                    <li class="departments__item"><a href="#">Storage & Organization</a>
-                    </li>
-                    <li class="departments__item"><a href="#">Welding & Soldering</a>
-                    </li>
+                    }
                   </ul>
                 </div>
               </div>
