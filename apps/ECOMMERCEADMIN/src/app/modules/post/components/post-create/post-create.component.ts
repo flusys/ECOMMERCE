@@ -2,7 +2,7 @@ import { Component, effect, ElementRef, inject, viewChild, viewChildren } from '
 import { NgForm, FormControlName } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { take } from 'rxjs';
-import { IPost } from '../../interfaces/post-data.interface';
+import { IPost } from '../../interfaces/psot-data.interface';
 import { PostApiService } from '../../services/post-api.service';
 import { PostFormService } from '../../services/post-form.service';
 import { PostStateService } from '../../services/post-state.service';

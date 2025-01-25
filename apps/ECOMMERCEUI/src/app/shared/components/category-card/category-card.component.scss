@@ -24,6 +24,7 @@
 
 .category-card__content {
   display: -ms-flexbox;
+  max-width: 50%;
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column
@@ -52,7 +53,14 @@
   font-size: 14px;
   line-height: 22px;
   -ms-flex-positive: 1;
-  flex-grow: 1
+  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Limit to 4 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: calc(1.5em * 4); /* Adjust line height as needed */
+  line-height: 1.5em; 
 }
 
 .category-card__links a {
@@ -101,7 +109,9 @@
     flex-direction: column;
     padding: 24px 28px
   }
-
+  .category-card__content {
+    max-width: 100%;
+  }
   .category-card__image {
     width: auto;
     margin: 0 0 18px

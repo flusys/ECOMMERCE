@@ -64,7 +64,14 @@
 
 .post-card__content {
   font-size: 15px;
-  line-height: 24px
+  line-height: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Limit to 4 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: calc(1.5em * 4); /* Adjust line height as needed */
+  line-height: 1.5em; 
 }
 
 
@@ -124,6 +131,7 @@
     height: 40px;
     overflow: hidden
   }
+
   .block-posts--layout--list-sm .post-card .post-card__info {
     max-width: 420px;
   }
@@ -137,7 +145,6 @@
     font-size: 15px;
     line-height: 22px;
     height: 66px;
-    overflow: hidden
   }
 }
 

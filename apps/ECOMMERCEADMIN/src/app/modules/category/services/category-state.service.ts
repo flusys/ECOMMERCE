@@ -12,7 +12,7 @@ const InitValue: ICategoryStoreState = {
 
   filter: null,
   sort: { serial: 'ASC' },
-  select: ['id', 'name', 'discription', 'image', 'parent', 'isPopular'],
+  select: ['id', 'name', 'description', 'image', 'parent', 'isPopular'],
 
   editModelData: null,
   loading: false,

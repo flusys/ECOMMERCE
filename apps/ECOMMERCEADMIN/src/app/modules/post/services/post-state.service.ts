@@ -2,7 +2,7 @@ import { effect, inject, Injectable } from '@angular/core';
 import { ɵFormGroupValue } from '@angular/forms';
 import { getInitResponse, Store } from 'flusysng/shared/classes';
 import { take } from 'rxjs';
-import { IPost } from '../interfaces/post-data.interface';
+import { IPost } from '../interfaces/psot-data.interface';
 import { IPostForm } from '../interfaces/post-form.interface';
 import { IPostStoreState } from '../interfaces/post-state.interfaces';
 import { PostApiService } from './post-api.service';

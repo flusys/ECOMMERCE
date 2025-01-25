@@ -3,7 +3,7 @@ import { LayoutService } from 'flusysng/layout/services';
 import { IDeleteData } from 'flusysng/shared/interfaces';
 import { MessageService } from 'primeng/api';
 import { take } from 'rxjs';
-import { IPost } from '../../interfaces/post-data.interface';
+import { IPost } from '../../interfaces/psot-data.interface';
 import { PostApiService } from '../../services/post-api.service';
 import { PostStateService } from '../../services/post-state.service';
 import { AngularModule, PrimeModule } from 'flusysng/shared/modules';

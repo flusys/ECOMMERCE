@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ɵFormGroupValue } from '@angular/forms';
 import { ApiService } from 'flusysng/shared/classes';
-import { IPost } from '../interfaces/post-data.interface';
+import { IPost } from '../interfaces/psot-data.interface';
 import { IPostForm } from '../interfaces/post-form.interface';
 
 @Injectable({

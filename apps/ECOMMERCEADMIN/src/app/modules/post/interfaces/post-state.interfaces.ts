@@ -1,5 +1,5 @@
 import { IResponsePayload, IFilter, ISort, IPagination } from "flusysng/shared/interfaces";
-import { IPost } from "./post-data.interface";
+import { IPost } from "./psot-data.interface";
 
 export interface IPostStoreState {
   data: IResponsePayload<IPost[]>,
