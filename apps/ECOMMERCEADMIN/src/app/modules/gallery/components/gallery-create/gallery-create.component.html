@@ -4,7 +4,7 @@
       <div class="p-fluid p-formgrid grid">
         <div class="field col-12 md:col-8">
           <div class="field col-12 md:col-12">
-            <label for="name">Folder</label>
+            <label for="name">Folder <i class="pi pi-sync cursor-pointer" (click)="folderStateService.reset()"></i></label>
             <div class="flex gap-2">
               <p-dropdown [options]="folderList" formControlName="folder" optionLabel="name" optionValue="id"
                 [showClear]="true" placeholder="Select Folder" styleClass="w-full" id="folder">

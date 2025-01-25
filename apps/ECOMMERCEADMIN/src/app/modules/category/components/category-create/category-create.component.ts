@@ -48,7 +48,7 @@ export class CategoryCreateComponent {
       if (model) {
         this.model = model;
         this.isPanelCollapsed = false;
-        this.categoryFormService.patchValue({ ...model, ...{ parent: (model.parent as ICategory)?.id ?? null } });
+        this.categoryFormService.patchValue({ ...model, ...{ parent: (model.parent as ICategory)?.id ?? null, isPopular: model.isPopular ?? false } });
       } else {
         this.model = undefined;
       }

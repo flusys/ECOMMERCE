@@ -1,28 +1,15 @@
 <div class="block block--highlighted block-categories block-categories--layout--classic">
   <div class="container">
-      <div class="block-header">
-          <h3 class="block-header__title">Popular Categories</h3>
-          <div class="block-header__divider"></div>
+    <div class="block-header">
+      <h3 class="block-header__title">Popular Categories</h3>
+      <div class="block-header__divider"></div>
+    </div>
+    <div class="block-categories__list">
+      @for (slide of categories(); track slide; let i = $index) {
+      <div class="block-categories__item category-card">
+        <app-category-card [category]="slide"/>
       </div>
-      <div class="block-categories__list">
-          <div class="block-categories__item category-card">
-            <app-category-card/>
-          </div>
-          <div class="block-categories__item category-card">
-            <app-category-card/>
-          </div>
-          <div class="block-categories__item category-card">
-            <app-category-card/>
-          </div>
-          <div class="block-categories__item category-card">
-            <app-category-card/>
-          </div>
-          <div class="block-categories__item category-card">
-            <app-category-card/>
-          </div>
-          <div class="block-categories__item category-card">
-              <app-category-card/>
-          </div>
-      </div>
+      }
+    </div>
   </div>
 </div>

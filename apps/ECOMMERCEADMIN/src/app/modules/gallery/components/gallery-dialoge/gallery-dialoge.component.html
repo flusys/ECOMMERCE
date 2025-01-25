@@ -27,8 +27,9 @@
     <div class="grid gap-2">
       @for (gallery of galleryStateService.select('data')().result; track gallery.url; let i = $index) {
       <div class="flex relative">
+        <p class="absolute z-1 right-0" style="color: red;">{{gallery.name}}</p>
         <p-image [src]="gallery.url" alt="Image" width="200" height="200" [preview]="true"></p-image>
-        <div class="absolute r-0 t-0 z-5">
+        <div class="absolute left-0 t-0 z-5">
           <p-button icon="pi pi-check" (click)="selectImage(gallery)"></p-button>
         </div>
       </div>

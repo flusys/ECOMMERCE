@@ -1,11 +1,14 @@
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, PLATFORM_ID, ViewChild, inject } from '@angular/core';
 import { SwiperContainer } from 'swiper/element';
+import { BrandApiService } from '../../services/brand-api.service';
 
 @Component({
   selector: 'app-block-brands',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './block-brands.component.html',
   styleUrl: './block-brands.component.scss'
@@ -16,12 +19,24 @@ export class BlockBrandsComponent {
   slidesPerView = 4;
   spaceBetween = 20;
 
+
+  brandApiService=inject(BrandApiService);
+  blogData:any[]=[];  
+
   constructor() { }
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.updateSwiperSettings();
       window.addEventListener('resize', this.updateSwiperSettings.bind(this));
     }
+    this.getAll()
+  }
+
+  getAll(){
+    const select=['id','name','image'];
+     this.brandApiService.getAll('',{select}).subscribe((res)=>{
+      this.blogData=res.result;
+     });
   }
 
   updateSwiperSettings() {

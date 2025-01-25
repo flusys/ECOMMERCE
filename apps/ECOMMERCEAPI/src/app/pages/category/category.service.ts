@@ -166,8 +166,10 @@ export class CategoryService {
       const dataAggregates = await this.attributeValueModel.aggregate(aggregatesCategoryes);
       if (pagination) {
         return {
-          ...{ ...dataAggregates[0] },
-          ...{ success: true, message: 'Success' },
+          result: dataAggregates[0].data,
+          success: true,
+          message: 'Success',
+          total: dataAggregates[0].count,
         } as IResponsePayload<Array<ICategory>>;
       } else {
         return {

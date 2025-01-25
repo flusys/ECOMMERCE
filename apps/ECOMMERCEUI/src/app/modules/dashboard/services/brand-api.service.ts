@@ -2,17 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ɵFormGroupValue } from '@angular/forms';
 import { ApiService } from 'flusysng/shared/classes';
-import { IPost } from '../interfaces/post-data.interface';
-import { IPostForm } from '../interfaces/post-form.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PostApiService extends ApiService<ɵFormGroupValue<IPostForm>, IPost> {
+export class BrandApiService  extends ApiService<any, any> {
   protected override http: HttpClient;
   constructor() {
     const http = inject(HttpClient);
-    super("post", http)
+    super("brand", http)
     this.http = http;
   }
 }

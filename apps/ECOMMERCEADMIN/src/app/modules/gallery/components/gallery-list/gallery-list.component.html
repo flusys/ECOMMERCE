@@ -3,6 +3,7 @@
   <div class="grid">
     @for (item of galleryStateService.select('data')().result; track item.url; let i = $index) {
     <div class="col-4 md:col-3 sm:col-4 p-card">
+      <p>{{item.name}}</p>
       <img [src]="item.url" class="w-full"/>
     </div>
     }
