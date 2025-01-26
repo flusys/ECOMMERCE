@@ -1,7 +1,8 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NouiFormatter, NouisliderModule } from 'ng2-nouislider';
+import { CategoryStateService } from '../../../dashboard/services/category-state.service';
 
 @Component({
   selector: 'app-product-filter',
@@ -17,6 +18,7 @@ export class ProductFilterComponent {
 
   someKeyboardConfig: object;
 
+  categoryStateService=inject(CategoryStateService);
   constructor(private decimalPipe: DecimalPipe) {
     this.someKeyboardConfig = {
       connect: true,
@@ -32,6 +34,11 @@ export class ProductFilterComponent {
       },
       behaviour: 'drag',
     };
+  }
+
+
+  get categoryTree(){
+    return this.categoryStateService.categoryTree();
   }
 
   toggle(event: MouseEvent) {

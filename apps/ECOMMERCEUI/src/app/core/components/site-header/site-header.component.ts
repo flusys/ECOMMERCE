@@ -28,7 +28,6 @@ export class SiteHeaderComponent implements OnInit{
 
 
   categoryStateService=inject(CategoryStateService);
-  categories = signal<any[]>([])
   constructor(private renderer: Renderer2,private router: Router,) {
   }
 

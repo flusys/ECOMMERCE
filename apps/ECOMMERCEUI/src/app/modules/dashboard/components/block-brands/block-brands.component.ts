@@ -21,7 +21,7 @@ export class BlockBrandsComponent {
 
 
   brandApiService=inject(BrandApiService);
-  blogData:any[]=[];  
+  brandData:any[]=[];  
 
   constructor() { }
   ngOnInit() {
@@ -35,7 +35,7 @@ export class BlockBrandsComponent {
   getAll(){
     const select=['id','name','image'];
      this.brandApiService.getAll('',{select}).subscribe((res)=>{
-      this.blogData=res.result;
+      this.brandData=res.result;
      });
   }
 
