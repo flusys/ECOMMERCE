@@ -13,7 +13,7 @@
     </div>
     <div class="block-posts__slider">
       <swiper-container #swiper [slidesPerView]="slidesPerView" [spaceBetween]="spaceBetween">
-        @for (slide of postData; track slide; let i = $index) {
+        @for (slide of postData; track slide.id; let i = $index) {
         <swiper-slide>
           <div class="post-card">
             <div class="post-card__image"><a href="#"><img [src]="slide.image" alt=""></a>

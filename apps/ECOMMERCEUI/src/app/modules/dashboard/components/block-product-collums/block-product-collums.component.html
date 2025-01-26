@@ -7,7 +7,7 @@
           <div class="block-header__divider"></div>
         </div>
         <div class="block-product-columns__column">
-          @for (product of topRatedProducts(); track product; let i = $index) {
+          @for (product of topRatedProducts(); track product.id; let i = $index) {
             <div class="block-product-columns__item">
               <app-product-horizontal-mini-card [product]="product"/>
             </div>
@@ -20,7 +20,7 @@
           <div class="block-header__divider"></div>
         </div>
         <div class="block-product-columns__column">
-          @for (product of specialProducts(); track product; let i = $index) {
+          @for (product of specialProducts(); track product.id; let i = $index) {
             <div class="block-product-columns__item">
               <app-product-horizontal-mini-card [product]="product"/>
             </div>
@@ -33,7 +33,7 @@
           <div class="block-header__divider"></div>
         </div>
         <div class="block-product-columns__column">
-          @for (product of bestSallerProducts(); track product; let i = $index) {
+          @for (product of bestSallerProducts(); track product.id; let i = $index) {
             <div class="block-product-columns__item">
               <app-product-horizontal-mini-card [product]="product"/>
             </div>

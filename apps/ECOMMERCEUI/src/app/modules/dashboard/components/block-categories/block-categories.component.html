@@ -5,7 +5,7 @@
       <div class="block-header__divider"></div>
     </div>
     <div class="block-categories__list">
-      @for (slide of categories(); track slide; let i = $index) {
+      @for (slide of categories(); track slide.id; let i = $index) {
       <div class="block-categories__item category-card">
         <app-category-card [category]="slide"/>
       </div>

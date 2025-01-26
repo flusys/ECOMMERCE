@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="block-products__list">
-        @for (product of products(); track product; let i = $index) {
+        @for (product of products(); track product.id; let i = $index) {
         <div class="block-products__list-item">
           <app-product-vertical-card [showFeatures]="false" [product]="product" />
         </div>

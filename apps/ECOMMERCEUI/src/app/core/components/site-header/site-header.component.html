@@ -160,7 +160,7 @@
               <div class="departments__body">
                 <div class="departments__links-wrapper">
                   <ul class="departments__links">
-                    @for (category of categoryTree; track category; let i = $index) {
+                    @for (category of categoryTree; track category.id; let i = $index) {
                     <li class="departments__item departments__item--menu">
                       <a href="#">{{category.name}}
                         @if(category.children && category.children.length){
@@ -173,7 +173,7 @@
                       @if(category.children && category.children.length){
                       <div class="departments__menu"><!-- .menu -->
                         <ul class="menu menu--layout--classic">
-                          @for (categoryone of category.children; track categoryone; let i = $index) {
+                          @for (categoryone of category.children; track categoryone.id; let i = $index) {
                           <li>
                             <a href="#">{{categoryone.name}}
                               @if(categoryone.children && categoryone.children.length){
@@ -186,7 +186,7 @@
                             @if(categoryone.children && categoryone.children.length){
                             <div class="menu__submenu"><!-- .menu -->
                               <ul class="menu menu--layout--classic">
-                                @for (categorytwo of categoryone.children; track categorytwo; let i = $index) {
+                                @for (categorytwo of categoryone.children; track categorytwo.id; let i = $index) {
                                 <li><a href="#">{{categorytwo.name}}</a></li>
                                 }
                               </ul>
