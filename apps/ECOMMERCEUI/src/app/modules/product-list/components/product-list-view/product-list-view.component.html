@@ -4,49 +4,26 @@
       <div class="view-options__layout">
         <div class="layout-switcher">
           <div class="layout-switcher__list">
-            <button
-              data-layout="grid-3-sidebar"
-              data-with-features="false"
-              title="Grid"
-              type="button"
-              class="layout-switcher__button"
-              [ngClass]="{
+            <button data-layout="grid-3-sidebar" data-with-features="false" title="Grid" type="button"
+              class="layout-switcher__button" [ngClass]="{
                 'layout-switcher__button--active': activeLayout == 1
-              }"
-              (click)="activeLayout = 1"
-            >
+              }" (click)="activeLayout = 1">
               <svg width="16px" height="16px">
                 <use xlink:href="images/sprite.svg#layout-grid-16x16"></use>
               </svg>
             </button>
-            <button
-              data-layout="grid-3-sidebar"
-              data-with-features="false"
-              title="Grid With Features"
-              type="button"
-              class="layout-switcher__button"
-              [ngClass]="{
+            <button data-layout="grid-3-sidebar" data-with-features="false" title="Grid With Features" type="button"
+              class="layout-switcher__button" [ngClass]="{
                 'layout-switcher__button--active': activeLayout == 2
-              }"
-              (click)="activeLayout = 2"
-            >
+              }" (click)="activeLayout = 2">
               <svg width="16px" height="16px">
-                <use
-                  xlink:href="images/sprite.svg#layout-grid-with-details-16x16"
-                ></use>
+                <use xlink:href="images/sprite.svg#layout-grid-with-details-16x16"></use>
               </svg>
             </button>
-            <button
-              data-layout="list"
-              data-with-features="false"
-              title="List"
-              type="button"
-              class="layout-switcher__button"
-              [ngClass]="{
+            <button data-layout="list" data-with-features="false" title="List" type="button"
+              class="layout-switcher__button" [ngClass]="{
                 'layout-switcher__button--active': activeLayout == 3
-              }"
-              (click)="activeLayout = 3"
-            >
+              }" (click)="activeLayout = 3">
               <svg width="16px" height="16px">
                 <use xlink:href="images/sprite.svg#layout-list-16x16"></use>
               </svg>
@@ -78,149 +55,40 @@
   </div>
   <div class="products-view__list products-list">
     <div class="products-list__body">
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}" >
+      @for (product of products(); track product.id; let i = $index) {
+      <div class="products-list__item" [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
         @if(activeLayout==3){
-        <app-product-horizontal-card />
+        <app-product-horizontal-card [product]="product" />
         }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
+        <app-product-vertical-card [showFeatures]="activeLayout == 2" [product]="product" />
         }
       </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
-      <div class="products-list__item"  [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
-        @if(activeLayout==3){
-        <app-product-horizontal-card />
-        }@else {
-        <app-product-vertical-card [showFeatures]="activeLayout == 2" />
-        }
-      </div>
+      }
     </div>
   </div>
   <div class="products-view__pagination">
     <ul class="pagination justify-content-center">
       <li class="page-item disabled">
-        <a
-          class="page-link page-link--with-arrow"
-          href="#"
-          aria-label="Previous"
-          ><svg
-            class="page-link__arrow page-link__arrow--left"
-            aria-hidden="false"
-            width="8px"
-            height="13px"
-          >
+        <a class="page-link page-link--with-arrow" href="#" aria-label="Previous"><svg
+            class="page-link__arrow page-link__arrow--left" aria-hidden="false" width="8px" height="13px">
             <use xlink:href="images/sprite.svg#arrow-rounded-left-8x13"></use>
           </svg>
         </a>
       </li>
-      <li class="page-item">
-        <a class="page-link" href="#">1</a>
-      </li>
+      @for (num of getPageNumbers(); track num; let i = $index) {
+      @if(num==currentPage()){
       <li class="page-item active">
-        <a class="page-link" href="#"
-          >2 <span class="sr-only">(current)</span></a
-        >
+        <a class="page-link" href="#">{{num+1}} <span class="sr-only">(current)</span></a>
       </li>
+      }@else{
       <li class="page-item">
-        <a class="page-link" href="#">3</a>
+        <a class="page-link" href="#">{{num+1}} </a>
       </li>
+      }
+      }
       <li class="page-item">
-        <a class="page-link page-link--with-arrow" href="#" aria-label="Next"
-          ><svg
-            class="page-link__arrow page-link__arrow--right"
-            aria-hidden="false"
-            width="8px"
-            height="13px"
-          >
+        <a class="page-link page-link--with-arrow" href="#" aria-label="Next"><svg
+            class="page-link__arrow page-link__arrow--right" aria-hidden="false" width="8px" height="13px">
             <use xlink:href="images/sprite.svg#arrow-rounded-right-8x13"></use>
           </svg>
         </a>

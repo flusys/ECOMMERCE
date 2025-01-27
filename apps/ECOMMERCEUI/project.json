@@ -43,7 +43,6 @@
         ],
         "styles": [
           "apps/ECOMMERCEUI/src/styles.scss",
-          "node_modules/nouislider/dist/nouislider.css",
           "node_modules/flusysng/assets/layout/styles/style.scss",
           "node_modules/primeflex/primeflex.scss",
           "node_modules/primeicons/primeicons.css"

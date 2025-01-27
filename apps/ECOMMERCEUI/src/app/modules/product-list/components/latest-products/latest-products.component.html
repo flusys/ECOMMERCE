@@ -1,87 +1,22 @@
 <div class="widget-products widget">
     <h4 class="widget__title">Latest Products</h4>
     <div class="widget-products__list">
-      <div class="widget-products__item">
-        <div class="widget-products__image">
-          <a href="product.html"
-            ><img src="images/products/product-1.jpg" alt=""
-          /></a>
-        </div>
-        <div class="widget-products__info">
-          <div class="widget-products__name">
+      @for (product of products(); track product.id; let i = $index) {
+        <div class="widget-products__item">
+          <div class="widget-products__image">
             <a href="product.html"
-              >Electric Planer Brandix KL370090G 300 Watts</a
-            >
+              ><img [src]="product?.image" alt=""
+            /></a>
           </div>
-          <div class="widget-products__prices">$749.00</div>
-        </div>
-      </div>
-      <div class="widget-products__item">
-        <div class="widget-products__image">
-          <a href="product.html"
-            ><img src="images/products/product-2.jpg" alt=""
-          /></a>
-        </div>
-        <div class="widget-products__info">
-          <div class="widget-products__name">
-            <a href="product.html"
-              >Undefined Tool IRadix DPS3000SY 2700 Watts</a
-            >
-          </div>
-          <div class="widget-products__prices">$1,019.00</div>
-        </div>
-      </div>
-      <div class="widget-products__item">
-        <div class="widget-products__image">
-          <a href="product.html"
-            ><img src="images/products/product-3.jpg" alt=""
-          /></a>
-        </div>
-        <div class="widget-products__info">
-          <div class="widget-products__name">
-            <a href="product.html"
-              >Drill Screwdriver Brandix ALX7054 200 Watts</a
-            >
-          </div>
-          <div class="widget-products__prices">$850.00</div>
-        </div>
-      </div>
-      <div class="widget-products__item">
-        <div class="widget-products__image">
-          <a href="product.html"
-            ><img src="images/products/product-4.jpg" alt=""
-          /></a>
-        </div>
-        <div class="widget-products__info">
-          <div class="widget-products__name">
-            <a href="product.html"
-              >Drill Series 3 Brandix KSR4590PQS 1500 Watts</a
-            >
-          </div>
-          <div class="widget-products__prices">
-            <span class="widget-products__new-price"
-              >$949.00</span
-            >
-            <span class="widget-products__old-price"
-              >$1189.00</span
-            >
+          <div class="widget-products__info">
+            <div class="widget-products__name">
+              <a href="product.html"
+                >{{product?.parentProduct?.name}} {{getVariantName(product)}}</a
+              >
+            </div>
+            <div class="widget-products__prices">$749.00</div>
           </div>
         </div>
-      </div>
-      <div class="widget-products__item">
-        <div class="widget-products__image">
-          <a href="product.html"
-            ><img src="images/products/product-5.jpg" alt=""
-          /></a>
-        </div>
-        <div class="widget-products__info">
-          <div class="widget-products__name">
-            <a href="product.html"
-              >Brandix Router Power Tool 2017ERXPK</a
-            >
-          </div>
-          <div class="widget-products__prices">$1,700.00</div>
-        </div>
-      </div>
+      }
     </div>
   </div>

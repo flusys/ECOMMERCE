@@ -1,3 +1,3 @@
 googleapis class-validator mongoose @nestjs/mongoose @nestjs/config class-transformer moment-timezone nodemailer
 @primeng/themes flusysng primeflex primeicons primeng
-nouislider ng2-nouislider swiper
+swiper
