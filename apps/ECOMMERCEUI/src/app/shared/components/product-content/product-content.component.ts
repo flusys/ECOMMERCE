@@ -3,18 +3,21 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   inject,
+  input,
   PLATFORM_ID,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ProductRatingBarComponent } from '../product-rating-bar/product-rating-bar.component';
 import { SwiperContainer } from 'swiper/element';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
+import { AngularModule } from 'flusysng/shared/modules';
 
 @Component({
   selector: 'app-product-content',
   standalone: true,
   imports: [
-    CommonModule,
+    AngularModule,
     ProductRatingBarComponent
   ],
   templateUrl: './product-content.component.html',
@@ -22,16 +25,23 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProductContentComponent {
+  productDetails = input<any>();
   @ViewChild('swiper') swiperRef!: ElementRef<SwiperContainer>;
   platformId = inject(PLATFORM_ID);
   slidesPerView = 4;
   spaceBetween = 10;
+  
+
+  selectedProduct=signal({});
+
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.updateSwiperSettings();
       window.addEventListener('resize', this.updateSwiperSettings.bind(this));
+      this.selectedProduct.set(this.productDetails().products[0]);
     }
   }
+
   updateSwiperSettings() {
     const width = window.innerWidth;
     if (width < 380) {
@@ -44,15 +54,15 @@ export class ProductContentComponent {
       this.slidesPerView = 4;
     }
   }
+
   activeIndex = 0;
-  productImageList = [
-    'images/products/product-16.jpg',
-    'images/products/product-16-1.jpg',
-    'images/products/product-16-2.jpg',
-    'images/products/product-16-3.jpg',
-    'images/products/product-16-4.jpg',
-  ]
   get activeImage() {
-    return this.productImageList[this.activeIndex]
+    if (this.productDetails()?.images?.length)
+      return this.productDetails()?.images[this.activeIndex];
+    return ""
   }
+
+
+
+
 }

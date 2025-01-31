@@ -5,10 +5,7 @@
       <div class="block-header__divider"></div>
       <ul class="block-header__groups-list">
         <li>
-          <button
-            type="button"
-            class="block-header__group block-header__group--active"
-          >
+          <button type="button" class="block-header__group block-header__group--active">
             All
           </button>
         </li>
@@ -23,70 +20,22 @@
         </li>
       </ul>
       <div class="block-header__arrows-list">
-        <button
-          class="block-header__arrow block-header__arrow--left"
-          type="button"
-          (click)="changeSlide(-1)"
-        >
+        <button class="block-header__arrow block-header__arrow--left" type="button" (click)="changeSlide(-1)">
           <svg width="7px" height="11px">
             <use xlink:href="images/sprite.svg#arrow-rounded-left-7x11"></use>
           </svg>
         </button>
-        <button
-          class="block-header__arrow block-header__arrow--right"
-          type="button"
-          (click)="changeSlide(1)"
-        >
+        <button class="block-header__arrow block-header__arrow--right" type="button" (click)="changeSlide(1)">
           <svg width="7px" height="11px">
             <use xlink:href="images/sprite.svg#arrow-rounded-right-7x11"></use>
           </svg>
         </button>
       </div>
     </div>
-    <swiper-container
-      #swiper
-      [slidesPerView]="slidesPerView"
-      [spaceBetween]="spaceBetween"
-    >
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
-      <swiper-slide
-        ><app-product-vertical-card [showFeatures]="false"
-      /></swiper-slide>
+    <swiper-container #swiper [slidesPerView]="slidesPerView" [spaceBetween]="spaceBetween">
+      @for (product of products(); track product._id; let i = $index) {
+      <swiper-slide><app-product-vertical-card [showFeatures]="false" [product]="product" /></swiper-slide>
+      }
     </swiper-container>
   </div>
 </div>

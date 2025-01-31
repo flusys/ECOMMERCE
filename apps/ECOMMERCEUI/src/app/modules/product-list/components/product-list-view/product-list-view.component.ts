@@ -3,6 +3,7 @@ import { ProductVerticalCardComponent } from '../../../../shared/components/prod
 import { CommonModule } from '@angular/common';
 import { ProductHorizontalCardComponent } from '../../../../shared/components/product-horizontal-card/product-horizontal-card.component';
 import { ProductApiService } from '../../../dashboard/services/product-api.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-product-list-view',
@@ -17,18 +18,27 @@ import { ProductApiService } from '../../../dashboard/services/product-api.servi
 })
 export class ProductListViewComponent {
   activeLayout: number = 1;
-
+  activeRoute = inject(ActivatedRoute);
   productApiService = inject(ProductApiService);
   products = signal<any[]>([]);
 
-  totalProduct=signal(0);
-  totalPage=signal(0);
-  
-  currentPage=signal(0);
-  pageSize=signal(10);
+  totalProduct = signal(0);
+  totalPage = signal(0);
 
+  currentPage = signal(0);
+  pageSize = signal(10);
+  pageSizeOption=[10,20,30];
+
+  priceMax: number | null = null;
+  priceMin: number | null = null;
+  brandIds: number[] = [];
   ngOnInit() {
-    this.getAllData();
+    this.activeRoute.queryParams.subscribe(params => {
+      this.priceMax = +params['priceMax'] || null;
+      this.priceMin = +params['priceMin'] || null;
+      this.brandIds = params['brandIds'] ? params['brandIds'].split(',').map((id: any) => +id) : [];
+      this.getAllData();
+    });
   }
 
   getPageNumbers(): number[] {
@@ -44,18 +54,41 @@ export class ProductListViewComponent {
     return "";
   }
 
+  setPageSize(event:any){
+    this.pageSize.set(parseInt(event.target?.value??0));
+    this.getAllData()
+  }
+
   setPage(page: number) {
     this.currentPage.set(page);
     this.getAllData();
   }
 
-  getAllData(){
-    this.productApiService.getAll('', {  }).subscribe(res => {
-      this.products.set(res.result);
-      this.totalProduct.set(res.total??0);
+  getAllData() {
+    const filter: any = {};
 
+    if (this.priceMax !== null) {
+      filter.price = { ...filter.price, $lte: this.priceMax };
+    }
+
+    if (this.priceMin !== null) {
+      filter.price = { ...filter.price, $gte: this.priceMin };
+    }
+
+    if (this.brandIds.length > 0) {
+      filter.brandId = { $in: this.brandIds };
+    }
+
+    this.productApiService.getAll('', {
+      pagination: {
+        currentPage: this.currentPage(), pageSize: this.pageSize()
+      },
+      filter
+    }).subscribe((res: any) => {
+      this.products.set(res.result);
+      this.totalProduct.set(res.total ?? 0);
       this.totalPage.set(Math.ceil(this.totalProduct() / this.pageSize()));
-    })
+    });
   }
 
 }

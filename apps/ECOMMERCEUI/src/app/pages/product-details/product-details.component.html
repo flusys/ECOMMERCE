@@ -27,7 +27,7 @@
 <div class="block">
   <div class="container">
     <div class="product product--layout--columnar">
-      <app-product-content />
+      <app-product-content [productDetails]="productDetails()"/>
     </div>
     <div class="product-tabs">
       <div class="product-tabs__list">
@@ -55,14 +55,14 @@
       </div>
       <div class="product-tabs__content">
         @if(activeTab==1){
-        <app-product-description />
+        <app-product-description [productDetails]="productDetails()"/>
         }@else if(activeTab==2){
-        <app-product-specification />
+        <app-product-specification [productDetails]="productDetails()"/>
         }@else {
-        <app-product-reviews />
+        <app-product-reviews [productDetails]="productDetails()"/>
         }
       </div>
     </div>
   </div>
 </div>
-<app-related-products />
+<app-related-products [productDetails]="productDetails()"/>

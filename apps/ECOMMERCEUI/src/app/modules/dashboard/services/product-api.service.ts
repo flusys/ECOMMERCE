@@ -17,4 +17,7 @@ export class ProductApiService {
     return this.http.post<IResponsePayload<any[]>>(this.baseUrl + "/get-all", body);
   }
 
+  getParentProductById(id: string): Observable<IResponsePayload<any>> {
+    return this.http.get<IResponsePayload<any>>(this.baseUrl + "/parent-product/" + id);
+  }
 }

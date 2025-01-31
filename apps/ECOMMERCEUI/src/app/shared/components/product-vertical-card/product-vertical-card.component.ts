@@ -1,6 +1,7 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { Component, inject, input, InputSignal } from '@angular/core';
 import { ProductRatingBarComponent } from '../product-rating-bar/product-rating-bar.component';
 import { AngularModule } from 'flusysng/shared/modules';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-vertical-card',
@@ -14,11 +15,12 @@ import { AngularModule } from 'flusysng/shared/modules';
 })
 export class ProductVerticalCardComponent {
   showFeatures = input.required<boolean>();
+  router = inject(Router);
   product: InputSignal<any> = input<any>({
     parentProduct: '',
     image: '',
-    ingredients:[],
-    price:0
+    ingredients: [],
+    price: 0
   });
 
   quickViewShow() {
@@ -36,4 +38,7 @@ export class ProductVerticalCardComponent {
   }
 
 
+  nevigateDetailPage() {
+    this.router.navigate(['/product-details/' + this.product().parentProduct._id])
+  }
 }

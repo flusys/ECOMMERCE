@@ -424,7 +424,7 @@ screen and (min-width:992px) and (-ms-high-contrast:active) {
     margin: -2px
 }
 
-.tags__list a {
+.tags__list p {
     display: block;
     background: transparent;
     border: 1px solid #e5e5e5;
@@ -435,8 +435,8 @@ screen and (min-width:992px) and (-ms-high-contrast:active) {
     transition: all .15s
 }
 
-.tags__list a:focus,
-.tags__list a:hover {
+.tags__list p:focus,
+.tags__list p:hover {
     background: #ffd333;
     border: 1px solid #ffd333;
     color: #3d464d

@@ -31,9 +31,9 @@
           </div>
         </div>
       </div>
-      <div class="view-options__legend">Showing 6 of 98 products</div>
+      <div class="view-options__legend">Showing {{products().length}} of {{totalProduct()}} products</div>
       <div class="view-options__divider"></div>
-      <div class="view-options__control">
+      <!-- <div class="view-options__control">
         <label for="">Sort By</label>
         <div>
           <select class="form-control form-control-sm" name="" id="">
@@ -41,13 +41,15 @@
             <option value="">Name (A-Z)</option>
           </select>
         </div>
-      </div>
+      </div> -->
       <div class="view-options__control">
         <label for="">Show</label>
         <div>
-          <select class="form-control form-control-sm" name="" id="">
-            <option value="">12</option>
-            <option value="">24</option>
+          <select class="form-control form-control-sm" name="" 
+          (change)="setPageSize($event)">
+            @for (op of pageSizeOption; track op; let i = $index) {
+              <option [value]="op">{{op}}</option>
+            }
           </select>
         </div>
       </div>
@@ -55,7 +57,7 @@
   </div>
   <div class="products-view__list products-list">
     <div class="products-list__body">
-      @for (product of products(); track product.id; let i = $index) {
+      @for (product of products(); track product._id; let i = $index) {
       <div class="products-list__item" [ngStyle]="{'width': (activeLayout==3) ? '100%' : ''}">
         @if(activeLayout==3){
         <app-product-horizontal-card [product]="product" />
@@ -68,30 +70,33 @@
   </div>
   <div class="products-view__pagination">
     <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link page-link--with-arrow" href="#" aria-label="Previous"><svg
+      <li class="page-item "
+      [ngClass]="{'disabled': currentPage() === 0}">
+        <div class="page-link page-link--with-arrow" aria-label="Previous"><svg
             class="page-link__arrow page-link__arrow--left" aria-hidden="false" width="8px" height="13px">
             <use xlink:href="images/sprite.svg#arrow-rounded-left-8x13"></use>
           </svg>
-        </a>
+        </div>
       </li>
       @for (num of getPageNumbers(); track num; let i = $index) {
       @if(num==currentPage()){
       <li class="page-item active">
-        <a class="page-link" href="#">{{num+1}} <span class="sr-only">(current)</span></a>
+        <p class="page-link">{{num+1}}</p>
       </li>
       }@else{
-      <li class="page-item">
-        <a class="page-link" href="#">{{num+1}} </a>
+      <li class="page-item" (click)="currentPage.set(num)">
+        <p class="page-link">{{num+1}} </p>
       </li>
       }
       }
-      <li class="page-item">
-        <a class="page-link page-link--with-arrow" href="#" aria-label="Next"><svg
+      <li class="page-item" 
+      [ngClass]="{'disabled': currentPage() === totalPage()-1}">
+        <div class="page-link page-link--with-arrow" aria-label="Next"
+        cli><svg
             class="page-link__arrow page-link__arrow--right" aria-hidden="false" width="8px" height="13px">
             <use xlink:href="images/sprite.svg#arrow-rounded-right-8x13"></use>
           </svg>
-        </a>
+        </div>
       </li>
     </ul>
   </div>

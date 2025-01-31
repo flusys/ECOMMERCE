@@ -31,9 +31,11 @@
               <div class="filter-list__list">
                 @for (brand of brandData; track brand.image; let i = $index) {
                   <label class="filter-list__item"
+                  (click)="selectBrand(brand.id)"
                   ><span class="filter-list__input input-check"
                     ><span class="input-check__body"
-                      ><input class="input-check__input" type="checkbox" />
+                      ><input class="input-check__input" type="checkbox" 
+                      [checked]="isSelected(brand.id)"/>
                       <span class="input-check__box"></span>
                       <svg class="input-check__icon" width="9px" height="7px">
                         <use xlink:href="images/sprite.svg#check-9x7"></use>
@@ -50,7 +52,7 @@
     </div>
   </div>
   <div class="widget-filters__actions d-flex">
-    <button class="btn btn-primary btn-sm">Filter</button>
-    <button class="btn btn-secondary btn-sm ml-2">Reset</button>
+    <button class="btn btn-primary btn-sm" (click)="filter()">Filter</button>
+    <button class="btn btn-secondary btn-sm ml-2" (click)="resetFilter()">Reset</button>
   </div>
 </div>

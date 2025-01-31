@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ProductRatingBarComponent } from '../../../../shared/components/product-rating-bar/product-rating-bar.component';
 
 @Component({
@@ -8,4 +8,6 @@ import { ProductRatingBarComponent } from '../../../../shared/components/product
   templateUrl: './product-reviews.component.html',
   styleUrl: './product-reviews.component.scss',
 })
-export class ProductReviewsComponent {}
+export class ProductReviewsComponent {
+    productDetails = input<any>();
+}

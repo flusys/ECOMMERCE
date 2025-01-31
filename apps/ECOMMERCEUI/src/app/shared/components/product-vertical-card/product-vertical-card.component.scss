@@ -53,7 +53,8 @@
   flex-shrink: 0
 }
 
-.product-card__image a {
+.product-card__image .a-tag {
+  cursor: pointer;
   display: block;
   padding-bottom: 100%;
   position: relative
@@ -150,14 +151,15 @@
   flex-grow: 1
 }
 
-.product-card__name a {
+.product-card__name .a-tag {
+  cursor: pointer;
   color: inherit;
   transition: .15s;
   height: 38px;
   display: block;
 }
 
-.product-card__name a:hover {
+.product-card__name .a-tag:hover {
   color: #1a66ff
 }
 

@@ -2,10 +2,16 @@ import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
+  inject,
+  input,
+  PLATFORM_ID,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { SwiperContainer } from 'swiper/element';
 import { ProductVerticalCardComponent } from '../../../../shared/components/product-vertical-card/product-vertical-card.component';
+import { ProductApiService } from '../../../dashboard/services/product-api.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-related-products',
@@ -16,15 +22,40 @@ import { ProductVerticalCardComponent } from '../../../../shared/components/prod
   styleUrl: './related-products.component.scss',
 })
 export class RelatedProductsComponent {
+  productDetails = input<any>();
   @ViewChild('swiper') swiperRef!: ElementRef<SwiperContainer>;
+  platformId: Object = inject(PLATFORM_ID);
   slidesPerView = 5;
   spaceBetween = 10;
 
-  constructor() {}
+  productApiService = inject(ProductApiService);
+  products = signal<any[]>([]);
+
+  getVariantName(product: any) {
+    if (product?.variants && product?.variants.length) {
+      return product?.variants?.reduce((prev: any, cur: any) => {
+        return prev + (cur?.attribute as any)?.name + ':' + cur?.name + ', ';
+      }, '');
+    }
+    return "";
+  }
 
   ngOnInit() {
-    this.updateSwiperSettings();
-    window.addEventListener('resize', this.updateSwiperSettings.bind(this));
+    if (isPlatformBrowser(this.platformId)) {
+      const filter: any = {};
+      if (this.productDetails().tags?.length > 0) {
+        filter.tagsId = { $in: this.productDetails().tags.map((item: any) => item.id) };
+      }
+      if (this.productDetails()?.brand) {
+        filter.brandId = this.productDetails()?.brand.id;
+      }
+
+      this.productApiService.getAll('', { filter: { tagsId: 6 } }).subscribe(res => {
+        this.products.set(res.result);
+      })
+      this.updateSwiperSettings();
+      window.addEventListener('resize', this.updateSwiperSettings.bind(this));
+    }
   }
 
   updateSwiperSettings() {

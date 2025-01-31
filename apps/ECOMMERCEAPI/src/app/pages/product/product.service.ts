@@ -374,7 +374,6 @@ export class ProductService {
   async getParentProductDetailsById(id: string, select: string): Promise<IResponsePayload<IParentProduct>> {
     const aggregateStages = [];
     aggregateStages.push({ $match: { _id: new Types.ObjectId(id) } });
-
     aggregateStages.push(
       {
         $lookup: {

@@ -51,7 +51,6 @@ export class CreateProductComponent {
       const model: any = this.productStateService.select('editModelData')() ?? undefined;
       if (model) {
         this.isEdit = true;
-        console.warn(model)
         this.productApiService.getParentProductById(model.parentProduct._id).subscribe(res => {
           const data = res.result;
           this.productStateService.setState({ editModelParentData: data });

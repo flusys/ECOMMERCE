@@ -36,14 +36,14 @@
     </div>
     @if(type()=='featured'){
     <swiper-container #swiper [slidesPerView]="slidesPerView" [spaceBetween]="spaceBetween">
-      @for (product of products(); track product.id; let i = $index) {
+      @for (product of products(); track product._id; let i = $index) {
       <swiper-slide><app-product-vertical-card [showFeatures]="false" [product]="product"/></swiper-slide>
       }
     </swiper-container>
     } @if(type()=='new'){
     <swiper-container #swiper [grid]="{ rows: 2,fill:'row' }" [slidesPerView]="slidesPerView"
       [spaceBetween]="spaceBetween">
-      @for (product of products(); track product.id; let i = $index) {
+      @for (product of products(); track product._id; let i = $index) {
       <swiper-slide><app-product-horizontal-mini-card [product]="product"/></swiper-slide>
       }
     </swiper-container>

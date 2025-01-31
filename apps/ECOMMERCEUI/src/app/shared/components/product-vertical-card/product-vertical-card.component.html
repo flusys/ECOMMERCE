@@ -12,12 +12,12 @@
     </div>
     }
   </div>
-  <div class="product-card__image">
-    <a href="product.html"><img [src]="product()?.image" alt="" /></a>
+  <div class="product-card__image" (click)="nevigateDetailPage()">
+    <div class="a-tag"><img [src]="product()?.image" alt="" /></div>
   </div>
   <div class="product-card__info">
-    <div class="product-card__name">
-      <a href="product.html"> {{product()?.parentProduct?.name}} {{getVariantName()}}</a>
+    <div class="product-card__name" (click)="nevigateDetailPage()">
+      <div class="a-tag"> {{product()?.parentProduct?.name}} {{getVariantName()}}</div>
     </div>
     <app-product-rating-bar [star]="1" />
     @if(showFeatures()){
