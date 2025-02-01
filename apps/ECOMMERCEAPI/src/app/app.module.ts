@@ -23,6 +23,7 @@ import { SubscriberModule } from './pages/subscriber/subscriber.module';
 import { UploadModule } from './pages/gallery/upload.module';
 import { PostModule } from './pages/post/post.module';
 import { PostCategoryModule } from './pages/post/post-category.module';
+import { ReviewModule } from './pages/review/review.module';
 
 @Module({
   imports: [
@@ -49,7 +50,8 @@ import { PostCategoryModule } from './pages/post/post-category.module';
     UploadModule,
     SubscriberModule,
     PostCategoryModule,
-    PostModule
+    PostModule,
+    ReviewModule
   ],
   controllers: [AppController],
   providers: [AppService],

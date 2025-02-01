@@ -1,0 +1,1 @@
+export const PASSPORT_USER_TOKEN_TYPE="Thisisusertokentype";

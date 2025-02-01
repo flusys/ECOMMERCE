@@ -309,6 +309,7 @@ export class ProductService {
         activeOnline: 1,
         status: 1,
         "parentProduct._id": 1,
+        "parentProduct.id": 1,
         "parentProduct.name": 1,
         "parentProduct.readOnly": 1,
         "parentProduct.slug": 1,
@@ -412,6 +413,14 @@ export class ProductService {
       },
       {
         $lookup: {
+          from: 'reviews',
+          localField: 'id',
+          foreignField: 'product',
+          as: 'reviews',
+        },
+      },
+      {
+        $lookup: {
           from: 'products',
           localField: 'id',
           foreignField: 'parentProduct',
@@ -459,7 +468,13 @@ export class ProductService {
                 status: '$$products.status',
                 variants: {
                   $map: {
-                    input: '$variantDetails',
+                    input: {
+                      $filter: {
+                        input: '$variantDetails',
+                        as: 'variant',
+                        cond: { $in: ['$$variant.id', '$$products.variants'] }
+                      }
+                    },
                     as: 'variant',
                     in: {
                       id: '$$variant.id',
