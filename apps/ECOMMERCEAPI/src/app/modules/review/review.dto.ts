@@ -15,13 +15,13 @@ import { PaginationDto } from '../../shared/dtos/pagination.dto';
 export class AddReviewDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  star: string;
 }
 
 export class FilterReviewDto {
   @IsOptional()
   @IsString()
-  name: string;
+  star: string;
 }
 
 export class OptionReviewDto {
@@ -37,7 +37,7 @@ export class UpdateReviewDto {
 
   @IsNotEmpty()
   @IsString()
-  name: string;
+  star: string;
 }
 
 export class FilterAndPaginationReviewDto {

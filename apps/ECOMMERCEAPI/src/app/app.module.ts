@@ -24,6 +24,7 @@ import { UploadModule } from './pages/gallery/upload.module';
 import { PostModule } from './pages/post/post.module';
 import { PostCategoryModule } from './pages/post/post-category.module';
 import { ReviewModule } from './pages/review/review.module';
+import { UserModule } from './pages/user/user.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ReviewModule } from './pages/review/review.module';
     UtilsModule,
     EmailModule,
 
+    UserModule,
     BrandModule,
     CompanyModule,
     TagModule,

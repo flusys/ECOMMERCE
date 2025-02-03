@@ -31,8 +31,9 @@ export class ReviewService {
   async addReview(addReviewDto: AddReviewDto): Promise<IResponsePayload<IReview>> {
     try {
       const id = await this.counterService.getNextId('review_id')
+      const userId = 8;
       const createdAtString = this.utilsService.getDateString(new Date());
-      const data = new this.reviewModel({ ...addReviewDto, createdAtString, id: id });
+      const data = new this.reviewModel({ ...addReviewDto, createdAtString, id: id, user: userId });
       const saveData = await data.save();
 
       return {

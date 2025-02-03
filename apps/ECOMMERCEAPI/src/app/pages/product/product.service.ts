@@ -413,14 +413,6 @@ export class ProductService {
       },
       {
         $lookup: {
-          from: 'reviews',
-          localField: 'id',
-          foreignField: 'product',
-          as: 'reviews',
-        },
-      },
-      {
-        $lookup: {
           from: 'products',
           localField: 'id',
           foreignField: 'parentProduct',
@@ -441,6 +433,50 @@ export class ProductService {
           localField: 'variantDetails.attribute',
           foreignField: 'id',
           as: 'attributeDetails',
+        },
+      },
+      {
+        $lookup: {
+          from: 'reviews',
+          localField: 'id',
+          foreignField: 'product',
+          as: 'reviews',
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'reviews.user',
+          foreignField: 'id',
+          as: 'users',
+        },
+      },
+      {
+        $addFields: {
+          reviews: {
+            $map: {
+              input: '$reviews',
+              as: 'reviews',
+              in: {
+                id: '$$reviews.id',
+                star: '$$reviews.star',
+                comment: '$$reviews.comment',
+                createdAt: '$$reviews.createdAt',
+                user: {
+                  $arrayElemAt: [
+                    {
+                      $filter: {
+                        input: '$users',
+                        as: 'users',
+                        cond: { $eq: ['$$users.id', '$$reviews.user'] },
+                      },
+                    },
+                    0,
+                  ],
+                },
+              },
+            },
+          },
         },
       },
       {
@@ -535,6 +571,13 @@ export class ProductService {
       "tags.id": 1,
       "tags.name": 1,
 
+      "reviews.id": 1,
+      "reviews.star": 1,
+      "reviews.comment": 1,
+      "reviews.createdAt": 1,
+      "reviews.user.firstname": 1,
+      "reviews.user.lastname": 1,
+      "reviews.user.image": 1,
 
       "products.id": 1,
       "products.price": 1,

@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
@@ -39,7 +38,6 @@ export class ProductContentComponent {
     effect(() => {
       const model = this.productDetails();
       if (model?.products?.length) {
-        console.warn(model.products[0])
         this.selectedProduct.set(model.products[0]);
         const variantMap = new Map<string, Map<number, { id: number, name: string }>>();
         model.products.forEach((item: any) => {
@@ -95,15 +93,25 @@ export class ProductContentComponent {
   }
 
   isChacked(id: any): boolean {
-    return this.selectedProduct()?.variants.find((item) => item.id = id);
+    return this.selectedProduct()?.variants.find((item) => item.id == id);
   }
 
-  changeVariationSelection(id: any) {
-    console.warn(this.selectedProduct());
-    console.warn(id)
+  changeVariationSelection(id: any, variant: string) {
     if (!this.isChacked(id)) {
       const productLists = this.productDetails()?.products;
-      // this.selectedProduct()?.variants.find((item) => item.id = id);
+      const currentVariantIds = this.selectedProduct()?.variants.map((item) =>
+        item.attribute.name === variant ? id : item.id
+      );
+      const selectedProduct = productLists.find((product: any) => {
+        if (product.variants.length !== currentVariantIds?.length) {
+          return false;
+        }
+        return product.variants.every((item: any) => currentVariantIds?.includes(item.id));
+      });
+
+      if (selectedProduct) {
+        this.selectedProduct.set(selectedProduct);
+      }
     }
   }
 

@@ -3,6 +3,7 @@ import { ProductRatingBarComponent } from '../../../../shared/components/product
 import { ReviewApiService } from '../../services/reviews-api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularModule } from 'flusysng/shared/modules';
+import { AuthStateService } from 'apps/ECOMMERCEUI/src/app/core/services/auth-state.service';
 
 @Component({
   selector: 'app-product-reviews',
@@ -17,21 +18,32 @@ import { AngularModule } from 'flusysng/shared/modules';
 export class ProductReviewsComponent {
   productDetails = input<any>();
   reviewApiService = inject(ReviewApiService);
+  authStateService = inject(AuthStateService);
   fb = inject(FormBuilder);
   reviewForm!: FormGroup;
 
   ngOnInit(): void {
     this.reviewForm = this.fb.group({
-      rating: [0, Validators.required],
+      star: [0, Validators.required],
+      product: [this.productDetails().id, Validators.required],
       comment: ['', Validators.required]
     });
   }
 
   onSubmit(): void {
     if (this.reviewForm.valid) {
-      console.log(this.reviewForm.value);
-      // Handle form submission
+      this.reviewApiService.insert(this.reviewForm.value).subscribe(res => {
+        console.warn(res);
+      })
     }
   }
 
+  getFormatedDate(dateString: string) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
 }

@@ -15,6 +15,7 @@ import * as bcrypt from 'bcrypt';
 import { UtilsService } from '../../shared/modules/utils/utils.service';
 import { AddUserDto, AuthUserDto } from '../../modules/user/user.dto';
 import { IUser } from '../../modules/user/user.interface';
+import { CounterService } from '../../shared/modules/counter/counter.service';
 
 
 const ObjectId = Types.ObjectId;
@@ -31,6 +32,7 @@ export class UserService {
         protected jwtService: JwtService,
         private configService: ConfigService,
         private utilsService: UtilsService,
+        private counterService: CounterService
     ) { }
 
     /**
@@ -43,8 +45,8 @@ export class UserService {
         const { password } = createUserDto;
         const salt = await bcrypt.genSalt();
         const hashedPass = await bcrypt.hash(password, salt);
-
-        const mData = { ...createUserDto, ...{ password: hashedPass, username: createUserDto.email } };
+        const id = await this.counterService.getNextId('tag_id');
+        const mData = { ...createUserDto, ...{ password: hashedPass, username: createUserDto.email,id } };
         const newUser = new this.userModel(mData);
         try {
             const saveData = await newUser.save();
@@ -57,6 +59,7 @@ export class UserService {
                 _id: saveData._id,
             } as any;
         } catch (error) {
+            console.warn(error)
             throw new InternalServerErrorException();
         }
     }
