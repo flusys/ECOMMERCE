@@ -228,11 +228,11 @@
             <div class="indicator"><a routerLink="/wish-list" class="indicator__button"><span
                   class="indicator__area"><svg width="20px" height="20px">
                     <use xlink:href="images/sprite.svg#heart-20"></use>
-                  </svg> <span class="indicator__value">0</span></span></a></div>
+                  </svg> <span class="indicator__value">{{wishlistStateService.getWishhListProduct()?.length}}</span></span></a></div>
             <div class="indicator indicator--trigger--click"><button class="indicator__button"><span
                   class="indicator__area"><svg width="20px" height="20px">
                     <use xlink:href="images/sprite.svg#cart-20"></use>
-                  </svg> <span class="indicator__value">3</span></span></button>
+                  </svg> <span class="indicator__value">{{cartStateService.getCartListProduct()?.length}}</span></span></button>
               <div class="indicator__dropdown"><!-- .dropcart -->
                 <div class="dropcart">
                   <div class="dropcart__products-list">

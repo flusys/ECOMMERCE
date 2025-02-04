@@ -9,25 +9,25 @@ export class CartStateService {
 
   getCartListProduct() {
     if (isPlatformBrowser(this.platformId))
-      return localStorage.getItem("cart_list_items")
+      return JSON.parse(localStorage.getItem("cart_list_items") ?? "[]")
     else
-      return null
+      return []
   }
 
   setCartListProduct(productId: string, quantity: number) {
-    const previousItems = JSON.parse(this.getCartListProduct() ?? "[]");
+    const previousItems = this.getCartListProduct();
     previousItems.push({ productId, quantity });
     localStorage.setItem("cart_list_items", JSON.stringify(previousItems));
   }
 
   removeCartListProduct(productId: string) {
-    let previousItems: Array<{productId:string,quantity:number}> = JSON.parse(this.getCartListProduct() ?? "[]");
+    let previousItems: Array<{productId:string,quantity:number}> = this.getCartListProduct();
     previousItems = previousItems.filter((item) => item.productId != productId);
     localStorage.setItem("cart_list_items", JSON.stringify(previousItems));
   }
 
   isExitsOnCartList(productId: string): boolean {
-    let previousItems: Array<{productId:string,quantity:number}> = JSON.parse(this.getCartListProduct() ?? "[]");
+    let previousItems: Array<{productId:string,quantity:number}> = this.getCartListProduct();
     return previousItems.find((item) => item.productId == productId) ? true : false;
   }
 }

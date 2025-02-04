@@ -46,7 +46,7 @@
     </ul>
     <ul class="product__meta">
       <li class="product__meta-availability">
-        Availability: <span class="text-success">In Stock</span>
+        Availability: <span class="text-success">{{selectedProduct()?.activeOnline?'':'Not '}}In Stock</span>
       </li>
       <li>Brand: {{productDetails()?.brand?.name}}</li>
       <li>SKU: {{selectedProduct()?.sku}}</li>

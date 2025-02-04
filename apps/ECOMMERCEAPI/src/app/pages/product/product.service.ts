@@ -145,6 +145,11 @@ export class ProductService {
       delete filter['tagsId'];
     }
 
+    if (filter && filter['ids']) {
+      filter['_id'] = { $in: filter['ids'].map((item: string) => new Types.ObjectId(item)) };
+      delete filter['ids'];
+    }
+
     // Aggregate Stages
     const aggregateStages = [];
 

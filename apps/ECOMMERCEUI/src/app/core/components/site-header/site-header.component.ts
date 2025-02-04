@@ -2,6 +2,8 @@ import { Component, ElementRef, HostListener, inject, OnInit, Renderer2, signal,
 import { Router } from '@angular/router';
 import { AngularModule } from '../../../shared/modules/angular.module';
 import { CategoryStateService } from '../../../modules/dashboard/services/category-state.service';
+import { WishlistStateService } from '../../../modules/wishlist/services/wishlist-state.service';
+import { CartStateService } from '../../../modules/cart/services/cart-state.service';
 
 @Component({
   selector: 'app-site-header',
@@ -27,6 +29,8 @@ export class SiteHeaderComponent implements OnInit{
   isOpenDepartmentMenu=false;
 
 
+  wishlistStateService = inject(WishlistStateService);
+  cartStateService = inject(CartStateService);
   categoryStateService=inject(CategoryStateService);
   constructor(private renderer: Renderer2,private router: Router,) {
   }
