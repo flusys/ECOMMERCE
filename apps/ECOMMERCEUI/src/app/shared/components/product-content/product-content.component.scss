@@ -16,6 +16,10 @@
     min-height: 0
 }
 
+.product-gallery__carousel-image{
+    cursor: pointer;
+}
+
 @media (-ms-high-contrast:none),
 screen and (-ms-high-contrast:active) {
     .product__gallery {

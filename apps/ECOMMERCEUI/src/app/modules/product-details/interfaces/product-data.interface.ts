@@ -30,6 +30,7 @@ export interface IParentProduct {
 }
 
 export interface IProduct {
+    _id: string;
     id: number;
     readOnly: boolean;
     image: string;

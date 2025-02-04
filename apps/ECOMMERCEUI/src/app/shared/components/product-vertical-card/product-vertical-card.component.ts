@@ -2,6 +2,10 @@ import { Component, inject, input, InputSignal } from '@angular/core';
 import { ProductRatingBarComponent } from '../product-rating-bar/product-rating-bar.component';
 import { AngularModule } from 'flusysng/shared/modules';
 import { Router } from '@angular/router';
+import { WishlistStateService } from '../../../modules/wishlist/services/wishlist-state.service';
+import { CartStateService } from '../../../modules/cart/services/cart-state.service';
+import { ProductApiService } from '../../../modules/dashboard/services/product-api.service';
+import { GlobalStateService } from '../../services/global-state.service';
 
 @Component({
   selector: 'app-product-vertical-card',
@@ -16,6 +20,10 @@ import { Router } from '@angular/router';
 export class ProductVerticalCardComponent {
   showFeatures = input.required<boolean>();
   router = inject(Router);
+  wishlistStateService = inject(WishlistStateService);
+  productApiService = inject(ProductApiService);
+  cartStateService = inject(CartStateService);
+  globalStateService = inject(GlobalStateService);
   product: InputSignal<any> = input<any>({
     parentProduct: '',
     image: '',
@@ -24,8 +32,13 @@ export class ProductVerticalCardComponent {
   });
 
   quickViewShow() {
-    const quickView = document.getElementById('product-quick-view');
-    quickView?.style.setProperty('display', 'flex');
+    if (this.product().parentProduct._id) {
+      this.productApiService.getParentProductById(this.product().parentProduct._id).subscribe(res => {
+        this.globalStateService.selectedQuickViewProduct.set(res.result);
+      })
+    } else {
+      console.error('Product ID is null');
+    }
   }
 
   getVariantName() {
@@ -40,5 +53,31 @@ export class ProductVerticalCardComponent {
 
   nevigateDetailPage() {
     this.router.navigate(['/product-details/' + this.product().parentProduct._id])
+  }
+
+  get isAlreadyAddToWishlist(): boolean {
+    return this.wishlistStateService.isExitsOnWishList(this.product()._id)
+  }
+  addToWishList() {
+    if (!this.isAlreadyAddToWishlist)
+      this.wishlistStateService.setWishhListProduct(this.product()._id);
+    else
+      this.wishlistStateService.removeWishhListProduct(this.product()._id);
+  }
+
+
+  get isAlreadyExitsOnCartList(): boolean {
+    return this.cartStateService.isExitsOnCartList(this.product()._id)
+  }
+
+  addToCartList() {
+    if (!this.isAlreadyExitsOnCartList)
+      this.cartStateService.setCartListProduct(this.product()._id, 1);
+    else
+      this.cartStateService.removeCartListProduct(this.product()._id);
+  }
+
+  goToCartList() {
+    this.router.navigate(['/cart'])
   }
 }

@@ -14,6 +14,10 @@ import { SwiperContainer } from 'swiper/element';
 import { isPlatformBrowser } from '@angular/common';
 import { AngularModule } from 'flusysng/shared/modules';
 import { IProduct } from '../../../modules/product-details/interfaces/product-data.interface';
+import { WishlistStateService } from '../../../modules/wishlist/services/wishlist-state.service';
+import { CartStateService } from '../../../modules/cart/services/cart-state.service';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-content',
@@ -33,6 +37,13 @@ export class ProductContentComponent {
   slidesPerView = 4;
   spaceBetween = 10;
   varients: { [key: string]: any[] } = {};
+
+  router = inject(Router);
+  messageService = inject(MessageService);
+  wishlistStateService = inject(WishlistStateService);
+  cartStateService = inject(CartStateService);
+  quantity = signal(1);
+
 
   constructor() {
     effect(() => {
@@ -115,4 +126,80 @@ export class ProductContentComponent {
     }
   }
 
+
+  get isAlreadyAddToWishlist(): boolean {
+    if (this.selectedProduct() != null) {
+      const productId = this.selectedProduct()?._id;
+      return productId ? this.wishlistStateService.isExitsOnWishList(productId) : false;
+    }
+    return false;
+  }
+
+
+  addToWishList() {
+    if (this.selectedProduct() != null) {
+      const productId = this.selectedProduct()?._id;
+      if (productId) {
+        if (!this.isAlreadyAddToWishlist)
+          this.wishlistStateService.setWishhListProduct(productId);
+        else
+          this.wishlistStateService.removeWishhListProduct(productId);
+      }
+    }
+  }
+
+
+  get isAlreadyExitsOnCartList(): boolean {
+    if (this.selectedProduct() != null) {
+      const productId = this.selectedProduct()?._id;
+      return productId ? this.cartStateService.isExitsOnCartList(productId) : false;
+    }
+    return false;
+  }
+
+  addToCartList() {
+    if (this.quantity() <= 0) {
+      return this.messageService.add({
+        key: 'tst',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Quantity Must Be Getter than 0.',
+      });
+    }
+    if (this.selectedProduct() != null) {
+      const productId = this.selectedProduct()?._id;
+      if (productId) {
+        if (!this.isAlreadyExitsOnCartList)
+          this.cartStateService.setCartListProduct(productId, this.quantity());
+        else
+          this.cartStateService.removeCartListProduct(productId);
+      }
+    }
+  }
+
+  goToCartList() {
+    this.router.navigate(['/cart'])
+  }
+
+  changeQuantity(type:number){
+    if(type==1){
+      this.quantity.update((previous)=>{
+        return ++previous;
+      })
+    }else{
+      this.quantity.update((previous)=>{
+        if(previous==1){
+          this.messageService.add({
+            key: 'tst',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Quantity Must Be Getter than 0.',
+          });
+          return previous;
+        }else{
+          return --previous;
+        }
+      })
+    }
+  }
 }

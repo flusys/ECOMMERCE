@@ -486,6 +486,7 @@ export class ProductService {
               input: '$products',
               as: 'products',
               in: {
+                _id: '$$products._id',
                 id: '$$products.id',
                 price: '$$products.price',
                 image: '$$products.image',
@@ -580,6 +581,7 @@ export class ProductService {
       "reviews.user.image": 1,
 
       "products.id": 1,
+      "products._id": 1,
       "products.price": 1,
       "products.image": 1,
       "products.warning": 1,

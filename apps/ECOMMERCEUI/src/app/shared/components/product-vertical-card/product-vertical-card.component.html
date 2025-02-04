@@ -7,7 +7,8 @@
   </button>
   <div class="product-card__badges-list">
     @for (tag of product()?.parentProduct?.tags; track tag.id; let i = $index) {
-    <div class="product-card__badge" [ngClass]="{'product-card__badge--new': i % 2 === 0, 'product-card__badge--hot': i % 2 !== 0}">
+    <div class="product-card__badge"
+      [ngClass]="{'product-card__badge--new': i % 2 === 0, 'product-card__badge--hot': i % 2 !== 0}">
       {{tag?.name}}
     </div>
     }
@@ -37,10 +38,17 @@
       <span class="product-card__old-price">$1189.00</span>
     </div>
     <div class="product-card__buttons">
-      <button class="btn btn-primary product-card__addtocart" type="button">
+      @if(isAlreadyExitsOnCartList){
+      <button class="btn btn-primary product-card__addtocart" type="button" (click)="goToCartList()">
+        Go to Cart
+      </button>
+      }@else{
+      <button class="btn btn-primary product-card__addtocart" type="button" (click)="addToCartList()">
         Add To Cart
       </button>
-      <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="button">
+      }
+      <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="button"
+        [ngClass]="{ 'btn-withlisted': isAlreadyAddToWishlist}" (click)="addToWishList()">
         <svg width="16px" height="16px">
           <use xlink:href="images/sprite.svg#wishlist-16"></use>
         </svg>
