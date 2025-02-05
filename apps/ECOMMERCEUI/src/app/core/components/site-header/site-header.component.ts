@@ -4,6 +4,7 @@ import { AngularModule } from '../../../shared/modules/angular.module';
 import { CategoryStateService } from '../../../modules/dashboard/services/category-state.service';
 import { WishlistStateService } from '../../../modules/wishlist/services/wishlist-state.service';
 import { CartStateService } from '../../../modules/cart/services/cart-state.service';
+import { ProductApiService } from '../../../modules/dashboard/services/product-api.service';
 
 @Component({
   selector: 'app-site-header',
@@ -14,7 +15,7 @@ import { CartStateService } from '../../../modules/cart/services/cart-state.serv
   templateUrl: './site-header.component.html',
   styleUrl: './site-header.component.scss',
 })
-export class SiteHeaderComponent implements OnInit{
+export class SiteHeaderComponent implements OnInit {
   showCart = false;
   @ViewChild('mobileMenu') mobileMenu!: ElementRef;
   @ViewChild('mobileMenuOpenButton') mobileMenuOpenButton!: ElementRef;
@@ -26,24 +27,37 @@ export class SiteHeaderComponent implements OnInit{
   @ViewChild('megamenu') megamenu!: ElementRef;
 
   @ViewChild('departmentsMenuOpenBtn') departmentsMenuOpenBtn!: ElementRef;
-  isOpenDepartmentMenu=false;
+  isOpenDepartmentMenu = false;
 
 
   wishlistStateService = inject(WishlistStateService);
   cartStateService = inject(CartStateService);
-  categoryStateService=inject(CategoryStateService);
-  constructor(private renderer: Renderer2,private router: Router,) {
+  categoryStateService = inject(CategoryStateService);
+  productApiService = inject(ProductApiService);
+  products = signal<any[]>([]);
+
+  constructor(private renderer: Renderer2, private router: Router,) {
   }
 
-  get categoryTree(){
+  get categoryTree() {
     return this.categoryStateService.categoryTree();
   }
 
   ngOnInit(): void {
+    const cartList = this.cartStateService.getCartListProduct();
+    if (cartList.length) {
+      const filter = { ids: cartList.map((item: any) => item.productId) };
+      this.productApiService.getAll('', { filter }).subscribe(res => {
+        const products = res.result.map((item) => {
+          return { ...item, ...{ cartQuantity: cartList.find((cart: any) => cart.productId == item._id)?.quantity } }
+        })
+        this.products.set(products);
+      });
+    }
   }
-  
-  get isHomePage(){
-    return this.router.url=='/';
+
+  get isHomePage() {
+    return this.router.url == '/';
   }
 
   @HostListener('document:click', ['$event'])
@@ -78,10 +92,10 @@ export class SiteHeaderComponent implements OnInit{
     }
 
     if (this.departmentsMenuOpenBtn.nativeElement.isSameNode(targetElement) || this.departmentsMenuOpenBtn.nativeElement.contains(targetElement)) {
-      if(!this.isHomePage)
-        this.isOpenDepartmentMenu=!this.isOpenDepartmentMenu;
-    }else{
-      this.isOpenDepartmentMenu=false;
+      if (!this.isHomePage)
+        this.isOpenDepartmentMenu = !this.isOpenDepartmentMenu;
+    } else {
+      this.isOpenDepartmentMenu = false;
     }
   }
 
@@ -99,6 +113,7 @@ export class SiteHeaderComponent implements OnInit{
     this.renderer.removeStyle(body, 'paddingRight');
     this.renderer.removeClass(this.mobileMenu.nativeElement, 'mobilemenu--open');
   }
+
   openMobileSearch() {
     this.renderer.addClass(this.mobileMenuSearch.nativeElement, 'mobile-header__search--opened');
   }
@@ -107,7 +122,7 @@ export class SiteHeaderComponent implements OnInit{
     this.renderer.removeClass(this.mobileMenuSearch.nativeElement, 'mobile-header__search--opened');
   }
 
-  openCollapseMenu(event:MouseEvent){
+  openCollapseMenu(event: MouseEvent) {
     const target = event.target as HTMLElement; // Type assertion
     const parentDiv = target.parentElement?.parentElement;
     if (parentDiv) {
@@ -135,4 +150,13 @@ export class SiteHeaderComponent implements OnInit{
     return element.offsetParent as HTMLElement;
   }
 
+  get getSubTotal() {
+    return this.products()?.reduce((prev, cur) => {
+      return prev += (cur.cartQuantity * cur.price)
+    }, 0)
+  }
+
+  remoteCart(productId: string) {
+    this.cartStateService.removeCartListProduct(productId);
+  }
 }

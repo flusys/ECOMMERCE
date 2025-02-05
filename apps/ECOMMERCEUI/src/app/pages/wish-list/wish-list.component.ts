@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
   selector: 'app-wish-list',
   standalone: true,
   imports: [
-    ProductRatingBarComponent,
     AngularModule
   ],
   templateUrl: './wish-list.component.html',
