@@ -98,9 +98,9 @@ export class CheckoutComponent implements OnInit {
         products: this.products().map((product) => {
           return {
             product: product.id,
-            quantity: product.quantity,
+            quantity: product.cartQuantity,
             price: product.price,
-            total: (product.quantity * product.price)
+            total: (product.cartQuantity * product.price)
           }
         }),
         total: this.total
@@ -112,7 +112,7 @@ export class CheckoutComponent implements OnInit {
       this.messageService.add({
         key: 'tst',
         severity: 'success',
-        summary: 'Sorry!',
+        summary: 'Succes!',
         detail: 'Order Successfully Created.',
       });
     })

@@ -7,6 +7,7 @@ import { IOrderDetails } from '../../interfaces/order-data.interface';
 import { OrderApiService } from '../../services/order-api.service';
 import { OrderStateService } from '../../services/order-state.service';
 import { AngularModule, PrimeModule } from 'flusysng/shared/modules';
+import { OrderStatus } from '../../enums/status.enum';
 
 @Component({
   selector: 'app-order-list',
@@ -97,5 +98,13 @@ export class OrderListComponent {
 
   clearAll() {
     this.selectedOrder = []
+  }
+
+
+  get orderStatusOptions(){
+    return  Object.keys(OrderStatus).map(key => ({
+      label: key,
+      value: OrderStatus[key as keyof typeof OrderStatus]
+    }));
   }
 }

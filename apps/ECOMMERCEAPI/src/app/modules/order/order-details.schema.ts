@@ -54,7 +54,7 @@ export const OrderDetailsSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
-    shipmentPrice: {
+    shipmentAmount: {
       type: Number,
       required: false,
     },

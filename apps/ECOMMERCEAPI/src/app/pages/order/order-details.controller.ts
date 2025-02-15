@@ -51,7 +51,7 @@ export class OrderDetailsController {
     @Body() filterOrderDetailsDto: FilterAndPaginationOrderDetailsDto,
     @Query('q') searchString: string,
   ): Promise<IResponsePayload<Array<IOrderDetails>>> {
-    return this.orderDetailsService.getAllOrderDetailss(filterOrderDetailsDto, searchString);
+    return this.orderDetailsService.getAllOrderDetails(filterOrderDetailsDto, searchString);
   }
 
   @Version(VERSION_NEUTRAL)

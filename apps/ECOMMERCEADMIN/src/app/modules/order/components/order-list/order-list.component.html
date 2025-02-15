@@ -1,83 +1,125 @@
 <p-panel header="All Order List " [toggleable]="true" class="line-height-3 m-0">
-    <p-table #dt [value]="orderStateService.select('data')().result" [(selection)]="selectedOrder" dataKey="id"
-      [showCurrentPageReport]="true" [loading]="orderStateService.select('loading')()" [filterDelay]="0"
-      [globalFilterFields]="globalFilterField" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      [rowsPerPageOptions]="[5, 10, 50, 100]">
-      <ng-template pTemplate="caption">
-        <div class="table-header flex flex-wrap justify-content-left gap-3">
-          <p-button icon="pi pi-refresh" (click)="
+  <p-table #dt [value]="orderStateService.select('data')().result" [(selection)]="selectedOrder" dataKey="id"
+    [showCurrentPageReport]="true" [loading]="orderStateService.select('loading')()" [filterDelay]="0"
+    [globalFilterFields]="globalFilterField" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[5, 10, 50, 100]">
+    <ng-template pTemplate="caption">
+      <div class="table-header flex flex-wrap justify-content-left gap-3">
+        <p-button icon="pi pi-refresh" (click)="
                 orderStateService.resetFilter(); orderStateService.withDeleted = false
               " styleClass="h-full"></p-button>
-          <p-iconfield>
-            <p-inputicon styleClass="pi pi-search" />
-            <input autocomplete="false" pInputText type="text" id="globalSearch"
-              (input)="dt.filterGlobal(getInputString($event), 'contains')" placeholder="Global Search" />
-          </p-iconfield>
-          @if (selectedOrder.length && !orderStateService.withDeleted) {
-          <p-button icon="pi pi-trash" (click)="deleteOrRestore('delete')" styleClass="p-button-danger h-full"></p-button>
-          } @if (selectedOrder.length && orderStateService.withDeleted) {
-          <p-button icon="pi pi-replay" (click)="deleteOrRestore('restore')" styleClass="h-full"></p-button>
-          }
-          <p-button icon="pi pi-eye-slash" (click)="withDeletedItem()" styleClass="p-button-{{
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input autocomplete="false" pInputText type="text" id="globalSearch"
+            (input)="dt.filterGlobal(getInputString($event), 'contains')" placeholder="Global Search" />
+        </p-iconfield>
+        @if (selectedOrder.length && !orderStateService.withDeleted) {
+        <p-button icon="pi pi-trash" (click)="deleteOrRestore('delete')" styleClass="p-button-danger h-full"></p-button>
+        } @if (selectedOrder.length && orderStateService.withDeleted) {
+        <p-button icon="pi pi-replay" (click)="deleteOrRestore('restore')" styleClass="h-full"></p-button>
+        }
+        <p-button icon="pi pi-eye-slash" (click)="withDeletedItem()" styleClass="p-button-{{
                 orderStateService.withDeleted ? 'primary' : 'secondary'
               }} h-full"></p-button>
-        </div>
-      </ng-template>
-  
-      <ng-template pTemplate="header">
-        <tr>
-          <th style="width: 4rem">
-            <p-tableHeaderCheckbox inputId="checkboxP"></p-tableHeaderCheckbox>
-          </th>
-          <th style="min-width: 14rem">
-            <div class="flex justify-content-between align-items-center">
-              Order Logo
-            </div>
-          </th>
-          <th pSortableColumn="name" style="min-width: 14rem">
-            <div class="flex justify-content-between align-items-center">
-              Name
-              <p-sortIcon field="name"></p-sortIcon>
-              <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
-            </div>
-          </th>
-          <th>
-            Action
-          </th>
-        </tr>
-      </ng-template>
-  
-      <ng-template pTemplate="body" let-data>
-        <tr class="p-selectable-row">
-          <td>
-            <p-tableCheckbox inputId="checkboxC{{ data.id }}" [value]="data"></p-tableCheckbox>
-          </td>
-          <td>
-            <span class="ml-1 vertical-align-middle">
-              <img class="w-3rem h-3rem shadow-2 flex-shrink-0 border-circle" [src]="data.image" alt="{{ data.name }}" />
-            </span>
-          </td>
-          <td>
-            <span class="ml-1 vertical-align-middle  {{
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 4rem">
+          <p-tableHeaderCheckbox inputId="checkboxP"></p-tableHeaderCheckbox>
+        </th>
+        <th style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            Name
+          </div>
+        </th>
+        <th pSortableColumn="phone" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            Phone
+            <p-sortIcon field="phone"></p-sortIcon>
+            <p-columnFilter type="text" field="phone" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="address" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            Address
+            <p-sortIcon field="address"></p-sortIcon>
+            <p-columnFilter type="text" field="address" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th style="min-width: 14rem">
+          Total Item
+        </th>
+        <th pSortableColumn="total" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            Amount
+            <p-sortIcon field="total"></p-sortIcon>
+            <p-columnFilter type="text" field="total" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="orderStatus" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            Status
+            <p-sortIcon field="orderStatus"></p-sortIcon>
+            <p-columnFilter type="text" field="orderStatus" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th>
+          Action
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-data>
+      <tr class="p-selectable-row">
+        <td>
+          <p-tableCheckbox inputId="checkboxC{{ data.id }}" [value]="data"></p-tableCheckbox>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle  {{
                   data.deletedAt ? 'text-red-600' : ''
-                }}">{{ data?.name }}</span>
-          </td>
-          <td>
-            <p-button
-                label="Edit"
-                icon="pi pi-pencil"
-                size="small"
-                (click)="editOrder(data)"
-              />
-          </td>
-        </tr>
-      </ng-template>
-  
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="6">No datas found.</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </p-panel>
+                }}">{{ data?.firstName }}</span>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle  {{
+                  data.deletedAt ? 'text-red-600' : ''
+                }}">{{ data?.phone }}</span>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle  {{
+                  data.deletedAt ? 'text-red-600' : ''
+                }}">{{ data?.address }}</span>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle  {{
+                  data.deletedAt ? 'text-red-600' : ''
+                }}">{{ data?.orderitems?.length }}</span>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle  {{
+                  data.deletedAt ? 'text-red-600' : ''
+                }}">{{ data?.total }}</span>
+        </td>
+        <td>
+          <p-dropdown [options]="orderStatusOptions" optionLabel="label" optionValue="value" appendTo="body"
+            [(ngModel)]="data.orderStatus" [showClear]="true" placeholder="Select Status" styleClass="w-full"
+            id="folder" />
+        </td>
+        <td>
+          <div class="flex gap-2">
+            <p-button label="Edit" icon="pi pi-pencil" size="small" (click)="editOrder(data)" />
+            <p-button label="View" icon="pi pi-eye" size="small" (click)="editOrder(data)" />
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6">No datas found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-panel>

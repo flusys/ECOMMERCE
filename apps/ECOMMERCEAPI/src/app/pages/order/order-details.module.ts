@@ -9,7 +9,7 @@ import { OrderItemSchema } from '../../modules/order/order-item.schema';
   imports: [
     MongooseModule.forFeature([
       { name: 'OrderDetails', schema: OrderDetailsSchema },
-      { name: 'OrderItem', schema: OrderItemSchema },
+      { name: 'OrderItems', schema: OrderItemSchema },
     ]),
   ],
   controllers: [OrderDetailsController],

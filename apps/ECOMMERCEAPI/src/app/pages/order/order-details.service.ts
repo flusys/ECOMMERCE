@@ -20,7 +20,7 @@ export class OrderDetailsService {
 
   constructor(
     @InjectModel('OrderDetails') private readonly orderDetailsModel: Model<IOrderDetails>,
-    @InjectModel('OrderItem') private readonly orderItemModel: Model<IOrderItem>,
+    @InjectModel('OrderItems') private readonly orderItemModel: Model<IOrderItem>,
     private utilsService: UtilsService,
     private counterService: CounterService
   ) { }
@@ -34,8 +34,7 @@ export class OrderDetailsService {
     try {
       const id = await this.counterService.getNextId('order_details_id');
       const createdAtString = this.utilsService.getDateString(new Date());
-
-      // Handle the 'chields' (child products)
+      // Handle the 'chields' (child z)
       const childProductIds = [];
       if (addOrderDetailsDto.products && addOrderDetailsDto.products.length > 0) {
         for (const childDto of addOrderDetailsDto.products) {
@@ -75,20 +74,18 @@ export class OrderDetailsService {
    * getOrderDetailsById()
    * getUserOrderDetailsById()
    */
-  async getAllOrderDetailss(
+  async getAllOrderDetails(
     filterOrderDetailsDto: FilterAndPaginationOrderDetailsDto,
     searchQuery?: string,
   ): Promise<IResponsePayload<Array<IOrderDetails>>> {
     const { filter } = filterOrderDetailsDto;
     const { pagination } = filterOrderDetailsDto;
     const { sort } = filterOrderDetailsDto;
-    const { select } = filterOrderDetailsDto;
 
     // Essential Variables
     const aggregatesOrderDetailses = [];
     let mFilter = {};
     let mSort = {};
-    let mSelect = {};
     let mPagination = {};
 
     // Match
@@ -98,23 +95,15 @@ export class OrderDetailsService {
     if (searchQuery) {
       mFilter = { ...mFilter, ...{ name: new RegExp(searchQuery, 'i') } };
     }
+
     // Sort
     if (sort) {
       mSort = {};
       Object.keys(sort).forEach(item => {
-        mSort = { ...mSort, ...{ [item]: sort['item'] == 'ASC' ? 1 : -1 } }
+        mSort = { ...mSort, ...{ [item]: sort[item] === 'ASC' ? 1 : -1 } };
       });
     } else {
       mSort = { createdAt: -1 };
-    }
-
-    // Select
-    if (select && select.length) {
-      mSelect = select.reduce((prev, curr) => {
-        return prev = { ...prev, ...{ [curr]: 1 } }
-      }, {});
-    } else {
-      mSelect = { name: 1 };
     }
 
     // Finalize
@@ -125,23 +114,180 @@ export class OrderDetailsService {
     if (Object.keys(mSort).length) {
       aggregatesOrderDetailses.push({ $sort: mSort });
     }
+    
+    // Add custom sort field for orderStatus
+    aggregatesOrderDetailses.push({
+      $addFields: {
+        orderStatusSortOrder: {
+          $switch: {
+            branches: [
+              { case: { $eq: ['$orderStatus', 'PENDING'] }, then: 1 },
+              { case: { $eq: ['$orderStatus', 'PROCESSING'] }, then: 2 },
+              { case: { $eq: ['$orderStatus', 'SHIPPED'] }, then: 3 },
+              { case: { $eq: ['$orderStatus', 'DELIVERED'] }, then: 4 },
+              { case: { $eq: ['$orderStatus', 'CANCELLED'] }, then: 5 },
+            ],
+            default: 1, // Default value if orderStatus does not match any case
+          },
+        },
+      },
+    });
 
-    // Populate `order` field using `$lookup`
-    aggregatesOrderDetailses.push({
-      $lookup: {
-        from: 'orders',
-        localField: 'order',
-        foreignField: 'id',
-        as: 'order',
+
+    // Populate `product` field using `$lookup`
+    aggregatesOrderDetailses.push(
+      {
+        $lookup: {
+          from: 'orderitems',
+          localField: 'id',
+          foreignField: 'orderDetails',
+          as: 'orderitems',
+        },
       },
-    });
-    // Unwind the array to make `orderDetails` an object
-    aggregatesOrderDetailses.push({
-      $unwind: {
-        path: '$order',
-        preserveNullAndEmptyArrays: true, // Optional: Include results even if `orderDetails` is missing
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'orderitems.product',
+          foreignField: 'id',
+          as: 'product',
+        },
       },
-    });
+      {
+        $lookup: {
+          from: 'parentproducts',
+          localField: 'product.parentProduct',
+          foreignField: 'id',
+          as: 'parentProduct',
+        },
+      },
+      {
+        $lookup: {
+          from: 'attributevalues',
+          localField: 'product.variants',
+          foreignField: 'id',
+          as: 'variantDetails',
+        },
+      },
+      {
+        $lookup: {
+          from: 'attributes',
+          localField: 'variantDetails.attribute',
+          foreignField: 'id',
+          as: 'attributeDetails',
+        },
+      },
+      {
+        $addFields: {
+          orderitems: {
+            $map: {
+              input: '$orderitems',
+              as: 'orderitems',
+              in: {
+                _id: '$$orderitems._id',
+                id: '$$orderitems.id',
+                quantity: '$$orderitems.quantity',
+                price: '$$orderitems.price',
+                total: '$$orderitems.total',
+                orderStatus: '$$orderitems.orderStatus',
+                product: {
+                  $let: {
+                    vars: {
+                      productData: {
+                        $first: {
+                          $filter: {
+                            input: '$product',
+                            as: 'product',
+                            cond: { '$eq': ['$$product.id', '$$orderitems.product'] }
+                          }
+                        }
+                      }
+                    },
+                    in: {
+                      id: '$$productData.id',
+                      price: '$$productData.price',
+                      image: '$$productData.image',
+                      parentProduct: {
+                        $first: {
+                          $filter: {
+                            input: '$parentProduct',
+                            as: 'parentProduct',
+                            cond: { '$eq': ['$$parentProduct.id', '$$productData.parentProduct'] }
+                          }
+                        }
+                      },
+                      variants: {
+                        $map: {
+                          input: {
+                            $filter: {
+                              input: '$variantDetails',
+                              as: 'variant',
+                              cond: { '$in': ['$$variant.id', '$$productData.variants'] }
+                            }
+                          },
+                          as: 'variant',
+                          in: {
+                            id: '$$variant.id',
+                            name: '$$variant.name',
+                            attribute: {
+                              $first: {
+                                $filter: {
+                                  input: '$attributeDetails',
+                                  as: 'attr',
+                                  cond: { '$eq': ['$$attr.id', '$$variant.attribute'] }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    );
+
+    // Select
+    const mSelect = {
+      "_id": 1,
+      "id": 1,
+      "firstName": 1,
+      "lastName": 1,
+      "address": 1,
+      "email": 1,
+      "phone": 1,
+      "createAccount": 1,
+      "differentAddress": 1,
+      "comment": 1,
+      "shipmentAmount": 1,
+      "total": 1,
+      "orderStatus": 1,
+
+      "orderitems.id": 1,
+      "orderitems.quantity": 1,
+      "orderitems.price": 1,
+      "orderitems.total": 1,
+      "orderitems.orderStatus": 1,
+
+      "orderitems.product._id": 1,
+      "orderitems.product.id": 1,
+      "orderitems.product.price": 1,
+      "orderitems.product.image": 1,
+
+      "orderitems.product.parentProduct.id": 1,
+      "orderitems.product.parentProduct.name": 1,
+      "orderitems.product.parentProduct.readOnly": 1,
+      "orderitems.product.parentProduct.slug": 1,
+      "orderitems.product.parentProduct.images": 1,
+
+      "orderitems.product.variants.id": 1,
+      "orderitems.product.variants.name": 1,
+      "orderitems.product.variants.attribute.id": 1,
+      "orderitems.product.variants.attribute.name": 1,
+    };
 
     if (!pagination) {
       aggregatesOrderDetailses.push({ $project: mSelect });

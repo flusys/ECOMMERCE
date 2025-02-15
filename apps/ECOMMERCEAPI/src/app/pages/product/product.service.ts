@@ -298,6 +298,7 @@ export class ProductService {
       }, {});
     } else {
       mSelect = {
+        id: 1,
         price: 1,
         image: 1,
         warningDay: 1,
@@ -536,7 +537,6 @@ export class ProductService {
                     },
                   },
                 },
-
               },
             },
           },
@@ -585,8 +585,8 @@ export class ProductService {
       "reviews.user.lastname": 1,
       "reviews.user.image": 1,
 
-      "products.id": 1,
       "products._id": 1,
+      "products.id": 1,
       "products.price": 1,
       "products.image": 1,
       "products.warning": 1,
@@ -607,7 +607,7 @@ export class ProductService {
       "products.variants.name": 1,
       "products.variants.attribute.id": 1,
       "products.variants.attribute.name": 1,
-    };;
+    };
     aggregateStages.push({ $project: mSelect });
 
     try {
