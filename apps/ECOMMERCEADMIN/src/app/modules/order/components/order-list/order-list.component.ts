@@ -107,4 +107,11 @@ export class OrderListComponent {
       value: OrderStatus[key as keyof typeof OrderStatus]
     }));
   }
+
+
+  changeOrderStatus(id:number,event:any){
+    this.orderApiService.updateOrderStatus({id,status:event.value}).subscribe(res=>{
+      this.messageService.add({ key: 'tst', severity: 'success', summary: 'Success!', detail: res.message });
+    })
+  }
 }

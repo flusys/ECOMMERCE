@@ -12,9 +12,11 @@ export interface IOrderDetails extends ICommonData{
   comment?: string;
   createdAt?: Date;
   updatedAt?: Date;
+
+  orderitems:Array<IOrderItem>
 }
 
-export interface IOrderItem {
+export interface IOrderItem extends ICommonData{
   orderDetails: number | IOrderDetails; // Reference to OrderDetails
   product: number | IProduct; // Reference to Product
   quantity: number;

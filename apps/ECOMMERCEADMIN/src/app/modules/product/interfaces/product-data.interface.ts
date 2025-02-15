@@ -61,4 +61,9 @@ export interface IProduct {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;
+
+
+    //Order
+    quantity:number,
+    orderid:number
 }

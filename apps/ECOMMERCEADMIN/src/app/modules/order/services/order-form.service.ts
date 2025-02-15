@@ -2,12 +2,12 @@ import { inject, Injectable } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { FormCommonClass } from 'flusysng/shared/classes';
 import { MessageService } from 'primeng/api';
-import { ICompanyForm } from '../interfaces/order-form.interface';
+import { IOrderForm } from '../interfaces/order-form.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CompanyFormService extends FormCommonClass<ICompanyForm> {
+export class OrderFormService extends FormCommonClass<IOrderForm> {
   protected override messageService: MessageService;
   
   constructor() {
@@ -20,11 +20,13 @@ export class CompanyFormService extends FormCommonClass<ICompanyForm> {
   }
 
   initForm() {
-    this.formGroup = new FormGroup<ICompanyForm>({
+    this.formGroup = new FormGroup<IOrderForm>({
       id: new FormControl(0, { nonNullable: true }),
-      name: new FormControl('', { nonNullable: true }),
+      firstName: new FormControl('', { nonNullable: true }),
+      lastName:  new FormControl('', { nonNullable: true }),
       address: new FormControl('', { nonNullable: true }),
-      image: new FormControl('', { nonNullable: true }),
+      email: new FormControl('', { nonNullable: true }),
+      phone: new FormControl('', { nonNullable: true }),
     });
   }
 

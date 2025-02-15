@@ -6,13 +6,14 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AddOrderDetailsDto, FilterAndPaginationOrderDetailsDto, UpdateOrderDetailsDto } from '../../modules/order/order-details.dto';
+import { AddOrderDetailsDto, FilterAndPaginationOrderDetailsDto, UpdateOrderDetailsDto, UpdateOrderDetailsStatusDto } from '../../modules/order/order-details.dto';
 import { UtilsService } from '../../shared/modules/utils/utils.service';
 import { IOrderDetails } from '../../modules/order/order-details.interface';
 import { ErrorCodes } from '../../shared/enums/error-code.enum';
 import { CounterService } from '../../shared/modules/counter/counter.service';
 import { IResponsePayload } from 'flusysng/shared/interfaces';
 import { IOrderItem } from '../../modules/order/order-item.interface';
+import { Console } from 'console';
 
 @Injectable()
 export class OrderDetailsService {
@@ -102,36 +103,37 @@ export class OrderDetailsService {
       Object.keys(sort).forEach(item => {
         mSort = { ...mSort, ...{ [item]: sort[item] === 'ASC' ? 1 : -1 } };
       });
-    } else {
-      mSort = { createdAt: -1 };
-    }
+    } 
 
     // Finalize
     if (Object.keys(mFilter).length) {
       aggregatesOrderDetailses.push({ $match: mFilter });
     }
 
-    if (Object.keys(mSort).length) {
-      aggregatesOrderDetailses.push({ $sort: mSort });
-    }
-    
+
     // Add custom sort field for orderStatus
     aggregatesOrderDetailses.push({
       $addFields: {
         orderStatusSortOrder: {
           $switch: {
             branches: [
-              { case: { $eq: ['$orderStatus', 'PENDING'] }, then: 1 },
-              { case: { $eq: ['$orderStatus', 'PROCESSING'] }, then: 2 },
-              { case: { $eq: ['$orderStatus', 'SHIPPED'] }, then: 3 },
-              { case: { $eq: ['$orderStatus', 'DELIVERED'] }, then: 4 },
-              { case: { $eq: ['$orderStatus', 'CANCELLED'] }, then: 5 },
+              { case: { $eq: ['$orderStatus', 'Pending'] }, then: 1 },
+              { case: { $eq: ['$orderStatus', 'Processing'] }, then: 2 },
+              { case: { $eq: ['$orderStatus', 'Shipped'] }, then: 3 },
+              { case: { $eq: ['$orderStatus', 'Delivered'] }, then: 4 },
+              { case: { $eq: ['$orderStatus', 'Cancelled'] }, then: 5 },
             ],
-            default: 1, // Default value if orderStatus does not match any case
+            default: 6, // Default value if orderStatus does not match any case
           },
         },
       },
     });
+
+    if (Object.keys(mSort).length) {
+      aggregatesOrderDetailses.push({ $sort: mSort });
+    } else {
+      aggregatesOrderDetailses.push({ $sort: { orderStatusSortOrder: 1 } });
+    }
 
 
     // Populate `product` field using `$lookup`
@@ -265,6 +267,7 @@ export class OrderDetailsService {
       "shipmentAmount": 1,
       "total": 1,
       "orderStatus": 1,
+      "orderStatusSortOrder": 1,
 
       "orderitems.id": 1,
       "orderitems.quantity": 1,
@@ -381,6 +384,30 @@ export class OrderDetailsService {
     updateOrderDetailsDto: UpdateOrderDetailsDto,
   ): Promise<IResponsePayload<String>> {
     try {
+      const childProductIds = [];
+      updateOrderDetailsDto.products.forEach(async (childDto) => {
+        try {
+          if (childDto.id) {
+            const childData = { ...childDto, orderDetails: updateOrderDetailsDto.id };
+            await this.orderItemModel.updateOne({ id: childData.id }, childData);
+            childProductIds.push(childData.id);
+          } else {
+            const childId = await this.counterService.getNextId('order_item_id');
+            const childData = { ...childDto, id: childId, orderDetails: updateOrderDetailsDto.id };
+            const childProductModel = new this.orderItemModel(childData);
+            const savedChild = await childProductModel.save();
+            childProductIds.push(savedChild.id);
+          }
+        } catch (error) {
+          this.logger.error('Failed to add product with chields', error.stack);
+        }
+      });
+      await this.orderItemModel.deleteMany({
+        product: updateOrderDetailsDto.id,
+        id: { $nin: childProductIds }
+      });
+      delete updateOrderDetailsDto.products;
+
       const finalData = { ...updateOrderDetailsDto };
       delete finalData.id;
       await this.orderDetailsModel.findOneAndUpdate({ id: updateOrderDetailsDto.id }, {
@@ -395,4 +422,19 @@ export class OrderDetailsService {
     }
   }
 
+  async updateOrderDetailsStatusById(
+    updateOrderDetailsDto: UpdateOrderDetailsStatusDto,
+  ): Promise<IResponsePayload<String>> {
+    try {
+      await this.orderDetailsModel.findOneAndUpdate({ id: updateOrderDetailsDto.id }, {
+        orderStatus: updateOrderDetailsDto.status
+      });
+      return {
+        success: true,
+        message: 'Successfully Updated',
+      } as IResponsePayload<String>;
+    } catch (err) {
+      throw new InternalServerErrorException();
+    }
+  }
 }

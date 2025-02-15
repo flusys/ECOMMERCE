@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 
 import { OrderDetailsService } from './order-details.service';
-import { AddOrderDetailsDto, FilterAndPaginationOrderDetailsDto, UpdateOrderDetailsDto } from '../../modules/order/order-details.dto';
+import { AddOrderDetailsDto, FilterAndPaginationOrderDetailsDto, UpdateOrderDetailsDto, UpdateOrderDetailsStatusDto } from '../../modules/order/order-details.dto';
 import { IResponsePayload } from 'flusysng/shared/interfaces';
 import { MongoIdValidationPipe } from '../../shared/pipes/mongo-id-validation.pipe';
 import { IOrderDetails } from '../../modules/order/order-details.interface';
@@ -76,4 +76,12 @@ export class OrderDetailsController {
     return await this.orderDetailsService.updateOrderDetailsById(updateOrderDetailsDto);
   }
 
+  @Version(VERSION_NEUTRAL)
+  @Post('/update-status')
+  @UsePipes(ValidationPipe)
+  async updateOrderDetailsStatusById(
+    @Body() updateOrderDetailsDto: UpdateOrderDetailsStatusDto,
+  ): Promise<IResponsePayload<String>> {
+    return await this.orderDetailsService.updateOrderDetailsStatusById(updateOrderDetailsDto);
+  }
 }

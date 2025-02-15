@@ -11,7 +11,6 @@ const InitValue: IOrderStoreState = {
   data: getInitResponse<IOrderDetails[]>([]),
 
   filter: null,
-  sort: { serial: 'ASC' },
 
   editModelData: null,
   loading: false,
@@ -32,16 +31,14 @@ export class OrderStateService extends Store<IOrderStoreState> {
 
   loadData() {
     effect(() => {
-      this.select('sort')()
       this.select('filter')()
       this.callApi();
     });
   }
 
   callApi() {
-    const sort = this.select('sort')() ?? undefined;
     const filter = this.select('filter')() ?? undefined;
-    const body = { sort, filter, withDeleted: this.withDeleted }
+    const body = { filter, withDeleted: this.withDeleted }
     this.setState({ loading: true, });
     this.companyApiService.getAll('', body).pipe(take(1)).subscribe(res => {
       this.setState({ loading: false, });

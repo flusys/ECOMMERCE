@@ -1,0 +1,92 @@
+<p-panel header="Create Order " [toggleable]="true" [collapsed]="isPanelCollapsed" class="line-height-3 m-0">
+    <form #inputForm="ngForm" [formGroup]="orderFormService.formGroup" (ngSubmit)="onSubmit()">
+        <div class="p-fluid p-formgrid grid">
+            <div class="field col-12 md:col-4">
+                <label for="firstName">First Name</label>
+                <input autocomplete="false" pInputText class="w-full" formControlName="firstName" id="firstName"
+                    name="FirstName" type="text" />
+            </div>
+            <div class="field col-12 md:col-4">
+                <label for="lastName">Last Name</label>
+                <input autocomplete="false" pInputText class="w-full" formControlName="lastName" id="lastName"
+                    name="LastName" type="text" />
+            </div>
+            <div class="field col-12 md:col-4">
+                <label for="email">Email</label>
+                <input autocomplete="false" pInputText class="w-full" formControlName="email" id="email" name="Email"
+                    type="text" />
+            </div>
+            <div class="field col-12 md:col-4">
+                <label for="phone">Phone</label>
+                <input autocomplete="false" pInputText class="w-full" formControlName="phone" id="phone" name="Phone"
+                    type="text" />
+            </div>
+            <div class="field col-12 md:col-8">
+                <label for="address">Address</label>
+                <input autocomplete="false" pInputText class="w-full" formControlName="address" id="address"
+                    name="Address" type="text" />
+            </div>
+            <div class="field col-12">
+                <button pButton pRipple type="button" label="Select Product"
+                        icon="pi pi-plus" (click)="openSelecProduct()"></button>
+            </div>
+            <div class="field col-12">
+                <p-table #dt [value]="products()" dataKey="id">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="min-width: 14rem">
+                                <div class="flex justify-content-between align-items-center">
+                                    Product Logo
+                                </div>
+                            </th>
+                            <th pSortableColumn="price" style="min-width: 14rem">
+                                <div class="flex justify-content-between align-items-center">
+                                    Price
+                                    <p-sortIcon field="price"></p-sortIcon>
+                                    <p-columnFilter type="text" field="price" display="menu"
+                                        class="ml-auto"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th>
+                                Quantity
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-data>
+                        <tr class="p-selectable-row">
+                            <td>
+                                <span class="ml-1 vertical-align-middle">
+                                    <img class="w-3rem h-3rem shadow-2 flex-shrink-0 border-circle" [src]="data.image"
+                                        alt="{{ data.name }}" />
+                                </span>
+                                {{data.parentProduct?.name}} {{getVariantName(data)}}
+                            </td>
+                            <td>
+                                <span class="ml-1 vertical-align-middle  {{
+                  data.deletedAt ? 'text-red-600' : ''
+                }}">{{ data?.price }}</span>
+                            </td>
+                            <td>
+                                <input autocomplete="false" pInputText class="w-full" id="quantity" name="Quantity"
+                                    type="number" [(ngModel)]="data.quantity" [ngModelOptions]="{standalone: true}"/>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="6">No Item found.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <div class="field col-6 md:col-4">
+                <span class="flex gap-2 justify-content-start align-items-end">
+                    <button pButton pRipple type="submit" [label]="model ? 'Update' : 'Save'"
+                        icon="pi pi-check"></button>
+                    <button pButton pRipple type="button" label="Clear" icon="pi pi-trash"
+                        (click)="clearInputForm()"></button>
+                </span>
+            </div>
+        </div>
+    </form>
+</p-panel>

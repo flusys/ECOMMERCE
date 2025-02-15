@@ -1,6 +1,7 @@
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsNotEmpty,
   IsNotEmptyObject,
   IsNumber,
@@ -12,6 +13,7 @@ import {
 import { Type } from 'class-transformer';
 import { PaginationDto } from '../../shared/dtos/pagination.dto';
 import { AddOrderItemDto } from './order-item.dto';
+import { OrderStatus } from '../../shared/enums/status.enum';
 
 export class AddOrderDetailsDto {
   @IsNotEmpty()
@@ -45,6 +47,22 @@ export class UpdateOrderDetailsDto {
   @IsNotEmpty()
   @IsString()
   firstName: string;
+
+  @IsNotEmpty()
+  @ValidateNested()
+  @IsArray()
+  products: AddOrderItemDto[];
+}
+
+
+export class UpdateOrderDetailsStatusDto {
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
+
+  @IsNotEmpty()
+  @IsEnum(OrderStatus)
+  status: OrderStatus;
 }
 
 export class FilterAndPaginationOrderDetailsDto {

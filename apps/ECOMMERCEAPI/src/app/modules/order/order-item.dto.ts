@@ -14,6 +14,10 @@ import { PaginationDto } from '../../shared/dtos/pagination.dto';
 
 export class AddOrderItemDto {
   @IsNotEmpty()
+  @IsNumber()
+  id: number;
+  
+  @IsNotEmpty()
   @IsString()
   quantity: string;
 }

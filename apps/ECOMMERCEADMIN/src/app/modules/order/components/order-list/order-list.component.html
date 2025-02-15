@@ -105,7 +105,7 @@
         <td>
           <p-dropdown [options]="orderStatusOptions" optionLabel="label" optionValue="value" appendTo="body"
             [(ngModel)]="data.orderStatus" [showClear]="true" placeholder="Select Status" styleClass="w-full"
-            id="folder" />
+            id="folder" (onChange)="changeOrderStatus(data.id,$event)" />
         </td>
         <td>
           <div class="flex gap-2">

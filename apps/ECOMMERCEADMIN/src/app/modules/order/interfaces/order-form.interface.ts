@@ -2,7 +2,9 @@ import { FormControl } from "@angular/forms";
 import { ICommonForm } from "flusysng/shared/interfaces";
 
 export interface IOrderForm extends ICommonForm {
-    name: FormControl<string>;
+    firstName: FormControl<string>;
+    lastName: FormControl<string>;
     address: FormControl<string>;
-    image: FormControl<string>;
+    email: FormControl<string>;
+    phone: FormControl<string>;
 }
