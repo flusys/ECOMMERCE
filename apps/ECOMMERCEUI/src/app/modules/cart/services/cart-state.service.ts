@@ -21,13 +21,17 @@ export class CartStateService {
   }
 
   removeCartListProduct(productId: string) {
-    let previousItems: Array<{productId:string,quantity:number}> = this.getCartListProduct();
+    let previousItems: Array<{ productId: string, quantity: number }> = this.getCartListProduct();
     previousItems = previousItems.filter((item) => item.productId != productId);
     localStorage.setItem("cart_list_items", JSON.stringify(previousItems));
   }
 
+  removeAllCartProduct() {
+    localStorage.removeItem("cart_list_items");
+  }
+
   isExitsOnCartList(productId: string): boolean {
-    let previousItems: Array<{productId:string,quantity:number}> = this.getCartListProduct();
+    let previousItems: Array<{ productId: string, quantity: number }> = this.getCartListProduct();
     return previousItems.find((item) => item.productId == productId) ? true : false;
   }
 }

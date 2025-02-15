@@ -14,7 +14,7 @@ export class ProductApiService {
   constructor() { }
 
   getAll(search: string, body: IFilterData): Observable<IResponsePayload<any[]>> {
-    return this.http.post<IResponsePayload<any[]>>(this.baseUrl + "/get-all", body);
+    return this.http.post<IResponsePayload<any[]>>(this.baseUrl + "/get-all?q="+search, body);
   }
 
   getParentProductById(id: string): Observable<IResponsePayload<any>> {

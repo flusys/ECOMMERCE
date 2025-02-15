@@ -27,16 +27,18 @@ export class ProductListViewComponent {
 
   currentPage = signal(0);
   pageSize = signal(10);
-  pageSizeOption=[10,20,30];
+  pageSizeOption = [10, 20, 30];
 
   priceMax: number | null = null;
   priceMin: number | null = null;
   brandIds: number[] = [];
+  search: string = '';
   ngOnInit() {
     this.activeRoute.queryParams.subscribe(params => {
       this.priceMax = +params['priceMax'] || null;
       this.priceMin = +params['priceMin'] || null;
       this.brandIds = params['brandIds'] ? params['brandIds'].split(',').map((id: any) => +id) : [];
+      this.search = params['search'] || '';
       this.getAllData();
     });
   }
@@ -54,8 +56,8 @@ export class ProductListViewComponent {
     return "";
   }
 
-  setPageSize(event:any){
-    this.pageSize.set(parseInt(event.target?.value??0));
+  setPageSize(event: any) {
+    this.pageSize.set(parseInt(event.target?.value ?? 0));
     this.getAllData()
   }
 
@@ -78,8 +80,7 @@ export class ProductListViewComponent {
     if (this.brandIds.length > 0) {
       filter.brandId = { $in: this.brandIds };
     }
-
-    this.productApiService.getAll('', {
+    this.productApiService.getAll(this.search, {
       pagination: {
         currentPage: this.currentPage(), pageSize: this.pageSize()
       },

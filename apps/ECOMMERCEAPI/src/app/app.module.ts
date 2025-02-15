@@ -25,6 +25,7 @@ import { PostModule } from './pages/post/post.module';
 import { PostCategoryModule } from './pages/post/post-category.module';
 import { ReviewModule } from './pages/review/review.module';
 import { UserModule } from './pages/user/user.module';
+import { OrderDetailsModule } from './pages/order/order-details.module';
 
 @Module({
   imports: [
@@ -53,7 +54,8 @@ import { UserModule } from './pages/user/user.module';
     SubscriberModule,
     PostCategoryModule,
     PostModule,
-    ReviewModule
+    ReviewModule,
+    OrderDetailsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

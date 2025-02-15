@@ -17,6 +17,7 @@ import { ProductApiService } from '../../../modules/dashboard/services/product-a
 })
 export class SiteHeaderComponent implements OnInit {
   showCart = false;
+  search = signal('');
   @ViewChild('mobileMenu') mobileMenu!: ElementRef;
   @ViewChild('mobileMenuOpenButton') mobileMenuOpenButton!: ElementRef;
   @ViewChild('mobileMenuBody') mobileMenuBody!: ElementRef;
@@ -158,5 +159,12 @@ export class SiteHeaderComponent implements OnInit {
 
   remoteCart(productId: string) {
     this.cartStateService.removeCartListProduct(productId);
+  }
+
+
+  onSubmit() {
+    this.router.navigate(['/product-list'], {
+      queryParams: { search: this.search() }
+    });
   }
 }
