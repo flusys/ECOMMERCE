@@ -2,6 +2,11 @@ import * as mongoose from 'mongoose';
 
 export const OrderItemSchema = new mongoose.Schema(
   {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
     orderDetails: {
       type: Number, 
       ref: 'OrderDetails',

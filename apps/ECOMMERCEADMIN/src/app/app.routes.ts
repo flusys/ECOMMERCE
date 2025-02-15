@@ -102,6 +102,13 @@ export const routes: Routes = [
             (com) => com.BannerComponent
           ),
       },
+      {
+        path: 'order',
+        loadComponent: () =>
+          import('./pages/order/order.component').then(
+            (com) => com.OrderComponent
+          ),
+      },
     ],
   },
   {
