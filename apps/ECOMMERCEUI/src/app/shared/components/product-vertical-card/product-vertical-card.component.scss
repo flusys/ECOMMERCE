@@ -43,7 +43,7 @@
 
 .product-card:hover .product-card__quickview:not(.product-card__quickview--preload):hover {
   transition-duration: .2s, .2s;
-  background: var(--color-secondary);
+  background: var(--primary-hover-color);
   color: #fff
 }
 

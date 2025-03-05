@@ -57,6 +57,7 @@ export class ProductFormService extends FormCommonClass<IParentProductForm> {
     return new FormGroup<IProductForm>({
       id: new FormControl(0, { nonNullable: true }),
       price: new FormControl(0, { nonNullable: true }),
+      oldPrice: new FormControl(0, { nonNullable: true }),
       readOnly: new FormControl(false, { nonNullable: true }),
       sku: new FormControl('', { nonNullable: true }),
       barCode: new FormControl('', { nonNullable: true }),

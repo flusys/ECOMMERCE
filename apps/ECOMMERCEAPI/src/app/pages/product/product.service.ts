@@ -300,6 +300,7 @@ export class ProductService {
       mSelect = {
         id: 1,
         price: 1,
+        oldPrice: 1,
         image: 1,
         warningDay: 1,
         warning: 1,
@@ -495,6 +496,7 @@ export class ProductService {
                 _id: '$$products._id',
                 id: '$$products.id',
                 price: '$$products.price',
+                oldPrice: '$$products.oldPrice',
                 image: '$$products.image',
                 warning: '$$products.warning',
                 warningDay: '$$products.warningDay',
@@ -588,6 +590,7 @@ export class ProductService {
       "products._id": 1,
       "products.id": 1,
       "products.price": 1,
+      "products.oldPrice": 1,
       "products.image": 1,
       "products.warning": 1,
       "products.warningDay": 1,

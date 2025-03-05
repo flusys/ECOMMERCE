@@ -47,6 +47,10 @@ export const ProductSchema = new mongoose.Schema(
       type: Number,
       default: null,
     },
+    oldPrice: {
+      type: Number,
+      default: null,
+    },
     ingredients: [
       {
         key: String,

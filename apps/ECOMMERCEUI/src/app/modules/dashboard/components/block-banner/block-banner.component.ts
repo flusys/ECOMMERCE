@@ -22,7 +22,8 @@ export class BlockBannerComponent {
             image: res.image,
             mblImage: res.mblImage,
             title: res.title,
-            subTitle: res.subTitle
+            subTitle: res.subTitle,
+            url: res.url
           }
         })[0];
       } else {

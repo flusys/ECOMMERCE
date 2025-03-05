@@ -1,6 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnInit } from '@angular/core';
 import { BannerStateService } from '../../services/banner-state.service';
 import { CommonModule } from '@angular/common';
+import { url } from 'node:inspector';
 
 @Component({
   selector: 'app-block-slideshow',
@@ -15,19 +16,21 @@ import { CommonModule } from '@angular/common';
 export class BlockSlideshowComponent {
 
   bannerStateService = inject(BannerStateService)
-  slides:any[]=[];
+  slides: any[] = [];
 
-  constructor(){
+  constructor() {
     effect(() => {
       const model = this.bannerStateService.select('data')() ?? undefined;
       if (model) {
-        const data=model.result;
-        this.slides= data.filter(res => res.type == 'top').map((res) => {
+        const data = model.result;
+        this.slides = data.filter(res => res.type == 'top').map((res) => {
           return {
+            id: res.id,
             image: res.image,
             mblImage: res.mblImage,
             title: res.title,
-            subTitle: res.subTitle
+            subTitle: res.subTitle,
+            url: res.url
           }
         });
       } else {
@@ -35,7 +38,8 @@ export class BlockSlideshowComponent {
       }
     });
   }
-  clickBtn(url:string){
+  clickBtn(url: string) {
     window.open(url);
   }
+
 }

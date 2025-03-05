@@ -441,9 +441,9 @@ screen and (min-width:992px) and (-ms-high-contrast:active) {
 
 .tags__list p:focus,
 .tags__list p:hover {
-    background: var(--primary-color);;
-    border: 1px solid var(--primary-color);;
-    color: #3d464d
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    color: var(--text-color);
 }
 
 .tags--lg .tags__list {

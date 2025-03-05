@@ -42,6 +42,7 @@ export interface IProductForm extends ICommonForm {
     sku: FormControl<string>;
     barCode: FormControl<string>;
     price: FormControl<number>;
+    oldPrice: FormControl<number>;
     orderLimit: FormControl<number>;
     ingredients: FormArray<FormGroup<IIngredientsForm>>;
     trackQuantity: FormControl<number>;

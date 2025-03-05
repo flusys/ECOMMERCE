@@ -20,7 +20,6 @@
     <div class="product-card__name" (click)="nevigateDetailPage()">
       <div class="a-tag"> {{product()?.parentProduct?.name}} {{getVariantName()}}</div>
     </div>
-    <app-product-rating-bar [star]="1" />
     @if(showFeatures()){
     <ul class="product-card__features-list">
       @for (ingredient of product()?.ingredients; track ingredient; let i = $index) {
@@ -35,7 +34,9 @@
     </div>
     <div class="product-card__prices">
       <span class="product-card__new-price">{{product()?.price}}</span>
-      <span class="product-card__old-price">$1189.00</span>
+      @if(product()?.oldPrice){
+      <span class="product-card__old-price">{{product()?.oldPrice}}</span>
+      }
     </div>
     <div class="product-card__buttons">
       @if(isAlreadyExitsOnCartList){

@@ -5,10 +5,10 @@
       <div class="col-12 col-lg-9 offset-lg-3">
         <div class="block-slideshow__body">
           <swiper-container #swiper class="swiper" pagination="true" autoplay="true">
-            @for (slide of slides; track slide.title; let i = $index) {
+            @for (slide of slides; track slide.id; let i = $index) {
             <swiper-slide>
               <div class="active">
-                <a class="block-slideshow__slide" href="#">
+                <a class="block-slideshow__slide" [href]="slide?.url">
                   <div class="block-slideshow__slide-image block-slideshow__slide-image--desktop"
                     style="background-image: url('{{ slide?.image }}')"></div>
                   <div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="
@@ -20,7 +20,7 @@
                     <div class="block-slideshow__slide-text" [innerHtml]="slide?.subTitle">
                     </div>
                     <div class="block-slideshow__slide-button">
-                      <span class="btn btn-primary btn-lg" (click)="clickBtn( slide?.url)">Shop Now</span>
+                      <span class="btn btn-primary btn-lg" (click)="clickBtn(slide?.url)">Shop Now</span>
                     </div>
                   </div>
                 </a>
