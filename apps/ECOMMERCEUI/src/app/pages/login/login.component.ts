@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AngularModule } from '../../shared/modules/angular.module';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthApiService } from '../../modules/auth/services/auth-api.service';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +17,10 @@ export class LoginComponent {
   loginForm!: FormGroup;
   submitted = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router
-  ) { }
+
+  formBuilder: FormBuilder = inject(FormBuilder);
+  router: Router = inject(Router);
+  authStateService: AuthApiService = inject(AuthApiService);
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -39,10 +40,10 @@ export class LoginComponent {
       return;
     }
 
-    console.warn(this.loginForm.value);
-
-    // Perform login logic here
-    console.log('Login successful');
-    this.router.navigate(['/']);
+    this.authStateService.login(this.loginForm.value).subscribe(res => {
+      if(res.success){
+        this.router.navigate(['/']);
+      }
+    });
   }
 }

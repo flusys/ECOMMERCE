@@ -30,6 +30,7 @@ export const UserSchema = new mongoose.Schema(
     email: {
       type: String,
       required: false,
+      unique: true,
     },
     image: {
       type: String,

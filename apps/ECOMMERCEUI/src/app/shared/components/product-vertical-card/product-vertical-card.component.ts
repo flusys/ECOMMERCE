@@ -1,5 +1,4 @@
 import { Component, inject, input, InputSignal } from '@angular/core';
-import { ProductRatingBarComponent } from '../product-rating-bar/product-rating-bar.component';
 import { AngularModule } from 'flusysng/shared/modules';
 import { Router } from '@angular/router';
 import { WishlistStateService } from '../../../modules/wishlist/services/wishlist-state.service';
@@ -12,7 +11,6 @@ import { GlobalStateService } from '../../services/global-state.service';
   standalone: true,
   imports: [
     AngularModule,
-    ProductRatingBarComponent
   ],
   templateUrl: './product-vertical-card.component.html',
   styleUrl: './product-vertical-card.component.scss',

@@ -29,10 +29,6 @@ export class AddUserDto {
 export class AuthUserDto {
   @IsNotEmpty()
   @IsString()
-  username: string;
-
-  @IsNotEmpty()
-  @IsString()
   email: string;
 
   @IsNotEmpty()

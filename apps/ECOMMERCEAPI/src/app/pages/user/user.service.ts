@@ -46,7 +46,10 @@ export class UserService {
         const salt = await bcrypt.genSalt();
         const hashedPass = await bcrypt.hash(password, salt);
         const id = await this.counterService.getNextId('tag_id');
-        const mData = { ...createUserDto, ...{ password: hashedPass, username: createUserDto.email,id } };
+        const mData = { ...createUserDto, ...{ 
+            password: hashedPass, 
+            hasAccess:true,
+            username: createUserDto.email,id } };
         const newUser = new this.userModel(mData);
         try {
             const saveData = await newUser.save();
@@ -67,7 +70,7 @@ export class UserService {
     async userLogin(authUserDto: AuthUserDto): Promise<any> {
         try {
             const user = (await this.userModel
-                .findOne({ username: authUserDto.username })
+                .findOne({ email: authUserDto.email })
                 .select('password username hasAccess')) as any;
 
             if (!user) {
