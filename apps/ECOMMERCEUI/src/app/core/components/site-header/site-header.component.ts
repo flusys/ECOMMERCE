@@ -5,6 +5,7 @@ import { CategoryStateService } from '../../../modules/dashboard/services/catego
 import { WishlistStateService } from '../../../modules/wishlist/services/wishlist-state.service';
 import { CartStateService } from '../../../modules/cart/services/cart-state.service';
 import { ProductApiService } from '../../../modules/dashboard/services/product-api.service';
+import { AuthStateService } from '../../services/auth-state.service';
 
 @Component({
   selector: 'app-site-header',
@@ -32,6 +33,7 @@ export class SiteHeaderComponent implements OnInit {
   wishlistStateService = inject(WishlistStateService);
   cartStateService = inject(CartStateService);
   categoryStateService = inject(CategoryStateService);
+  authStateService = inject(AuthStateService);
   productApiService = inject(ProductApiService);
   products = signal<any[]>([]);
 

@@ -1487,14 +1487,6 @@ screen and (-ms-high-contrast:active) {
   transition: transform .2s, opacity .2s, visibility 0s .2s
 }
 
-.topbar-dropdown--opened .topbar-dropdown__btn,
-.topbar-dropdown__btn:focus,
-.topbar-dropdown__btn:hover {
-  background: var(--color-secondary-background);
-  color: var(--color-secondary);
-  fill: #999
-}
-
 .topbar-dropdown--opened .topbar-dropdown__btn .topbar__item-value,
 .topbar-dropdown__btn:focus .topbar__item-value,
 .topbar-dropdown__btn:hover .topbar__item-value {
