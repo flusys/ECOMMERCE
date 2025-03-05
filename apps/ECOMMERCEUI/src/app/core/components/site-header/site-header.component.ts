@@ -25,8 +25,6 @@ export class SiteHeaderComponent implements OnInit {
   @ViewChild('mobileMenuSearch') mobileMenuSearch!: ElementRef;
   @ViewChild('mobileMenuSearchOpenButton') mobileMenuSearchOpenButton!: ElementRef;
 
-  @ViewChild('megamenu') megamenu!: ElementRef;
-
   @ViewChild('departmentsMenuOpenBtn') departmentsMenuOpenBtn!: ElementRef;
   isOpenDepartmentMenu = false;
 
@@ -131,21 +129,7 @@ export class SiteHeaderComponent implements OnInit {
     }
   }
 
-  onMegaMenuMouseEnter(event: MouseEvent) {
-    const target = event.currentTarget as HTMLElement;
-    const megamenu = target.querySelector('.nav-links__megamenu') as HTMLElement;
-    if (megamenu) {
-      const container = this.getOffsetParent(megamenu);
-      if (container) {
-        const containerWidth = container.clientWidth;
-        const megamenuWidth = megamenu.clientWidth;
-        const itemPosition = target.getBoundingClientRect().left - container.getBoundingClientRect().left; // Calculate position relative to container
-        const megamenuPosition = Math.round(Math.min(itemPosition, containerWidth - megamenuWidth));
 
-        this.renderer.setStyle(megamenu, 'left', `${megamenuPosition}px`);
-      }
-    }
-  }
 
   private getOffsetParent(element: HTMLElement): HTMLElement | null {
     return element.offsetParent as HTMLElement;

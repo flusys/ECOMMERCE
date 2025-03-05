@@ -130,9 +130,9 @@
 .layout-switcher__button--active,
 .layout-switcher__button--active:hover {
     cursor: default;
-    border-color: #ffd333;
-    background: #ffd333;
-    fill: #3d464d;
+    border-color: var(--primary-color);;
+    background: var(--primary-color);;
+    fill: var(--text-color);
     z-index: 1
 }
 

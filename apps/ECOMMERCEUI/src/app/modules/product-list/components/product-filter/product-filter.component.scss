@@ -70,7 +70,7 @@
 
     .noUi-connect {
         border-radius: 2px;
-        background: #ffd333
+        background: var(--primary-color);
     }
 
     .noUi-horizontal .noUi-handle {
@@ -91,7 +91,7 @@
         height: 6px;
         margin: 5px;
         border-radius: 3px;
-        background: #ffd333;
+        background: var(--primary-color);;
         transition: transform .2s;
         left: -1px;
         top: -1px;

@@ -280,8 +280,8 @@
 }
 
 .btn-withlisted {
-  color: green !important;
-  fill: green !important;
+  color: rgb(21, 196, 21) !important;
+  fill: rgb(21, 196, 21) !important;
 }
 
 
@@ -914,7 +914,7 @@ select.form-control-lg:valid {
 .input-radio-label__list input:checked~span {
   cursor: default;
   background: var(--primary-color);
-  color: #3d464d;
+  color: var(--text-color);
   transition-duration: .08s, .08s
 }
 

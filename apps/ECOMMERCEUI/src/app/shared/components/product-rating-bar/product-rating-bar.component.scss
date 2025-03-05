@@ -36,7 +36,7 @@
 }
 
 .rating__star--active .rating__fill {
-    color: #ffd333
+    color: var(--primary-color);
 }
 
 .rating__star--active .rating__stroke {

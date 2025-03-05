@@ -6,7 +6,7 @@
     <span class="fake-svg-icon"></span>
   </button>
   <div class="product-card__badges-list">
-    @for (tag of product()?.parentProduct?.tags; track tag.id; let i = $index) {
+    @for (tag of tags; track tag.id; let i = $index) {
     <div class="product-card__badge"
       [ngClass]="{'product-card__badge--new': i % 2 === 0, 'product-card__badge--hot': i % 2 !== 0}">
       {{tag?.name}}

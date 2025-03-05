@@ -52,7 +52,7 @@
 .product-tabs__item--active,
 .product-tabs__item--active:hover {
     cursor: default;
-    border-bottom-color: #ffd333;
+    border-bottom-color: var(--primary-color);;
     background: transparent
 }
 

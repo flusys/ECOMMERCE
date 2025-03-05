@@ -88,8 +88,8 @@
 
 .tags__list a:focus,
 .tags__list a:hover {
-  background: #ffd333;
-  border: 1px solid #ffd333;
+  background: var(--primary-color);;
+  border: 1px solid var(--primary-color);;
   color: #3d464d
 }
 

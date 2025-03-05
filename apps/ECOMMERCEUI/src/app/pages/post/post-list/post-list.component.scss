@@ -579,7 +579,7 @@
 
 .widget-search__input:focus {
   outline: none;
-  box-shadow: inset 0 0 0 2px #ffd333
+  box-shadow: inset 0 0 0 2px var(--primary-color);
 }
 
 .widget-search__input::-webkit-input-placeholder {
@@ -621,7 +621,7 @@
 
 .widget-search__button:focus,
 .widget-search__button:hover {
-  fill: #ffd333
+  fill: var(--primary-color);
 }
 
 .widget-tags {

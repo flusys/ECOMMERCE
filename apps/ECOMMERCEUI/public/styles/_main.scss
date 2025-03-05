@@ -7,18 +7,27 @@
   font-variation-settings: normal;
   --font-family: Roboto, "sans-serif";
   --font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-  --text-color: #3d464d;
-  --primary-color: #ffd333;
-  --secoundary-color: #1a66ff;
+  --text-color: #ffffff;
+  --primary-color: #3535cd;
   --border-radius: 12px;
   --surface-ground: #FFF;
+  --primary-contrast-color: #ffffff;
+  --primary-hover-color: #0707a9;
+  --primary-active-color: #0707a9;
+  --primary-inverse-color: #0707a9;
+
+  --color-secondary: #3d464d;
+  --color-secondary-text: #1a66ff;
+  --color-secondary-background: #fff;
+  --color-secondary-hover: #1a66ff;
+  --color-secondary-active: #1a66ff;
 
   --swiper-theme-color: var(--primary-color);
   --swiper-pagination-color: var(--primary-color);
   --swiper-pagination-bullet-size: 10px;
   --swiper-pagination-bullet-width: 10px;
   --swiper-pagination-bullet-height: 10px;
-  --swiper-pagination-bullet-inactive-color: var(--text-color);
+  --swiper-pagination-bullet-inactive-color: var(--color-secondary);
   --swiper-pagination-bullet-inactive-opacity: 0.2;
   --swiper-pagination-bullet-opacity: 1;
   --swiper-pagination-bullet-horizontal-gap: 4px;

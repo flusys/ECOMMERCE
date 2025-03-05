@@ -441,8 +441,8 @@ screen and (min-width:992px) and (-ms-high-contrast:active) {
 
 .tags__list p:focus,
 .tags__list p:hover {
-    background: #ffd333;
-    border: 1px solid #ffd333;
+    background: var(--primary-color);;
+    border: 1px solid var(--primary-color);;
     color: #3d464d
 }
 
@@ -545,5 +545,5 @@ screen and (min-width:992px) and (-ms-high-contrast:active) {
 }
 
 .product-gallery__carousel-item--active {
-    box-shadow: inset 0 0 0 2px #ffd333
+    box-shadow: inset 0 0 0 2px var(--primary-color);
 }

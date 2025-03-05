@@ -80,4 +80,8 @@ export class ProductVerticalCardComponent {
   goToCartList() {
     this.router.navigate(['/cart'])
   }
+
+  get tags() {
+    return this.product()?.parentProduct?.tags?.slice(0, 3);
+  }
 }
