@@ -1,0 +1,100 @@
+<p-panel header="All User List " [toggleable]="true" class="line-height-3 m-0">
+  <p-table #dt [value]="userStateService.select('data')().result" [(selection)]="selectedUser" dataKey="id"
+    [showCurrentPageReport]="true" [loading]="userStateService.select('loading')()" [filterDelay]="0"
+    [globalFilterFields]="globalFilterField" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[5, 10, 50, 100]">
+    <ng-template pTemplate="caption">
+      <div class="table-header flex flex-wrap justify-content-left gap-3">
+        <p-button icon="pi pi-refresh" (click)="
+                userStateService.resetFilter(); userStateService.withDeleted = false
+              " styleClass="h-full"></p-button>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input autocomplete="false" pInputText type="text" id="globalSearch"
+            (input)="dt.filterGlobal(getInputString($event), 'contains')" placeholder="Global Search" />
+        </p-iconfield>
+        @if (selectedUser.length && !userStateService.withDeleted) {
+        <p-button icon="pi pi-trash" (click)="deleteOrRestore('delete')" styleClass="p-button-danger h-full"></p-button>
+        } @if (selectedUser.length && userStateService.withDeleted) {
+        <p-button icon="pi pi-replay" (click)="deleteOrRestore('restore')" styleClass="h-full"></p-button>
+        }
+        <p-button icon="pi pi-eye-slash" (click)="withDeletedItem()" styleClass="p-button-{{
+                userStateService.withDeleted ? 'primary' : 'secondary'
+              }} h-full"></p-button>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 4rem">
+          <p-tableHeaderCheckbox inputId="checkboxP"></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="name" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            Name
+            <p-sortIcon field="name"></p-sortIcon>
+            <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="email" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            Email
+            <p-sortIcon field="email"></p-sortIcon>
+            <p-columnFilter type="text" field="email" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="phone" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            Phone
+            <p-sortIcon field="phone"></p-sortIcon>
+            <p-columnFilter type="text" field="phone" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="hasAccess" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            Has Access
+            <p-sortIcon field="hasAccess"></p-sortIcon>
+            <p-columnFilter type="text" field="hasAccess" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th>
+          Action
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-data>
+      <tr class="p-selectable-row">
+        <td>
+          <p-tableCheckbox inputId="checkboxC{{ data.id }}" [value]="data"></p-tableCheckbox>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle  {{
+                  data.deletedAt ? 'text-red-600' : ''
+                }}">{{ data?.firstname }} {{ data?.lastname }}</span>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle" ifRowEmpty="{{ data?.email }}"></span>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle" ifRowEmpty="{{ data?.phone }}"></span>
+        </td>
+        <td>
+          <p-dropdown [options]="hasAccessOptions" optionLabel="label" optionValue="value" appendTo="body"
+            [(ngModel)]="data.hasAccess" placeholder="Select hasAccess" styleClass="w-full" id="folder"
+            (onChange)="changeHasAccess(data.id,$event)" />
+        </td>
+        <td>
+          <p-button label="Edit" icon="pi pi-pencil" size="small" (click)="editUser(data)" />
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6">No datas found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-panel>

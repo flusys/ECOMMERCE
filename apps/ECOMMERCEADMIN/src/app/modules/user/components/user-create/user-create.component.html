@@ -1,0 +1,39 @@
+<p-panel header="Create User " [toggleable]="true" [collapsed]="isPanelCollapsed" class="line-height-3 m-0">
+  <div class="col-12">
+    <form #inputForm="ngForm" [formGroup]="userFormService.formGroup" (ngSubmit)="onSubmit()">
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-4">
+          <label for="name">First Name</label>
+          <input autocomplete="false" pInputText class="w-full" formControlName="firstname" id="name" name="Name"
+            type="text" />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label for="lastname">Last Name</label>
+          <input autocomplete="false" pInputText class="w-full" formControlName="lastname" id="lastname" name="lastname"
+            type="text" />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label for="address">Address</label>
+          <input autocomplete="false" pInputText class="w-full" formControlName="address" id="address" name="address"
+            type="text" />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label for="email">Email</label>
+          <input autocomplete="false" pInputText class="w-full" formControlName="email" id="email" name="email"
+            type="text" />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label for="phone">Phone</label>
+          <input autocomplete="false" pInputText class="w-full" formControlName="phone" id="phone" name="phone"
+            type="text" />
+        </div>
+        <div class="field col-6 md:col-4 flex justify-content-end align-items-end">
+          <span class="flex gap-2 justify-content-end align-items-end">
+            <button pButton pRipple type="submit" [label]="model ? 'Update' : 'Save'" icon="pi pi-check"></button>
+            <button pButton pRipple type="button" label="Clear" icon="pi pi-trash" (click)="clearInputForm()"></button>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</p-panel>

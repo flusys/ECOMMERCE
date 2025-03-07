@@ -66,6 +66,11 @@ export class MenuStateService {
       icon: 'pi pi-align-justify',
       routerLink: ['/order'],
     },
+    {
+      name: 'User',
+      icon: 'pi pi-users',
+      routerLink: ['/user'],
+    },
   ];
 
   constructor() {}

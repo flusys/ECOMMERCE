@@ -109,6 +109,13 @@ export const routes: Routes = [
             (com) => com.OrderComponent
           ),
       },
+      {
+        path: 'user',
+        loadComponent: () =>
+          import('./pages/user/user.component').then(
+            (com) => com.UserComponent
+          ),
+      },
     ],
   },
   {
