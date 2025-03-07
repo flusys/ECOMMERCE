@@ -8,12 +8,12 @@ export const OrderDetailsSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    firstName: {
+    firstname: {
       type: String,
       required: true,
       trim: true,
     },
-    lastName: {
+    lastname: {
       type: String,
       required: false,
       trim: true,

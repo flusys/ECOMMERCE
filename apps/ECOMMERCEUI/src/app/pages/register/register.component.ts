@@ -3,6 +3,8 @@ import { AngularModule } from '../../shared/modules/angular.module';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthApiService } from '../../modules/auth/services/auth-api.service';
+import { MessageService } from 'primeng/api';
+import { error } from 'console';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +22,7 @@ export class RegisterComponent {
   formBuilder: FormBuilder = inject(FormBuilder);
   router: Router = inject(Router);
   authStateService: AuthApiService = inject(AuthApiService);
+  messageService:MessageService = inject(MessageService);
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
@@ -42,8 +45,14 @@ export class RegisterComponent {
 
     this.authStateService.signup(this.registerForm.value).subscribe(res => {
       if (res.success) {
-        this.router.navigate(['/']);
+        this.messageService.add({ key: 'tst', severity: 'success', summary: 'Success!', detail: res.message });
+        this.router.navigate(['/login']);
+      }else{
+        this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: res.message });
       }
-    });
+    },error=>{
+      this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: error.message });
+    }
+    );
   }
 }

@@ -6,6 +6,7 @@ import { IProduct } from '../../modules/product-details/interfaces/product-data.
 import { AngularModule } from 'flusysng/shared/modules';
 import { MessageService } from 'primeng/api';
 import { OrderApiService } from '../../modules/checkout/services/order-api.service';
+import { AuthApiService } from '../../modules/auth/services/auth-api.service';
 
 @Component({
   selector: 'app-checkout',
@@ -21,11 +22,12 @@ export class CheckoutComponent implements OnInit {
   orderApiService = inject(OrderApiService);
   productApiService = inject(ProductApiService);
   private messageService = inject(MessageService);
+  private authApiService = inject(AuthApiService);
   fb = inject(FormBuilder);
   products = signal<any[]>([]);
   shippingAmount = signal(50);
   readTermsAndCondition = signal(false);
-
+  userdata = signal<any>({});
   billingForm!: FormGroup;
   ngOnInit(): void {
 
@@ -41,8 +43,8 @@ export class CheckoutComponent implements OnInit {
     }
 
     this.billingForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: [''],
+      firstname: ['', Validators.required],
+      lastname: [''],
       address: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
@@ -51,6 +53,11 @@ export class CheckoutComponent implements OnInit {
       comment: [''],
       shipmentPrice: [this.shippingAmount()],
       total: [0],
+    });
+
+    this.authApiService.myProfileInformation().subscribe((data) => {
+      this.userdata.set(data.data);
+      this.billingForm.patchValue(data.data);
     });
   }
 
@@ -93,6 +100,16 @@ export class CheckoutComponent implements OnInit {
       });
     }
     let formData = this.billingForm.value;
+
+    if (formData.createAccount && !formData.email) {
+      return this.messageService.add({
+        key: 'tst',
+        severity: 'error',
+        summary: 'Sorry!',
+        detail: 'Password is required.',
+      });
+    }
+
     formData = {
       ...formData, ...{
         products: this.products().map((product) => {
@@ -106,9 +123,14 @@ export class CheckoutComponent implements OnInit {
         total: this.total
       }
     }
-    this.orderApiService.insert(formData).subscribe((res)=>{
-      this.products.set([])
+    this.orderApiService.insert(formData).subscribe((res) => {
+      this.products.set([]);
       this.cartStateService.removeAllCartProduct();
+      this.billingForm.reset();
+      this.billingForm.patchValue({
+        shipmentPrice: this.shippingAmount(),
+        ...this.userdata()
+      });
       this.messageService.add({
         key: 'tst',
         severity: 'success',

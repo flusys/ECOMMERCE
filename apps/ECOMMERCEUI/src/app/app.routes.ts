@@ -60,6 +60,12 @@ export const routes: Routes = [
       import('./pages/faq/faq.component').then(
         (m) => m.FaqComponent
       ),
+  },{
+    path: 'profile',
+    loadComponent: () =>
+      import('./pages/profile/profile.component').then(
+        (m) => m.ProfileComponent
+      ),
   }, {
     path: 'post',
     loadChildren: () => [

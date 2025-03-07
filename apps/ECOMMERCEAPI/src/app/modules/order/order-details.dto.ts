@@ -18,7 +18,15 @@ import { OrderStatus } from '../../shared/enums/status.enum';
 export class AddOrderDetailsDto {
   @IsNotEmpty()
   @IsString()
-  firstName: string;
+  firstname: string;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  createAccount: boolean;
+
+  @IsNotEmpty()
+  @IsString()
+  email: string;
 
 
   @IsNotEmpty()

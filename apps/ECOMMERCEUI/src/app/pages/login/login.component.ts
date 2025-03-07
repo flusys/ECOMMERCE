@@ -3,6 +3,7 @@ import { AngularModule } from '../../shared/modules/angular.module';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthApiService } from '../../modules/auth/services/auth-api.service';
+import { AuthStateService } from '../../core/services/auth-state.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent {
 
   formBuilder: FormBuilder = inject(FormBuilder);
   router: Router = inject(Router);
-  authStateService: AuthApiService = inject(AuthApiService);
+  authApiService: AuthApiService = inject(AuthApiService);
+  authStateService: AuthStateService = inject(AuthStateService);
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -40,8 +42,10 @@ export class LoginComponent {
       return;
     }
 
-    this.authStateService.login(this.loginForm.value).subscribe(res => {
+    this.authApiService.login(this.loginForm.value).subscribe(res => {
       if(res.success){
+        this.authStateService.loginUserData.set(res.data);
+        localStorage.setItem('token', res['token']);
         this.router.navigate(['/']);
       }
     });

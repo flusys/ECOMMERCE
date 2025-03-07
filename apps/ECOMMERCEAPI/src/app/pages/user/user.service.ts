@@ -1,11 +1,7 @@
 import {
-    BadRequestException,
-    ConflictException,
-    Inject,
     Injectable,
     InternalServerErrorException,
     Logger,
-    NotFoundException,
 } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
@@ -45,11 +41,14 @@ export class UserService {
         const { password } = createUserDto;
         const salt = await bcrypt.genSalt();
         const hashedPass = await bcrypt.hash(password, salt);
-        const id = await this.counterService.getNextId('tag_id');
-        const mData = { ...createUserDto, ...{ 
-            password: hashedPass, 
-            hasAccess:true,
-            username: createUserDto.email,id } };
+        const id = await this.counterService.getNextId('user_id');
+        const mData = {
+            ...createUserDto, ...{
+                password: hashedPass,
+                hasAccess: true,
+                username: createUserDto.email, id
+            }
+        };
         const newUser = new this.userModel(mData);
         try {
             const saveData = await newUser.save();
@@ -63,7 +62,13 @@ export class UserService {
             } as any;
         } catch (error) {
             console.warn(error)
-            throw new InternalServerErrorException();
+            if (error.message.includes('duplicate key error')) {
+                return {
+                    success: false,
+                    message: 'This email is already registered!',
+                } as any;
+            }
+            throw new InternalServerErrorException(error.message);
         }
     }
 
@@ -71,7 +76,7 @@ export class UserService {
         try {
             const user = (await this.userModel
                 .findOne({ email: authUserDto.email })
-                .select('password username hasAccess')) as any;
+                .select('password username hasAccess firstname')) as any;
 
             if (!user) {
                 return {
@@ -93,15 +98,13 @@ export class UserService {
                 const payload: any = {
                     _id: user._id,
                     id: user.id,
-                    username: user.username,
+                    firstname: user.firstname,
                 };
                 const accessToken = this.jwtService.sign(payload);
                 return {
                     success: true,
                     message: 'Login success!',
-                    data: {
-                        id: user.id,
-                    },
+                    data: payload,
                     token: accessToken,
                     tokenExpiredIn: this.configService.get<number>(
                         'userTokenExpiredTime',
@@ -118,6 +121,41 @@ export class UserService {
             }
         } catch (error) {
             console.log(error);
+            throw new InternalServerErrorException();
+        }
+    }
+
+    async myProfileInformation(user: any): Promise<any> {
+        try {
+            const userData = await this.userModel
+                .findOne({ _id: user._id })
+                .select('firstname lastname email phone address')
+                .lean();
+            return {
+                success: true,
+                message: 'Success',
+                data: userData,
+            } as any;
+        } catch (error) {
+            console.log(error);
+            throw new InternalServerErrorException();
+        }
+    }
+
+
+    async updateProfile(user: any, updateData: any): Promise<any> {
+        try {
+            const { _id } = user;
+            const { ...restData } = updateData;
+            await this.userModel.findOneAndUpdate({ _id: new ObjectId(_id) }, {
+                $set: restData,
+            });
+            return {
+                success: true,
+                message: 'Success',
+            } as any;
+        } catch (error) {
+            console.warn(error);
             throw new InternalServerErrorException();
         }
     }

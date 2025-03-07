@@ -13,11 +13,27 @@ export class AuthApiService {
   private baseUrl = environment.apiGatewayUrl + '/user';
   constructor() { }
 
-  login(body: any): Observable<IResponsePayload<any>> {
-    return this.http.post<IResponsePayload<any>>(this.baseUrl + "/login", body);
+  login(body: any): Observable<any> {
+    return this.http.post<any>(this.baseUrl + "/login", body);
   }
 
   signup(body: any): Observable<IResponsePayload<any>> {
     return this.http.post<IResponsePayload<any>>(this.baseUrl + "/signup", body);
   }
+
+  checkLogin(): Observable<any> {
+    return this.http.get<any>(this.baseUrl + "/check-login");
+  }
+
+  myProfileInformation(): Observable<any> {
+    return this.http.get<any>(this.baseUrl + "/my-profile");
+  }
+  updateProfile(body: any): Observable<any> {
+    return this.http.post<any>(this.baseUrl + "/update-profile", body);
+  }
+
+  changePassword(body: any): Observable<any> {
+    return this.http.post<any>(this.baseUrl + "/change-password", body);
+  }
+
 }

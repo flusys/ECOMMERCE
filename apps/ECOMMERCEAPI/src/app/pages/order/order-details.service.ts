@@ -13,7 +13,8 @@ import { ErrorCodes } from '../../shared/enums/error-code.enum';
 import { CounterService } from '../../shared/modules/counter/counter.service';
 import { IResponsePayload } from 'flusysng/shared/interfaces';
 import { IOrderItem } from '../../modules/order/order-item.interface';
-import { Console } from 'console';
+import * as bcrypt from 'bcrypt';
+import { IUser } from '../../modules/user/user.interface';
 
 @Injectable()
 export class OrderDetailsService {
@@ -22,6 +23,7 @@ export class OrderDetailsService {
   constructor(
     @InjectModel('OrderDetails') private readonly orderDetailsModel: Model<IOrderDetails>,
     @InjectModel('OrderItems') private readonly orderItemModel: Model<IOrderItem>,
+    @InjectModel('User') private readonly userModel: Model<IUser>,
     private utilsService: UtilsService,
     private counterService: CounterService
   ) { }
@@ -55,6 +57,24 @@ export class OrderDetailsService {
         }
       }
 
+      if (addOrderDetailsDto.createAccount) {
+        const existingUser = await this.userModel.findOne({ email: addOrderDetailsDto.email });
+        if (!existingUser) {
+          const salt = await bcrypt.genSalt();
+          const hashedPass = await bcrypt.hash('123456', salt);
+          const userId = await this.counterService.getNextId('user_id');
+          const mData = {
+            ...addOrderDetailsDto, ...{
+              password: hashedPass,
+              hasAccess: true,
+              username: addOrderDetailsDto.email,
+              id: userId
+            }
+          };
+          const newUser = new this.userModel(mData);
+          await newUser.save();
+        }
+      }
 
       const data = new this.orderDetailsModel({ ...addOrderDetailsDto, createdAtString, id });
       const saveData = await data.save();
@@ -103,7 +123,7 @@ export class OrderDetailsService {
       Object.keys(sort).forEach(item => {
         mSort = { ...mSort, ...{ [item]: sort[item] === 'ASC' ? 1 : -1 } };
       });
-    } 
+    }
 
     // Finalize
     if (Object.keys(mFilter).length) {

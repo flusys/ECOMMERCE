@@ -27,6 +27,15 @@ export const UserSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    hasAccess: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    address: {
+      type: String,
+      required: false,
+    },
     email: {
       type: String,
       required: false,
