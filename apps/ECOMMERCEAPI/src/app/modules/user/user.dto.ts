@@ -56,6 +56,10 @@ export class UpdateUserDto {
   @IsNotEmpty()
   @IsString()
   firstname: string;
+
+  @IsOptional()
+  @IsString()
+  password: string;
 }
 
 export class FilterAndPaginationUserDto {

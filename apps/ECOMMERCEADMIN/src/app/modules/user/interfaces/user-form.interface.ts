@@ -7,5 +7,6 @@ export interface IUserForm extends ICommonForm {
     address: FormControl<string>;
     email: FormControl<string>;
     phone: FormControl<string>;
+    password: FormControl<string>;
     hasAccess: FormControl<boolean>;
 }

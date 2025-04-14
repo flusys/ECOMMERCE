@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, Signal, viewChild, ViewChild } from '@angular/core';
 import { Listbox } from 'primeng/listbox';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
@@ -17,14 +17,16 @@ import { AuthenticationStateService } from 'flusysng/auth/services';
 })
 export class ProfileComponent implements OnInit {
   options!: any[];
-  @ViewChild('myListBox') myListBoxComponent!: Listbox;
+  myListBoxComponent: Signal<Listbox | undefined> = viewChild<Listbox>('myListBox');
+
+  private router: Router = inject(Router);
 
   constructor(
     private authenticationStateService: AuthenticationStateService,
-    private router: Router) {
+  ) {
   }
 
-  get loginUserData():any{
+  get loginUserData(): any {
     return this.authenticationStateService.loginUserData();
   }
 
@@ -36,12 +38,13 @@ export class ProfileComponent implements OnInit {
   }
 
   clickOption(event: { value: any; }) {
-    this.myListBoxComponent.modelValue.set(null);
+    this.myListBoxComponent()?.modelValue.set(null);
     if (event.value == 'logout')
       this.logout();
   }
 
   logout() {
-    console.warn("HI")
+    localStorage.removeItem('token');
+    this.router.navigate(['/auth/login']);
   }
 }

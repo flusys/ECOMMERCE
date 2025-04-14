@@ -3,9 +3,8 @@ import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } fr
 import { catchError, of, switchMap } from 'rxjs';
 import { MessageService } from "primeng/api";
 import { AuthenticationApiService } from '../auth/service/authentication-api.service';
-import { AuthenticationStateService } from '../auth/service/authentication-state.service';
-import { MenuStateService } from '../layout/services/menu-state.service';
-import {PlatformService} from "flusysng/shared/services";
+import { PlatformService } from "flusysng/shared/services";
+import { AuthenticationStateService } from 'flusysng/auth/services';
 
 export const authGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
@@ -13,7 +12,6 @@ export const authGuard: CanActivateFn = (
 ) => {
   const authenticationStateService = inject(AuthenticationStateService);
   const authenticationApiService = inject(AuthenticationApiService);
-  const menuStateService = inject(MenuStateService);
   const messageService = inject(MessageService);
   const platformService = inject(PlatformService);
   const router = inject(Router);
@@ -23,21 +21,21 @@ export const authGuard: CanActivateFn = (
 
   authenticationStateService.isInitLoad = false;
 
-  return authenticationApiService.checkUserLogin().pipe(
+  return authenticationApiService.checkLogin().pipe(
     switchMap(userData => {
-      if (userData && userData.success) {
-        authenticationStateService.loginUserData.set(userData.result);
+      if (userData) {
+        authenticationStateService.loginUserData.set(userData);
         if (!platformService.isServer) {
-          authenticationStateService.navigateBaseUrl();
+          router.navigate(['/dashboard']);
           messageService.add({ key: 'tst', severity: 'success', summary: 'Success!', detail: "Authorized! Success." });
         }
         return of(true);
       } else {
-        authenticationStateService.loginUserData.set(null);
+        localStorage.removeItem('token');
+        router.navigate(['/auth/login']);
         return of(false);
       }
     }), catchError((err) => {
-      authenticationStateService.loginUserData.set(null);
       if (!platformService.isServer) {
         const pathName = window.location.pathname;
         if (!pathName.includes('/auth')) {
@@ -45,14 +43,12 @@ export const authGuard: CanActivateFn = (
             messageService.add({ key: 'tst', severity: 'error', summary: 'Unauthorized!', detail: 'Please, Login First .' });
           else
             messageService.add({ key: 'tst', severity: 'error', summary: 'Unauthorized!', detail: 'Request forbidden.' });
-
-          authenticationStateService.removeToken();
+          localStorage.removeItem('token');
           router.navigate(['/auth/login']);
           return of(false);
-        }else{
+        } else {
           return of(true);
         }
-
       }
       return of(false);
     },

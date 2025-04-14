@@ -33,6 +33,9 @@ export class CartComponent {
   }
 
   remoteCart(productId: string) {
+    this.products.update((products) => {
+      return products.filter((item) => item._id != productId);
+    })
     this.cartStateService.removeCartListProduct(productId);
   }
 

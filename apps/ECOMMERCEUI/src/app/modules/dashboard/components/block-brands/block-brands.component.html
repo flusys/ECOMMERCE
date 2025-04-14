@@ -1,12 +1,14 @@
 <div class="block block-brands">
   <div class="container">
     <div class="block-brands__slider">
-      <swiper-container #swiper loop="true" autoplay-delay="2500" autoplay-disable-on-interaction="false" [slidesPerView]="slidesPerView" [spaceBetween]="spaceBetween">
+      <swiper-container #swiper loop="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
+        [slidesPerView]="slidesPerView" [spaceBetween]="spaceBetween">
         @for (slide of brandData; track slide.image; let i = $index) {
-          <swiper-slide>
-            <div class="block-brands__item"><a href="#"><img [src]="slide.image" alt=""></a>
-            </div>
-          </swiper-slide>
+        <swiper-slide>
+          <div class="block-brands__item"><a routerLink="/product-list?brandIds={{slide.id}}"><img [src]="slide.image"
+                alt=""></a>
+          </div>
+        </swiper-slide>
         }
       </swiper-container>
     </div>

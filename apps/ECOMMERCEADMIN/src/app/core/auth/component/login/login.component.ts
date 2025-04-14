@@ -8,7 +8,8 @@ import {
   AuthenticationStateService as LibAuthState,
 } from 'flusysng/auth/services';
 import { MessageService } from 'primeng/api';
-import { take } from 'rxjs';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -20,11 +21,9 @@ import { take } from 'rxjs';
 export class LoginComponent {
   private authenticationFormService = inject(AuthenticationFormService);
   private authenticationApiService = inject(AuthenticationApiService);
-  private libAuthApi = inject(LibAuthApi);
   private libAuthState = inject(LibAuthState);
   private messageService = inject(MessageService);
-
-  @Input() requestUrl!: string;
+  private router=inject(Router)
 
   constructor() {
     this.authenticationFormService.initLoginForm();
@@ -47,16 +46,9 @@ export class LoginComponent {
       .login(this.loginForm.value)
       .subscribe((res) => {
         if (res.success) {
-          this.libAuthState.loginUserData.set(res.result);
-          if (this.requestUrl) this.libAuthApi.redirectBase(this.requestUrl);
-          else {
-            this.libAuthApi
-              .checkRequestCompanyApp()
-              .pipe(take(1))
-              .subscribe((res) => {
-                this.libAuthApi.redirectBase(this.requestUrl);
-              });
-          }
+          this.libAuthState.loginUserData.set(res.data);
+          localStorage.setItem('token',res.token);
+          this.router.navigate(['/dashboard']);
         } else {
           this.messageService.add({
             key: 'tst',

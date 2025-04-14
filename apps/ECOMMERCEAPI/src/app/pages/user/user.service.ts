@@ -174,9 +174,11 @@ export class UserService {
             const hashedPass = await bcrypt.hash('123456', salt);
             const id = await this.counterService.getNextId('user_id');
             const createdAtString = this.utilsService.getDateString(new Date());
-            const data = new this.userModel({ ...addUserDto, createdAtString, 
+            const data = new this.userModel({
+                ...addUserDto, createdAtString,
                 hasAccess: true,
-                password: hashedPass, id });
+                password: hashedPass, id
+            });
             const saveData = await data.save();
             return {
                 success: true,
@@ -340,6 +342,13 @@ export class UserService {
         try {
             const finalData = { ...updateUserDto };
             delete finalData.id;
+
+            if (finalData.password) {
+                const salt = await bcrypt.genSalt();
+                const hashedPass = await bcrypt.hash(finalData.password, salt);
+                finalData.password = hashedPass;
+            }
+
             await this.userModel.findOneAndUpdate({ id: updateUserDto.id }, {
                 $set: finalData,
             });
@@ -353,18 +362,18 @@ export class UserService {
     }
 
     async updateHasAccessById(
-        updateOrderDetailsDto: {id:number,status:boolean},
-      ): Promise<IResponsePayload<String>> {
+        updateOrderDetailsDto: { id: number, status: boolean },
+    ): Promise<IResponsePayload<String>> {
         try {
-          await this.userModel.findOneAndUpdate({ id: updateOrderDetailsDto.id }, {
-            hasAccess: updateOrderDetailsDto.status
-          });
-          return {
-            success: true,
-            message: 'Successfully Updated',
-          } as IResponsePayload<String>;
+            await this.userModel.findOneAndUpdate({ id: updateOrderDetailsDto.id }, {
+                hasAccess: updateOrderDetailsDto.status
+            });
+            return {
+                success: true,
+                message: 'Successfully Updated',
+            } as IResponsePayload<String>;
         } catch (err) {
-          throw new InternalServerErrorException();
+            throw new InternalServerErrorException();
         }
-      }
+    }
 }

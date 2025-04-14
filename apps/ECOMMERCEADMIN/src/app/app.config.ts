@@ -18,14 +18,13 @@ import { routes } from './app.routes';
 
 import {
   apiLoaderInterceptor,
-  errorCatchingInterceptor,
-  withCredentials,
 } from 'flusysng/core/interceptors';
 import { ApiLoaderService } from 'flusysng/core/services';
 import { LIB_CONFIG } from 'flusysng';
 import { environment } from '../environments/environment';
 import { providePrimeNG } from 'primeng/config';
 import { NavyBlueTheme } from 'flusysng/core/theme';
+import { includeTokenInHeader } from './core/interceptors/with-token.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -48,9 +47,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withFetch(),
       withInterceptors([
-        withCredentials,
-        errorCatchingInterceptor,
         apiLoaderInterceptor,
+        includeTokenInHeader
       ]),
     ),
     providePrimeNG({

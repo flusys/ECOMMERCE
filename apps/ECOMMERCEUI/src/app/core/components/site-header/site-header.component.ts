@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, OnInit, Renderer2, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, HostListener, inject, OnInit, Renderer2, signal, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularModule } from '../../../shared/modules/angular.module';
 import { CategoryStateService } from '../../../modules/dashboard/services/category-state.service';
@@ -38,6 +38,9 @@ export class SiteHeaderComponent implements OnInit {
   products = signal<any[]>([]);
 
   constructor(private renderer: Renderer2, private router: Router,) {
+    effect(() => {
+      const cartList = this.cartStateService.getCartListProduct();
+    })
   }
 
   get categoryTree() {

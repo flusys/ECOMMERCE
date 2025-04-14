@@ -2,12 +2,14 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, PLATFORM_ID, ViewChild, inject } from '@angular/core';
 import { SwiperContainer } from 'swiper/element';
 import { BrandApiService } from '../../services/brand-api.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-block-brands',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    RouterLink
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './block-brands.component.html',

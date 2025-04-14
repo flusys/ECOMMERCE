@@ -27,6 +27,7 @@ export class UserFormService extends FormCommonClass<IUserForm> {
       address: new FormControl('', { nonNullable: true }),
       email: new FormControl('', { nonNullable: true }),
       phone: new FormControl('', { nonNullable: true }),
+      password: new FormControl('', { nonNullable: true }),
       hasAccess: new FormControl(false, { nonNullable: true }),
     });
   }
