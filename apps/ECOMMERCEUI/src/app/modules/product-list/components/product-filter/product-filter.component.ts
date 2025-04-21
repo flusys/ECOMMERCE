@@ -39,7 +39,7 @@ export class ProductFilterComponent {
   }
 
   toggle(event: MouseEvent) {
-    const target = event.target as HTMLElement; // Type assertion
+    const target = event.target as HTMLElement;
     const parentDiv = target.parentElement;
     if (parentDiv) {
       parentDiv.classList.toggle('filter--opened');
@@ -71,6 +71,8 @@ export class ProductFilterComponent {
   }
 
   resetFilter() {
+    this.selectedBrandIds = [];
+    this.rangeValues = [0, 80];
     this.router.navigate(['/product-list']);
   }
 

@@ -49,7 +49,9 @@ export class UserCreateComponent {
       return;
     }
     let data = this.userFormService.formGroup.value;
-
+    if(!data.password) {
+      delete data.password;
+    }
     (this.model ? this.userApiService.update(data) : this.userApiService.insert(data)).pipe(take(1)).subscribe((res) => {
       if (res.success) {
         this.messageService.add({ key: 'tst', severity: 'success', summary: 'Success!', detail: res.message });
